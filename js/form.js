@@ -15,63 +15,53 @@ const titulo = document.getElementById("titulo");
 titulo.textContent = formularioData.titulo;
 
 formularioData.campos.forEach((campo) => {
-  const el = document.getElementById(campo.id);
-
-  if (!el) return;
-
-  if (campo.tipo === "switch") {
-    data[campo.id] = el.dataset.value === "true";
-  } else {
-    data[campo.id] = el.value;
-  }
+  const el = crearCampo(campo);
+  if (el) form.appendChild(el);
 });
 
-document.getElementById("multi_dia").addEventListener("click", () => {
-  const activo = document
-    .getElementById("multi_dia")
-    .classList.contains("active");
-
-  document.getElementById("fecha_inicio").parentElement.style.display = activo
-    ? "block"
-    : "none";
-  document.getElementById("fecha_fin").parentElement.style.display = activo
-    ? "block"
-    : "none";
-});
-
-document.querySelectorAll('[name="materiales"]').forEach((chk) => {
-  chk.addEventListener("change", () => {
-    const sonido = [
-      ...document.querySelectorAll('[name="materiales"]:checked'),
-    ].some((el) => el.value === "Sonido");
-
-    document.getElementById("microfonos").parentElement.style.display = sonido
-      ? "block"
-      : "none";
-  });
-});
-
-// Botón
+// 🔹 Botón
 const btn = document.createElement("button");
 btn.textContent = "Enviar";
 btn.type = "submit";
 form.appendChild(btn);
+
+// 🔹 Eventos dinámicos (DESPUÉS del render)
+
+// Multi día
+setTimeout(() => {
+  const multi = document.getElementById("multi_dia");
+
+  if (multi) {
+    multi.addEventListener("click", () => {
+      const activo = multi.classList.contains("active");
+
+      document.getElementById("fecha_inicio").parentElement.style.display =
+        activo ? "block" : "none";
+      document.getElementById("fecha_fin").parentElement.style.display = activo
+        ? "block"
+        : "none";
+    });
+  }
+
+  // Sonido → micrófonos
+  document.querySelectorAll('[name="materiales"]').forEach((chk) => {
+    chk.addEventListener("change", () => {
+      const sonido = [
+        ...document.querySelectorAll('[name="materiales"]:checked'),
+      ].some((el) => el.value === "Sonido");
+
+      document.getElementById("microfonos").parentElement.style.display = sonido
+        ? "block"
+        : "none";
+    });
+  });
+}, 100);
 
 // 🔹 Submit
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {};
-
-  if (data.espacio === "Auditorio" && data.personas > 110) {
-    alert("Capacidad máxima Auditorio: 110");
-    return;
-  }
-
-  if (data.espacio === "Sala de Consejo" && data.personas > 50) {
-    alert("Capacidad máxima Sala: 50");
-    return;
-  }
 
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
@@ -80,18 +70,36 @@ form.addEventListener("submit", async (e) => {
       data[campo.id] = new Date().toLocaleDateString();
     } else {
       const el = document.getElementById(campo.id);
-      if (el) data[campo.id] = el.value;
+
+      if (!el) return;
+
+      if (campo.tipo === "switch") {
+        data[campo.id] = el.dataset.value === "true";
+      } else {
+        data[campo.id] = el.value;
+      }
     }
   });
 
-  // 🔹 Validaciones
+  // 🔥 Validaciones después de llenar data
+
   if (!validarCorreo(data.correo)) {
     alert("Correo inválido");
     return;
   }
 
   if (!validarTelefono(data.telefono)) {
-    alert("Teléfono inválido");
+    alert("Teléfono inválido (10 dígitos)");
+    return;
+  }
+
+  if (data.espacio === "Auditorio" && data.personas > 110) {
+    alert("Capacidad máxima Auditorio: 110");
+    return;
+  }
+
+  if (data.espacio === "Sala de Consejo" && data.personas > 50) {
+    alert("Capacidad máxima Sala: 50");
     return;
   }
 
