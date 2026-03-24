@@ -2,48 +2,18 @@ body {
   font-family: Arial, sans-serif;
   background: #f4f6f8;
   margin: 0;
-  padding: 0;
 }
 
 .container {
-  max-width: 600px;
-  margin: 50px auto;
-  background: #ffffff;
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
 }
 
 .form-group {
   margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #444;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #007bff;
 }
 
 button {
