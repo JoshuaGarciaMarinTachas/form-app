@@ -64,6 +64,7 @@ form.addEventListener("submit", async (e) => {
   const data = {};
 
   formularioData.campos.forEach((campo) => {
+    // 🔹 AUTO
     if (campo.tipo === "auto_time") {
       data[campo.id] = new Date().toLocaleTimeString();
     } else if (campo.tipo === "auto_date") {
@@ -71,12 +72,40 @@ form.addEventListener("submit", async (e) => {
     } else {
       const el = document.getElementById(campo.id);
 
-      if (!el) return;
+      // 🔴 Si no existe el elemento, lo ignoramos
+      if (!el && campo.tipo !== "multiselect") return;
 
+      // 🔹 SWITCH (slider)
       if (campo.tipo === "switch") {
         data[campo.id] = el.dataset.value === "true";
+
+        // 🔹 RANGO DE HORA
+      } else if (campo.tipo === "time_range") {
+        const inicio = document.getElementById(campo.id + "_inicio")?.value;
+        const fin = document.getElementById(campo.id + "_fin")?.value;
+
+        // 🔥 VALIDACIÓN
+        if (!inicio || !fin) {
+          alert("Completa el horario");
+          throw new Error("Horario incompleto");
+        }
+
+        data[campo.id] = `${inicio} - ${fin}`;
+
+        // 🔹 MULTISELECT (checkbox group)
+      } else if (campo.tipo === "multiselect") {
+        const seleccionados = [
+          ...document.querySelectorAll(`input[name="${campo.id}"]:checked`),
+        ].map((el) => el.value);
+
+        data[campo.id] = seleccionados; // array (Firebase lo acepta)
+
+        // 🔹 INPUT NORMAL
       } else {
-        data[campo.id] = el.value;
+        const value = el.value?.trim();
+
+        // Evita undefined
+        data[campo.id] = value !== "" ? value : null;
       }
     }
   });

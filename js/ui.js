@@ -63,9 +63,11 @@ export function crearCampo(campo) {
 
       const start = document.createElement("input");
       start.type = "time";
+      start.id = campo.id + "_inicio";
 
       const end = document.createElement("input");
       end.type = "time";
+      end.id = campo.id + "_fin";
 
       input.appendChild(start);
       input.appendChild(end);
