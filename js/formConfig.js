@@ -58,12 +58,14 @@ export const formularioData = {
       label: "Fecha inicio",
       tipo: "date",
       dependsOn: "multi_dia",
+      oculto: true,
     },
     {
       id: "fecha_fin",
       label: "Fecha fin",
       tipo: "date",
       dependsOn: "multi_dia",
+      oculto: true,
     },
 
     { id: "horario", label: "Horario", tipo: "time_range" },

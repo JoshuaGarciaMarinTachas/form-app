@@ -29,19 +29,23 @@ form.appendChild(btn);
 
 // Multi día
 setTimeout(() => {
-  const multi = document.getElementById("multi_dia");
+  const multiDia = document.getElementById("multi_dia");
 
-  if (multi) {
-    multi.addEventListener("click", () => {
-      const activo = multi.classList.contains("active");
+  multiDia.addEventListener("click", () => {
+    const activo = multiDia.dataset.value === "true";
 
-      document.getElementById("fecha_inicio").parentElement.style.display =
-        activo ? "block" : "none";
-      document.getElementById("fecha_fin").parentElement.style.display = activo
-        ? "block"
-        : "none";
-    });
-  }
+    const inicioContainer =
+      document.getElementById("fecha_inicio").parentElement;
+    const finContainer = document.getElementById("fecha_fin").parentElement;
+
+    if (activo) {
+      inicioContainer.style.display = "block";
+      finContainer.style.display = "block";
+    } else {
+      inicioContainer.style.display = "none";
+      finContainer.style.display = "none";
+    }
+  });
 
   // Sonido → micrófonos
   document.querySelectorAll('[name="materiales"]').forEach((chk) => {

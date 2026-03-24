@@ -5,7 +5,9 @@ export function crearCampo(campo) {
   div.classList.add("form-group");
 
   if (campo.tipo === "auto_time" || campo.tipo === "auto_date") return null;
-
+  if (campo.oculto) {
+    div.style.display = "none";
+  }
   const label = document.createElement("label");
   label.textContent = campo.label;
 
