@@ -8,10 +8,11 @@ export const formularioData = {
     { id: "hora_inicio", tipo: "auto_time" },
     { id: "fecha_llenado", tipo: "auto_date" },
 
-    // 🔹 Datos básicos
+    // 🔹 =========================
+    // 🔹 BLOQUE 1 (DATOS BÁSICOS)
+    // 🔹 =========================
     { id: "correo", label: "Correo", tipo: "email", required: true },
     { id: "nombre", label: "Nombre", tipo: "text", required: true },
-
     { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
 
     {
@@ -41,9 +42,18 @@ export const formularioData = {
 
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
+    // 🔹 =========================
+    // 🔹 BLOQUE 2 (EVENTO)
+    // 🔹 =========================
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
 
-    { id: "fecha_aprobacion", label: "Fecha de aprobación", tipo: "date" },
+    {
+      id: "fecha_aprobacion",
+      label: "Fecha de aprobación",
+      tipo: "date",
+      dependsOn: "consejo", // 🔥 SOLO aparece si consejo = true
+      oculto: true,
+    },
 
     {
       id: "fecha_evento",
@@ -52,10 +62,8 @@ export const formularioData = {
       required: true,
     },
 
-    // 🔴 IMPORTANTE: este controla todo
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
-    // 🔴 FECHAS CONTROLADAS
     {
       id: "fecha_inicio",
       label: "Fecha inicio",
@@ -73,6 +81,9 @@ export const formularioData = {
 
     { id: "horario", label: "Horario", tipo: "time_range" },
 
+    // 🔹 =========================
+    // 🔹 BLOQUE 3 (LOGÍSTICA)
+    // 🔹 =========================
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
     {
@@ -91,7 +102,9 @@ export const formularioData = {
     { id: "montaje", label: "Montaje", tipo: "text" },
     { id: "personas", label: "Número de personas", tipo: "number" },
 
-    // 🔹 Recursos materiales
+    // 🔹 =========================
+    // 🔹 BLOQUE 4 (RECURSOS)
+    // 🔹 =========================
     {
       id: "materiales",
       label: "Recursos materiales",
@@ -106,18 +119,16 @@ export const formularioData = {
       ],
     },
 
-    // 🔴 ESTE DEPENDE DE "Sonido"
     {
       id: "microfonos",
       label: "Micrófonos",
       tipo: "number",
       dependsOnValue: { campo: "materiales", valor: "Sonido" },
-      oculto: true, // 🔥 IMPORTANTE (faltaba)
+      oculto: true,
     },
 
     { id: "personificadores", label: "Personificadores", tipo: "number" },
 
-    // 🔹 Recursos humanos
     {
       id: "humanos",
       label: "Recursos humanos",
@@ -130,7 +141,14 @@ export const formularioData = {
       ],
     },
 
+    // 🔹 =========================
+    // 🔹 BLOQUE 5
+    // 🔹 =========================
     { id: "descripcion", label: "Descripción", tipo: "textarea" },
+
+    // 🔹 =========================
+    // 🔹 BLOQUE 6
+    // 🔹 =========================
     { id: "observaciones", label: "Observaciones", tipo: "textarea" },
   ],
 };

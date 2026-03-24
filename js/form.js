@@ -14,24 +14,104 @@ const titulo = document.getElementById("titulo");
 // 🔹 Render
 titulo.textContent = formularioData.titulo;
 
-const grupos = {};
+// 🔹 CREAR BLOQUES
+const bloques = [
+  document.createElement("div"), // 0 → Datos básicos
+  document.createElement("div"), // 1 → Evento
+  document.createElement("div"), // 2 → Logística
+  document.createElement("div"), // 3 → Recursos
+  document.createElement("div"), // 4 → Descripción
+  document.createElement("div"), // 5 → Observaciones
+];
 
+// 🔹 Clase visual
+bloques.forEach((b) => b.classList.add("bloque"));
+
+// 🔹 Títulos (opcional pero recomendado)
+const titulos = [
+  "Datos del solicitante",
+  "Detalles del evento",
+  "Logística",
+  "Recursos",
+  "Descripción",
+  "Observaciones",
+];
+
+bloques.forEach((bloque, i) => {
+  const h3 = document.createElement("h3");
+  h3.textContent = titulos[i];
+  h3.style.marginBottom = "15px";
+  bloque.appendChild(h3);
+});
+
+// 🔹 ASIGNAR CAMPOS A BLOQUES
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
   if (!el) return;
 
-  const grupoId = campo.grupo || 0;
-
-  if (!grupos[grupoId]) {
-    const contenedor = document.createElement("div");
-    contenedor.classList.add("bloque");
-
-    grupos[grupoId] = contenedor;
-    form.appendChild(contenedor);
+  // 🔥 BLOQUE 1
+  if (
+    [
+      "correo",
+      "nombre",
+      "acudio_dep",
+      "nombre_evento",
+      "responsable",
+      "cargo_responsable",
+      "cargo_admin",
+      "unidad",
+      "telefono",
+    ].includes(campo.id)
+  ) {
+    bloques[0].appendChild(el);
   }
 
-  grupos[grupoId].appendChild(el);
+  // 🔥 BLOQUE 2
+  else if (
+    [
+      "consejo",
+      "fecha_aprobacion",
+      "fecha_evento",
+      "multi_dia",
+      "fecha_inicio",
+      "fecha_fin",
+      "horario",
+    ].includes(campo.id)
+  ) {
+    bloques[1].appendChild(el);
+  }
+
+  // 🔥 BLOQUE 3
+  else if (
+    ["externos", "discapacidad", "espacio", "montaje", "personas"].includes(
+      campo.id,
+    )
+  ) {
+    bloques[2].appendChild(el);
+  }
+
+  // 🔥 BLOQUE 4
+  else if (
+    ["materiales", "microfonos", "personificadores", "humanos"].includes(
+      campo.id,
+    )
+  ) {
+    bloques[3].appendChild(el);
+  }
+
+  // 🔥 BLOQUE 5
+  else if (campo.id === "descripcion") {
+    bloques[4].appendChild(el);
+  }
+
+  // 🔥 BLOQUE 6
+  else if (campo.id === "observaciones") {
+    bloques[5].appendChild(el);
+  }
 });
+
+// 🔹 AGREGAR BLOQUES AL FORM
+bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 Botón
 const btn = document.createElement("button");
