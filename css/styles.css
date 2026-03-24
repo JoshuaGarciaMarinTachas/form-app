@@ -1,37 +1,116 @@
+/* 🔹 Base */
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: #f4f6f8;
-}
-
-.container {
-  max-width: 600px;
-  margin: auto;
-  background: white;
+  margin: 0;
   padding: 20px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+/* 🔹 Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-button {
+/* 🔹 Título */
+#titulo {
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* 🔹 FORM GRID (tipo Google Forms) */
+#formulario {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* 🔹 Campos que ocupan todo el ancho */
+.form-group.full {
+  grid-column: span 2;
+}
+
+/* 🔹 Grupo */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔹 Labels */
+.form-group label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+/* 🔹 Inputs generales */
+input,
+select,
+textarea {
   width: 100%;
   padding: 10px;
-  background: blue;
-  color: white;
-  border: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fafafa;
+  transition: 0.2s;
 }
 
+/* 🔹 Focus estilo moderno */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+}
+
+/* 🔹 Placeholder gris */
+input::placeholder,
+textarea::placeholder {
+  color: #aaa;
+}
+
+/* 🔹 Textarea más grande */
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* 🔹 Botón */
+button {
+  grid-column: span 2;
+  padding: 12px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+/* 🔹 Switch container */
 .switch-container {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 🔹 Switch */
 .switch {
   width: 50px;
   height: 26px;
-  background: red;
+  background: #ccc;
   border-radius: 20px;
   position: relative;
   cursor: pointer;
@@ -51,9 +130,33 @@ button {
 }
 
 .switch.active {
-  background: green;
+  background: #22c55e;
 }
 
 .switch.active::before {
   transform: translateX(24px);
+}
+
+/* 🔹 Multiselect */
+.form-group div input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+.form-group div {
+  margin-bottom: 5px;
+}
+
+/* 🔹 Responsivo (celular) */
+@media (max-width: 600px) {
+  #formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: span 1;
+  }
+
+  button {
+    grid-column: span 1;
+  }
 }

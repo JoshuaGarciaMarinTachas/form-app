@@ -7,6 +7,15 @@ export function crearCampo(campo) {
   const div = document.createElement("div");
   div.classList.add("form-group");
 
+  // 🔥 Campos grandes ocupan todo el ancho
+  if (
+    campo.tipo === "textarea" ||
+    campo.id === "descripcion" ||
+    campo.id === "observaciones"
+  ) {
+    div.classList.add("full");
+  }
+
   // 🔹 Oculto inicial
   if (campo.oculto) {
     div.style.display = "none";
