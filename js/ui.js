@@ -21,8 +21,12 @@ export function crearCampo(campo) {
     div.style.display = "none";
   }
 
-  const label = document.createElement("label");
-  label.textContent = campo.label;
+  let label = null;
+
+  if (campo.tipo !== "textarea") {
+    label = document.createElement("label");
+    label.textContent = campo.label;
+  }
 
   let input;
 
@@ -96,12 +100,17 @@ export function crearCampo(campo) {
     default:
       input = document.createElement("input");
       input.type = campo.tipo;
+      if (campo.id === "personificadores") {
+        input.min = 0;
+        input.max = 2;
+        input.value = 0;
+      }
   }
 
   // 🔴 IMPORTANTE: asignar ID SIEMPRE
   input.id = campo.id;
 
-  div.appendChild(label);
+  if (label) div.appendChild(label);
   div.appendChild(input);
 
   // 🔥 ==============================

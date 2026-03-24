@@ -113,6 +113,17 @@ formularioData.campos.forEach((campo) => {
 // 🔹 AGREGAR BLOQUES AL FORM
 bloques.forEach((b) => form.appendChild(b));
 
+// 🔹 Agrupar switches horizontalmente
+["consejo", "multi_dia"].forEach((id) => {
+  const el = document.getElementById(id)?.parentElement;
+  if (el) el.classList.add("switch-group");
+});
+
+["externos", "discapacidad"].forEach((id) => {
+  const el = document.getElementById(id)?.parentElement;
+  if (el) el.classList.add("switch-group");
+});
+
 // 🔹 Botón
 const btn = document.createElement("button");
 btn.textContent = "Enviar";
@@ -169,9 +180,11 @@ setTimeout(() => {
         ...document.querySelectorAll('[name="materiales"]:checked'),
       ].some((el) => el.value === "Sonido");
 
-      document.getElementById("microfonos").parentElement.style.display = sonido
-        ? "block"
-        : "none";
+      const micro = document.getElementById("microfonos")?.parentElement;
+      const bocina = document.getElementById("bocina")?.parentElement;
+
+      if (micro) micro.style.display = sonido ? "block" : "none";
+      if (bocina) bocina.style.display = sonido ? "block" : "none";
     });
   });
 }, 100);

@@ -127,6 +127,13 @@ export const formularioData = {
       oculto: true,
     },
 
+    {
+      id: "bocina",
+      label: "¿Bocina?",
+      tipo: "switch",
+      oculto: true,
+    },
+
     { id: "personificadores", label: "Personificadores", tipo: "number" },
 
     {
