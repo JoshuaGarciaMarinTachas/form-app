@@ -20,6 +20,7 @@ export const formularioData = {
       tipo: "text",
       required: true,
     },
+
     { id: "responsable", label: "Responsable del evento", tipo: "text" },
 
     {
@@ -37,11 +38,13 @@ export const formularioData = {
       tipo: "select",
       opciones: ["Estudiante", "Docente", "Externo"],
     },
+
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
 
     { id: "fecha_aprobacion", label: "Fecha de aprobación", tipo: "date" },
+
     {
       id: "fecha_evento",
       label: "Fecha del evento",
@@ -49,8 +52,10 @@ export const formularioData = {
       required: true,
     },
 
+    // 🔴 IMPORTANTE: este controla todo
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
+    // 🔴 FECHAS CONTROLADAS
     {
       id: "fecha_inicio",
       label: "Fecha inicio",
@@ -69,6 +74,7 @@ export const formularioData = {
     { id: "horario", label: "Horario", tipo: "time_range" },
 
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
+
     {
       id: "discapacidad",
       label: "¿Asiste gente con discapacidad?",
@@ -100,11 +106,13 @@ export const formularioData = {
       ],
     },
 
+    // 🔴 ESTE DEPENDE DE "Sonido"
     {
       id: "microfonos",
       label: "Micrófonos",
       tipo: "number",
       dependsOnValue: { campo: "materiales", valor: "Sonido" },
+      oculto: true, // 🔥 IMPORTANTE (faltaba)
     },
 
     { id: "personificadores", label: "Personificadores", tipo: "number" },

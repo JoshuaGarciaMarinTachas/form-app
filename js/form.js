@@ -19,40 +19,6 @@ formularioData.campos.forEach((campo) => {
   if (el) form.appendChild(el);
 });
 
-const fechaInicio = document.getElementById("fecha_inicio");
-
-// 🔒 Bloquear edición
-fechaInicio.readOnly = true;
-
-// 🎨 Estilo visual profesional
-fechaInicio.style.backgroundColor = "#f1f1f1";
-fechaInicio.style.color = "#666";
-fechaInicio.style.cursor = "not-allowed";
-fechaInicio.style.border = "1px solid #ccc";
-
-const fechaEvento = document.getElementById("fecha_evento");
-
-fechaEvento.addEventListener("change", () => {
-  fechaInicio.value = fechaEvento.value;
-});
-
-const multiDia = document.getElementById("multi_dia");
-
-multiDia.addEventListener("click", () => {
-  const activo = multiDia.dataset.value === "true";
-
-  const contInicio = document.getElementById("fecha_inicio").parentElement;
-  const contFin = document.getElementById("fecha_fin").parentElement;
-
-  if (activo) {
-    contInicio.style.display = "block";
-    contFin.style.display = "block";
-  } else {
-    contInicio.style.display = "none";
-    contFin.style.display = "none";
-  }
-});
-
 // 🔹 Botón
 const btn = document.createElement("button");
 btn.textContent = "Enviar";
@@ -60,28 +26,49 @@ btn.type = "submit";
 form.appendChild(btn);
 
 // 🔹 Eventos dinámicos (DESPUÉS del render)
-
-// Multi día
 setTimeout(() => {
+  const fechaInicio = document.getElementById("fecha_inicio");
+  const fechaEvento = document.getElementById("fecha_evento");
+  const fechaFin = document.getElementById("fecha_fin");
   const multiDia = document.getElementById("multi_dia");
 
+  // 🟢 --- FECHA INICIO BLOQUEADA ---
+  fechaInicio.readOnly = true;
+  fechaInicio.style.backgroundColor = "#e0e0e0";
+  fechaInicio.style.color = "#666";
+  fechaInicio.style.cursor = "not-allowed";
+  fechaInicio.style.border = "1px solid #ccc";
+
+  // 🟢 --- ASEGURAR QUE FECHA FIN SEA EDITABLE ---
+  if (fechaFin) {
+    fechaFin.readOnly = false;
+  }
+
+  // 🟢 --- SINCRONIZAR FECHAS ---
+  function sincronizarFechas() {
+    fechaInicio.value = fechaEvento.value;
+  }
+
+  sincronizarFechas(); // copia inmediata
+  fechaEvento.addEventListener("change", sincronizarFechas);
+
+  // 🟢 --- MULTI DÍA ---
   multiDia.addEventListener("click", () => {
     const activo = multiDia.dataset.value === "true";
 
-    const inicioContainer =
-      document.getElementById("fecha_inicio").parentElement;
-    const finContainer = document.getElementById("fecha_fin").parentElement;
+    const contInicio = fechaInicio.parentElement;
+    const contFin = fechaFin.parentElement;
 
     if (activo) {
-      inicioContainer.style.display = "block";
-      finContainer.style.display = "block";
+      contInicio.style.display = "block";
+      contFin.style.display = "block";
     } else {
-      inicioContainer.style.display = "none";
-      finContainer.style.display = "none";
+      contInicio.style.display = "none";
+      contFin.style.display = "none";
     }
   });
 
-  // Sonido → micrófonos
+  // 🟢 --- SONIDO → MICRÓFONOS ---
   document.querySelectorAll('[name="materiales"]').forEach((chk) => {
     chk.addEventListener("change", () => {
       const sonido = [
@@ -102,7 +89,6 @@ form.addEventListener("submit", async (e) => {
   const data = {};
 
   formularioData.campos.forEach((campo) => {
-    // 🔹 AUTO
     if (campo.tipo === "auto_time") {
       data[campo.id] = new Date().toLocaleTimeString();
     } else if (campo.tipo === "auto_date") {
@@ -110,33 +96,25 @@ form.addEventListener("submit", async (e) => {
     } else {
       const el = document.getElementById(campo.id);
 
-      // 🔴 Si no existe el elemento, lo ignoramos
       if (!el && campo.tipo !== "multiselect") return;
 
-      // 🔹 SWITCH (slider)
       if (campo.tipo === "switch") {
         data[campo.id] = el.dataset.value === "true";
       } else if (campo.tipo === "time_range") {
         const inicioEl = document.getElementById(campo.id + "_inicio");
         const finEl = document.getElementById(campo.id + "_fin");
 
-        // 🔥 DEBUG (MUY IMPORTANTE)
-        console.log("Horario inputs:", inicioEl, finEl);
-
         if (!inicioEl || !finEl) {
           alert("Error interno: horario no encontrado");
           throw new Error("Inputs de horario no existen");
         }
 
-        // 🔥 Validar fechas solo si es multi día
         const esMultiDia =
           document.getElementById("multi_dia").dataset.value === "true";
 
-        if (esMultiDia) {
-          if (!data.fecha_fin) {
-            alert("Debes seleccionar fecha de fin");
-            return;
-          }
+        if (esMultiDia && !document.getElementById("fecha_fin").value) {
+          alert("Debes seleccionar fecha de fin");
+          return;
         }
 
         const inicio = inicioEl.value;
@@ -153,20 +131,15 @@ form.addEventListener("submit", async (e) => {
           ...document.querySelectorAll(`input[name="${campo.id}"]:checked`),
         ].map((el) => el.value);
 
-        data[campo.id] = seleccionados; // array (Firebase lo acepta)
-
-        // 🔹 INPUT NORMAL
+        data[campo.id] = seleccionados;
       } else {
         const value = el.value?.trim();
-
-        // Evita undefined
         data[campo.id] = value !== "" ? value : null;
       }
     }
   });
 
-  // Validaciones después de llenar data
-
+  // 🔹 Validaciones
   if (!validarCorreo(data.correo)) {
     alert("Correo inválido");
     return;
