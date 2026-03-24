@@ -27,9 +27,16 @@ export function crearCampo(campo) {
       break;
 
     case "switch":
-      input = document.createElement("input");
-      input.type = "checkbox";
+      input = document.createElement("div");
       input.classList.add("switch");
+      input.dataset.value = "false";
+
+      input.addEventListener("click", () => {
+        input.classList.toggle("active");
+        input.dataset.value = input.classList.contains("active")
+          ? "true"
+          : "false";
+      });
       break;
 
     case "multiselect":

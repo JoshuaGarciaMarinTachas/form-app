@@ -15,8 +15,40 @@ const titulo = document.getElementById("titulo");
 titulo.textContent = formularioData.titulo;
 
 formularioData.campos.forEach((campo) => {
-  const el = crearCampo(campo);
-  if (el) form.appendChild(el);
+  const el = document.getElementById(campo.id);
+
+  if (!el) return;
+
+  if (campo.tipo === "switch") {
+    data[campo.id] = el.dataset.value === "true";
+  } else {
+    data[campo.id] = el.value;
+  }
+});
+
+document.getElementById("multi_dia").addEventListener("click", () => {
+  const activo = document
+    .getElementById("multi_dia")
+    .classList.contains("active");
+
+  document.getElementById("fecha_inicio").parentElement.style.display = activo
+    ? "block"
+    : "none";
+  document.getElementById("fecha_fin").parentElement.style.display = activo
+    ? "block"
+    : "none";
+});
+
+document.querySelectorAll('[name="materiales"]').forEach((chk) => {
+  chk.addEventListener("change", () => {
+    const sonido = [
+      ...document.querySelectorAll('[name="materiales"]:checked'),
+    ].some((el) => el.value === "Sonido");
+
+    document.getElementById("microfonos").parentElement.style.display = sonido
+      ? "block"
+      : "none";
+  });
 });
 
 // Botón
@@ -30,6 +62,16 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {};
+
+  if (data.espacio === "Auditorio" && data.personas > 110) {
+    alert("Capacidad máxima Auditorio: 110");
+    return;
+  }
+
+  if (data.espacio === "Sala de Consejo" && data.personas > 50) {
+    alert("Capacidad máxima Sala: 50");
+    return;
+  }
 
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
