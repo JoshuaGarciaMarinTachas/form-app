@@ -1,36 +1,23 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #f4f6f8;
-  margin: 0;
 }
 
 .container {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 20px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 button {
   width: 100%;
-  padding: 12px;
-  background: #007bff;
+  padding: 10px;
+  background: blue;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn-enviar {
-  margin-top: 20px;
-}
-
-button:hover {
-  background: #0056b3;
 }
