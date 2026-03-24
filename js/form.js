@@ -78,21 +78,27 @@ form.addEventListener("submit", async (e) => {
       // 🔹 SWITCH (slider)
       if (campo.tipo === "switch") {
         data[campo.id] = el.dataset.value === "true";
-
-        // 🔹 RANGO DE HORA
       } else if (campo.tipo === "time_range") {
-        const inicio = document.getElementById(campo.id + "_inicio")?.value;
-        const fin = document.getElementById(campo.id + "_fin")?.value;
+        const inicioEl = document.getElementById(campo.id + "_inicio");
+        const finEl = document.getElementById(campo.id + "_fin");
 
-        // 🔥 VALIDACIÓN
+        // 🔥 DEBUG (MUY IMPORTANTE)
+        console.log("Horario inputs:", inicioEl, finEl);
+
+        if (!inicioEl || !finEl) {
+          alert("Error interno: horario no encontrado");
+          throw new Error("Inputs de horario no existen");
+        }
+
+        const inicio = inicioEl.value;
+        const fin = finEl.value;
+
         if (!inicio || !fin) {
           alert("Completa el horario");
           throw new Error("Horario incompleto");
         }
 
         data[campo.id] = `${inicio} - ${fin}`;
-
-        // 🔹 MULTISELECT (checkbox group)
       } else if (campo.tipo === "multiselect") {
         const seleccionados = [
           ...document.querySelectorAll(`input[name="${campo.id}"]:checked`),
