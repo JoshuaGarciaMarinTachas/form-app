@@ -37,8 +37,6 @@ export const formularioData = {
       tipo: "select",
       opciones: ["Estudiante", "Docente", "Externo"],
     },
-
-    { id: "dependencia", label: "Dependencia", tipo: "text" },
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
