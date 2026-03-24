@@ -27,6 +27,10 @@ button {
   cursor: pointer;
 }
 
+.btn-enviar {
+  margin-top: 20px;
+}
+
 button:hover {
   background: #0056b3;
 }
