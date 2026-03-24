@@ -8,11 +8,11 @@ body {
 
 /* 🔹 Contenedor principal */
 .container {
-  max-width: 900px;
+  max-width: 950px;
   margin: auto;
   background: white;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
@@ -23,16 +23,27 @@ body {
   font-weight: bold;
 }
 
-/* 🔹 FORM GRID (tipo Google Forms) */
+/* 🔴 FORMULARIO EN COLUMNA (IMPORTANTE) */
 #formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 🔹 BLOQUES (secciones tipo Google Forms) */
+.bloque {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-left: 5px solid #3b82f6;
+  border-radius: 10px;
+  padding: 22px;
+  margin-bottom: 25px;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-}
 
-/* 🔹 Campos que ocupan todo el ancho */
-.form-group.full {
-  grid-column: span 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* 🔹 Grupo */
@@ -54,6 +65,7 @@ select,
 textarea {
   width: 100%;
   padding: 10px;
+  margin-top: 6px; /* 🔥 separación */
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
@@ -61,7 +73,7 @@ textarea {
   transition: 0.2s;
 }
 
-/* 🔹 Focus estilo moderno */
+/* 🔹 Focus moderno */
 input:focus,
 select:focus,
 textarea:focus {
@@ -76,15 +88,21 @@ textarea::placeholder {
   color: #aaa;
 }
 
-/* 🔹 Textarea más grande */
+/* 🔹 Textareas grandes (bloques 5 y 6) */
 textarea {
-  min-height: 100px;
+  grid-column: span 2;
+  min-height: 120px;
   resize: vertical;
+}
+
+/* 🔹 Input montaje más grande */
+input[id="montaje"] {
+  height: 45px;
 }
 
 /* 🔹 Botón */
 button {
-  grid-column: span 2;
+  width: 100%;
   padding: 12px;
   background: #3b82f6;
   color: white;
@@ -92,18 +110,12 @@ button {
   border-radius: 6px;
   font-size: 15px;
   cursor: pointer;
+  margin-top: 10px;
   transition: 0.2s;
 }
 
 button:hover {
   background: #2563eb;
-}
-
-/* 🔹 Switch container */
-.switch-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 /* 🔹 Switch */
@@ -146,17 +158,23 @@ button:hover {
   margin-bottom: 5px;
 }
 
-/* 🔹 Responsivo (celular) */
+/* 🔹 BLOQUE 4 (recursos centrados) */
+.bloque:nth-child(4) {
+  grid-template-columns: 1fr 1fr;
+}
+
+.bloque:nth-child(4) label {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 🔹 Responsive */
 @media (max-width: 600px) {
-  #formulario {
+  .bloque {
     grid-template-columns: 1fr;
   }
 
-  .form-group.full {
-    grid-column: span 1;
-  }
-
-  button {
+  textarea {
     grid-column: span 1;
   }
 }

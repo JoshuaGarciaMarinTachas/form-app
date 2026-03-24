@@ -14,9 +14,23 @@ const titulo = document.getElementById("titulo");
 // 🔹 Render
 titulo.textContent = formularioData.titulo;
 
+const grupos = {};
+
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
-  if (el) form.appendChild(el);
+  if (!el) return;
+
+  const grupoId = campo.grupo || 0;
+
+  if (!grupos[grupoId]) {
+    const contenedor = document.createElement("div");
+    contenedor.classList.add("bloque");
+
+    grupos[grupoId] = contenedor;
+    form.appendChild(contenedor);
+  }
+
+  grupos[grupoId].appendChild(el);
 });
 
 // 🔹 Botón
