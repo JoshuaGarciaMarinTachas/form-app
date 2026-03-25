@@ -5,5 +5,5 @@ export function validarCorreo(correo) {
 }
 
 export function validarTelefono(tel) {
-  return /^[0-9]{10}$/.test(tel);
+  return /^[0-9]{12}$/.test(tel);
 }
