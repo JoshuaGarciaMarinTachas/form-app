@@ -109,7 +109,11 @@ export const formularioData = {
     },
 
     { id: "montaje", label: "Montaje", tipo: "text" },
-    { id: "personas", label: "Número de personas", tipo: "number" },
+    {
+      id: "personas",
+      label: "Número aproximado de personas",
+      tipo: "number",
+    },
 
     // 🔹 =========================
     // 🔹 BLOQUE 4 (RECURSOS)

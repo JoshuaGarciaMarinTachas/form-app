@@ -141,6 +141,58 @@ setTimeout(() => {
   const campoUnidad = document.getElementById("unidad").parentElement;
   const espacio = document.getElementById("espacio");
   const montaje = document.getElementById("montaje").parentElement;
+  const personasInput = document.getElementById("personas");
+
+  // 🔹 Mensaje visual (alerta pequeña)
+  const aviso = document.createElement("div");
+  aviso.style.color = "red";
+  aviso.style.fontSize = "12px";
+  aviso.style.marginTop = "5px";
+  aviso.style.display = "none";
+
+  personasInput.parentElement.appendChild(aviso);
+
+  // 🔹 Actualizar placeholder según espacio
+  function actualizarPersonas() {
+    const valor = espacio.value;
+
+    if (valor === "Auditorio") {
+      personasInput.placeholder = "Máximo 110 personas";
+    } else if (valor === "Sala de Consejo") {
+      personasInput.placeholder = "Máximo 50 personas";
+    } else {
+      personasInput.placeholder = "";
+    }
+
+    validarPersonas();
+  }
+
+  // 🔹 Validación en tiempo real
+  function validarPersonas() {
+    const valor = espacio.value;
+    const num = parseInt(personasInput.value);
+
+    aviso.style.display = "none";
+
+    if (!num) return;
+
+    if (valor === "Auditorio" && num > 110) {
+      aviso.textContent = "⚠️ Se supera el máximo permitido (110)";
+      aviso.style.display = "block";
+    }
+
+    if (valor === "Sala de Consejo" && num > 50) {
+      aviso.textContent = "⚠️ Se supera el máximo permitido (50)";
+      aviso.style.display = "block";
+    }
+  }
+
+  // 🔹 Eventos
+  espacio.addEventListener("change", actualizarPersonas);
+  personasInput.addEventListener("input", validarPersonas);
+
+  // Ejecutar al inicio
+  actualizarPersonas();
 
   function controlarMontaje() {
     const valor = espacio.value;
