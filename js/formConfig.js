@@ -12,13 +12,14 @@ export const formularioData = {
     // 🔹 BLOQUE 1 (DATOS BÁSICOS)
     // 🔹 =========================
     { id: "correo", label: "Correo", tipo: "email", required: true },
+
     {
       id: "responsable",
       label: "Responsable del evento (Nombre completo)",
       tipo: "text",
       required: true,
     },
-    ,
+
     { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
 
     {
@@ -60,7 +61,7 @@ export const formularioData = {
       id: "fecha_aprobacion",
       label: "Fecha de aprobación",
       tipo: "date",
-      dependsOn: "consejo", // 🔥 SOLO aparece si consejo = true
+      dependsOn: "consejo",
       oculto: true,
     },
 
@@ -91,7 +92,7 @@ export const formularioData = {
     { id: "horario", label: "Horario", tipo: "time_range" },
 
     // 🔹 =========================
-    // 🔹 BLOQUE 3 (LOGÍSTICA DEL EVENTO)
+    // 🔹 BLOQUE 3 (LOGÍSTICA)
     // 🔹 =========================
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
@@ -109,6 +110,7 @@ export const formularioData = {
     },
 
     { id: "montaje", label: "Montaje", tipo: "text" },
+
     {
       id: "personas",
       label: "Número aproximado de personas",
@@ -125,36 +127,31 @@ export const formularioData = {
       opciones: [
         "Laptop",
         "Proyector",
-        { id: "sonido", label: "", tipo: "recurso_sonido" },
         "Extensiones",
         "Sonido móvil",
         "Mamparas",
       ],
     },
 
+    // 🔥 NUEVO (reemplaza microfonos + bocina)
     {
-      id: "microfonos",
-      label: "Micrófonos",
-      tipo: "number",
-      dependsOnValue: { campo: "materiales", valor: "Sonido" },
-      oculto: true,
+      id: "sonido",
+      label: "",
+      tipo: "recurso_sonido",
     },
 
     {
-      id: "bocina",
-      label: "¿Bocina?",
-      tipo: "switch",
-      oculto: true,
+      id: "personificadores",
+      label: "",
+      tipo: "personificadores_custom",
     },
-
-    { id: "personificadores", label: "", tipo: "personificadores_custom" },
 
     {
       id: "humanos",
       label: "Recursos humanos",
       tipo: "multiselect",
       opciones: [
-        "Logística",
+        "Logística del evento",
         "Pase de lista",
         "Fotografía",
         "Maestro de ceremonias",
