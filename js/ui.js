@@ -82,6 +82,94 @@ export function crearCampo(campo) {
       });
       break;
 
+    case "recurso_sonido":
+      input = document.createElement("div");
+
+      // 🔹 Checkbox principal SONIDO
+      const chkSonido = document.createElement("input");
+      chkSonido.type = "checkbox";
+      chkSonido.id = "sonido_check";
+
+      const lblSonido = document.createElement("span");
+      lblSonido.textContent = "Sonido";
+
+      const wrapSonido = document.createElement("div");
+      wrapSonido.appendChild(chkSonido);
+      wrapSonido.appendChild(lblSonido);
+
+      // 🔹 CONTENEDOR OPCIONES (micro + bocina)
+      const contOpciones = document.createElement("div");
+      contOpciones.style.display = "none";
+      contOpciones.style.marginLeft = "20px";
+
+      // 🎤 MICROFONO
+      const chkMicro = document.createElement("input");
+      chkMicro.type = "checkbox";
+      chkMicro.id = "micro_check";
+
+      const lblMicro = document.createElement("span");
+      lblMicro.textContent = "Micrófono";
+
+      const inputMicro = document.createElement("input");
+      inputMicro.type = "number";
+      inputMicro.id = "cantidad_microfonos";
+      inputMicro.min = 0;
+      inputMicro.max = 2;
+      inputMicro.value = 0;
+      inputMicro.style.width = "60px";
+      inputMicro.style.marginLeft = "10px";
+      inputMicro.style.display = "none";
+
+      const wrapMicro = document.createElement("div");
+      wrapMicro.appendChild(chkMicro);
+      wrapMicro.appendChild(lblMicro);
+      wrapMicro.appendChild(inputMicro);
+
+    case "personificadores_custom":
+      input = document.createElement("div");
+
+      const chkPers = document.createElement("input");
+      chkPers.type = "checkbox";
+      chkPers.id = "personificadores_check";
+
+      const lblPers = document.createElement("span");
+      lblPers.textContent = "Personificadores";
+
+      const inputPers = document.createElement("input");
+      inputPers.type = "number";
+      inputPers.id = "cantidad_personificadores";
+      inputPers.min = 0;
+      inputPers.max = 7;
+      inputPers.value = 0;
+      inputPers.style.width = "60px";
+      inputPers.style.marginLeft = "10px";
+      inputPers.style.display = "none";
+
+      chkPers.addEventListener("change", () => {
+        inputPers.style.display = chkPers.checked ? "inline-block" : "none";
+      });
+
+      input.appendChild(chkPers);
+      input.appendChild(lblPers);
+      input.appendChild(inputPers);
+      break;
+
+      // 🔹 Eventos
+      chkSonido.addEventListener("change", () => {
+        contOpciones.style.display = chkSonido.checked ? "block" : "none";
+      });
+
+      chkMicro.addEventListener("change", () => {
+        inputMicro.style.display = chkMicro.checked ? "inline-block" : "none";
+      });
+
+      contOpciones.appendChild(wrapMicro);
+      contOpciones.appendChild(wrapBocina);
+
+      input.appendChild(wrapSonido);
+      input.appendChild(contOpciones);
+      break;
+
     case "time_range":
       input = document.createElement("div");
 

@@ -125,7 +125,7 @@ export const formularioData = {
       opciones: [
         "Laptop",
         "Proyector",
-        "Sonido",
+        { id: "sonido", label: "", tipo: "recurso_sonido" },
         "Extensiones",
         "Sonido móvil",
         "Mamparas",
@@ -147,7 +147,7 @@ export const formularioData = {
       oculto: true,
     },
 
-    { id: "personificadores", label: "Personificadores", tipo: "number" },
+    { id: "personificadores", label: "", tipo: "personificadores_custom" },
 
     {
       id: "humanos",

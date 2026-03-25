@@ -29,7 +29,7 @@ const titulos = [
   "Datos del solicitante",
   "Detalles del evento",
   "Logística del evento",
-  "Recursos",
+  "Requerimientos del evento",
   "Descripción",
   "Observaciones",
 ];
@@ -314,6 +314,22 @@ setTimeout(() => {
 // 🔹 SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  // 🔹 PERSONIFICADORES
+  const persChk = document.getElementById("personificadores_check");
+  const persVal = document.getElementById("cantidad_personificadores");
+
+  data.personificadores = persChk?.checked ? parseInt(persVal.value) || 0 : 0;
+
+  // 🔹 SONIDO
+  const sonidoChk = document.getElementById("sonido_check");
+  const microChk = document.getElementById("micro_check");
+  const microVal = document.getElementById("cantidad_microfonos");
+  const bocinaChk = document.getElementById("bocina");
+
+  data.sonido = sonidoChk?.checked || false;
+  data.microfonos = microChk?.checked ? parseInt(microVal.value) || 0 : 0;
+  data.bocina = bocinaChk?.checked || false;
 
   // 🔴 BLOQUEAR SI HAY ERRORES
   const errores = document.querySelectorAll(".input-error");
