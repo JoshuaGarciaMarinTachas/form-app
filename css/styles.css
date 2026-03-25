@@ -199,3 +199,17 @@ select {
   width: 100%;
   box-sizing: border-box;
 }
+
+/* 🔹 Error visual */
+.input-error {
+  border: 1px solid #ef4444 !important;
+  background: #fff5f5;
+}
+
+/* 🔹 Mensaje debajo */
+.error-msg {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}

@@ -6,28 +6,25 @@ import {
 
 import { formularioData } from "./formConfig.js";
 import { crearCampo } from "./ui.js";
-import { validarCorreo, validarTelefono } from "./validations.js";
 
 const form = document.getElementById("formulario");
 const titulo = document.getElementById("titulo");
 
-// 🔹 Render
+// 🔹 Render título
 titulo.textContent = formularioData.titulo;
 
 // 🔹 CREAR BLOQUES
 const bloques = [
-  document.createElement("div"), // 0 → Datos básicos
-  document.createElement("div"), // 1 → Evento
-  document.createElement("div"), // 2 → Logística del evento
-  document.createElement("div"), // 3 → Recursos
-  document.createElement("div"), // 4 → Descripción
-  document.createElement("div"), // 5 → Observaciones
+  document.createElement("div"),
+  document.createElement("div"),
+  document.createElement("div"),
+  document.createElement("div"),
+  document.createElement("div"),
+  document.createElement("div"),
 ];
 
-// 🔹 Clase visual
 bloques.forEach((b) => b.classList.add("bloque"));
 
-// 🔹 Títulos (opcional pero recomendado)
 const titulos = [
   "Datos del solicitante",
   "Detalles del evento",
@@ -40,23 +37,20 @@ const titulos = [
 bloques.forEach((bloque, i) => {
   const h3 = document.createElement("h3");
   h3.textContent = titulos[i];
-  h3.style.marginBottom = "15px";
   bloque.appendChild(h3);
 });
 
-// 🔹 ASIGNAR CAMPOS A BLOQUES
+// 🔹 ASIGNACIÓN DE CAMPOS
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
   if (!el) return;
 
-  // 🔥 BLOQUE 1
   if (
     [
       "correo",
       "nombre",
       "acudio_dep",
       "nombre_evento",
-      "responsable",
       "cargo_responsable",
       "cargo_admin",
       "unidad",
@@ -64,10 +58,7 @@ formularioData.campos.forEach((campo) => {
     ].includes(campo.id)
   ) {
     bloques[0].appendChild(el);
-  }
-
-  // 🔥 BLOQUE 2
-  else if (
+  } else if (
     [
       "consejo",
       "fecha_aprobacion",
@@ -79,50 +70,26 @@ formularioData.campos.forEach((campo) => {
     ].includes(campo.id)
   ) {
     bloques[1].appendChild(el);
-  }
-
-  // 🔥 BLOQUE 3
-  else if (
+  } else if (
     ["externos", "discapacidad", "espacio", "montaje", "personas"].includes(
       campo.id,
     )
   ) {
     bloques[2].appendChild(el);
-  }
-
-  // 🔥 BLOQUE 4
-  else if (
+  } else if (
     ["materiales", "microfonos", "personificadores", "humanos"].includes(
       campo.id,
     )
   ) {
     bloques[3].appendChild(el);
-  }
-
-  // 🔥 BLOQUE 5
-  else if (campo.id === "descripcion") {
+  } else if (campo.id === "descripcion") {
     bloques[4].appendChild(el);
-  }
-
-  // 🔥 BLOQUE 6
-  else if (campo.id === "observaciones") {
+  } else if (campo.id === "observaciones") {
     bloques[5].appendChild(el);
   }
 });
 
-// 🔹 AGREGAR BLOQUES AL FORM
 bloques.forEach((b) => form.appendChild(b));
-
-// 🔹 Agrupar switches horizontalmente
-["consejo", "multi_dia"].forEach((id) => {
-  const el = document.getElementById(id)?.parentElement;
-  if (el) el.classList.add("switch-group");
-});
-
-["externos", "discapacidad"].forEach((id) => {
-  const el = document.getElementById(id)?.parentElement;
-  if (el) el.classList.add("switch-group");
-});
 
 // 🔹 Botón
 const btn = document.createElement("button");
@@ -130,171 +97,193 @@ btn.textContent = "Enviar";
 btn.type = "submit";
 form.appendChild(btn);
 
-// 🔹 Eventos dinámicos (DESPUÉS del render)
+// 🔹 FUNCIONES DE ERROR
+function crearError(input) {
+  let msg = input.parentElement.querySelector(".error-msg");
+
+  if (!msg) {
+    msg = document.createElement("div");
+    msg.classList.add("error-msg");
+    input.parentElement.appendChild(msg);
+  }
+
+  return msg;
+}
+
+function mostrarError(input, mensaje) {
+  const msg = crearError(input);
+  msg.textContent = mensaje;
+  msg.style.display = "block";
+  input.classList.add("input-error");
+}
+
+function limpiarError(input) {
+  const msg = input.parentElement.querySelector(".error-msg");
+  if (msg) msg.style.display = "none";
+  input.classList.remove("input-error");
+}
+
+// 🔹 EVENTOS
 setTimeout(() => {
   const fechaInicio = document.getElementById("fecha_inicio");
   const fechaEvento = document.getElementById("fecha_evento");
   const fechaFin = document.getElementById("fecha_fin");
   const multiDia = document.getElementById("multi_dia");
+
   const cargo = document.getElementById("cargo_responsable");
   const campoAdmin = document.getElementById("cargo_admin").parentElement;
   const campoUnidad = document.getElementById("unidad").parentElement;
+
   const espacio = document.getElementById("espacio");
   const montaje = document.getElementById("montaje").parentElement;
   const personasInput = document.getElementById("personas");
-  const valor = espacio.value;
-  const num = parseInt(personasInput.value);
 
-  // 🔹 Mensaje visual (alerta pequeña)
-  const aviso = document.createElement("div");
-  aviso.style.color = "red";
-  aviso.style.fontSize = "12px";
-  aviso.style.marginTop = "5px";
-  aviso.style.display = "none";
+  const correo = document.getElementById("correo");
+  const telefono = document.getElementById("telefono");
 
-  personasInput.parentElement.appendChild(aviso);
+  const microInput = document.getElementById("microfonos");
+  const persInput = document.getElementById("personificadores");
 
-  // 🔹 Actualizar placeholder según espacio
-  function actualizarPersonas() {
-    // 🔹 Validación final (bloquea envío)
-    if (valor === "Auditorio" && num > 110) {
-      alert(
-        "No puedes enviar: se supera el máximo de 110 personas en Auditorio",
-      );
-      personasInput.focus();
-      return;
+  // 🔹 VALIDACIONES
+
+  correo.addEventListener("input", () => {
+    const value = correo.value.trim();
+    const valido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    if (!valido) {
+      mostrarError(correo, "Correo inválido (ej: usuario@dominio.com)");
+    } else {
+      limpiarError(correo);
     }
+  });
 
-    if (valor === "Sala de Consejo" && num > 50) {
-      alert(
-        "No puedes enviar: se supera el máximo de 50 personas en Sala de Consejo",
-      );
-      personasInput.focus();
-      return;
+  telefono.addEventListener("input", () => {
+    const value = telefono.value.trim();
+
+    if (!/^\d{10}$/.test(value)) {
+      mostrarError(telefono, "Debe tener 10 dígitos");
+    } else {
+      limpiarError(telefono);
     }
-    validarPersonas();
+  });
+
+  if (microInput) {
+    microInput.addEventListener("input", () => {
+      const num = parseInt(microInput.value);
+
+      if (num < 1 || num > 2) {
+        mostrarError(microInput, "Máximo 2 micrófonos");
+      } else {
+        limpiarError(microInput);
+      }
+    });
   }
 
-  // 🔹 Validación en tiempo real
+  if (persInput) {
+    persInput.addEventListener("input", () => {
+      const num = parseInt(persInput.value);
+
+      if (num < 1 || num > 7) {
+        mostrarError(persInput, "Entre 1 y 7");
+      } else {
+        limpiarError(persInput);
+      }
+    });
+  }
+
+  // 🔹 PERSONAS
   function validarPersonas() {
     const valor = espacio.value;
     const num = parseInt(personasInput.value);
 
-    aviso.style.display = "none";
-
-    if (!num) return;
-
-    if (valor === "Auditorio" && num > 110) {
-      aviso.textContent = "⚠️ Se supera el máximo permitido (110)";
-      aviso.style.display = "block";
+    if (!num) {
+      limpiarError(personasInput);
+      return;
     }
 
-    if (valor === "Sala de Consejo" && num > 50) {
-      aviso.textContent = "⚠️ Se supera el máximo permitido (50)";
-      aviso.style.display = "block";
+    if (valor === "Auditorio" && num > 110) {
+      mostrarError(personasInput, "Máximo 110 personas");
+    } else if (valor === "Sala de Consejo" && num > 50) {
+      mostrarError(personasInput, "Máximo 50 personas");
+    } else {
+      limpiarError(personasInput);
     }
   }
 
-  // 🔹 Eventos
+  function actualizarPersonas() {
+    const valor = espacio.value;
+
+    if (valor === "Auditorio") {
+      personasInput.placeholder = "Máximo 110 personas";
+    } else if (valor === "Sala de Consejo") {
+      personasInput.placeholder = "Máximo 50 personas";
+    } else {
+      personasInput.placeholder = "";
+    }
+
+    validarPersonas();
+  }
+
   espacio.addEventListener("change", actualizarPersonas);
   personasInput.addEventListener("input", validarPersonas);
 
-  // Ejecutar al inicio
   actualizarPersonas();
 
+  // 🔹 MONTAJE
   function controlarMontaje() {
     const valor = espacio.value;
-
-    if (valor === "Auditorio" || valor === "Sala de Consejo") {
-      montaje.style.display = "block";
-    } else {
-      montaje.style.display = "none";
-    }
+    montaje.style.display =
+      valor === "Auditorio" || valor === "Sala de Consejo" ? "block" : "none";
   }
 
   espacio.addEventListener("change", controlarMontaje);
-
-  // Ejecutar al inicio
   controlarMontaje();
 
+  // 🔹 CARGO
   function actualizarCamposCargo() {
     const valor = cargo.value;
 
-    // Ocultar todo primero
     campoAdmin.style.display = "none";
     campoUnidad.style.display = "none";
 
-    if (valor === "Administrativo") {
-      campoAdmin.style.display = "block";
-    }
-
-    if (valor === "Estudiante" || valor === "Docente") {
+    if (valor === "Administrativo") campoAdmin.style.display = "block";
+    if (valor === "Estudiante" || valor === "Docente")
       campoUnidad.style.display = "block";
-    }
-
-    // Externo → no muestra nada
   }
 
   cargo.addEventListener("change", actualizarCamposCargo);
-
-  // Ejecutar al cargar
   actualizarCamposCargo();
 
-  // 🟢 --- FECHA INICIO BLOQUEADA ---
+  // 🔹 FECHAS
   fechaInicio.readOnly = true;
   fechaInicio.style.backgroundColor = "#e0e0e0";
-  fechaInicio.style.color = "#666";
-  fechaInicio.style.cursor = "not-allowed";
-  fechaInicio.style.border = "1px solid #ccc";
 
-  // 🟢 --- ASEGURAR QUE FECHA FIN SEA EDITABLE ---
-  if (fechaFin) {
-    fechaFin.readOnly = false;
-  }
-
-  // 🟢 --- SINCRONIZAR FECHAS ---
   function sincronizarFechas() {
     fechaInicio.value = fechaEvento.value;
   }
 
-  sincronizarFechas(); // copia inmediata
   fechaEvento.addEventListener("change", sincronizarFechas);
+  sincronizarFechas();
 
-  // 🟢 --- MULTI DÍA ---
   multiDia.addEventListener("click", () => {
     const activo = multiDia.dataset.value === "true";
 
-    const contInicio = fechaInicio.parentElement;
-    const contFin = fechaFin.parentElement;
-
-    if (activo) {
-      contInicio.style.display = "block";
-      contFin.style.display = "block";
-    } else {
-      contInicio.style.display = "none";
-      contFin.style.display = "none";
-    }
-  });
-
-  // 🟢 --- SONIDO → MICRÓFONOS ---
-  document.querySelectorAll('[name="materiales"]').forEach((chk) => {
-    chk.addEventListener("change", () => {
-      const sonido = [
-        ...document.querySelectorAll('[name="materiales"]:checked'),
-      ].some((el) => el.value === "Sonido");
-
-      const micro = document.getElementById("microfonos")?.parentElement;
-      const bocina = document.getElementById("bocina")?.parentElement;
-
-      if (micro) micro.style.display = sonido ? "block" : "none";
-      if (bocina) bocina.style.display = sonido ? "block" : "none";
-    });
+    fechaInicio.parentElement.style.display = activo ? "block" : "none";
+    fechaFin.parentElement.style.display = activo ? "block" : "none";
   });
 }, 100);
 
-// 🔹 Submit
+// 🔹 SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  // 🔴 BLOQUEAR SI HAY ERRORES
+  const errores = document.querySelectorAll(".input-error");
+  if (errores.length > 0) {
+    alert("Corrige los campos marcados antes de enviar");
+    errores[0].focus();
+    return;
+  }
 
   const data = {};
 
@@ -310,65 +299,20 @@ form.addEventListener("submit", async (e) => {
 
       if (campo.tipo === "switch") {
         data[campo.id] = el.dataset.value === "true";
-      } else if (campo.tipo === "time_range") {
-        const inicioEl = document.getElementById(campo.id + "_inicio");
-        const finEl = document.getElementById(campo.id + "_fin");
-
-        if (!inicioEl || !finEl) {
-          alert("Error interno: horario no encontrado");
-          throw new Error("Inputs de horario no existen");
-        }
-
-        const esMultiDia =
-          document.getElementById("multi_dia").dataset.value === "true";
-
-        if (esMultiDia && !document.getElementById("fecha_fin").value) {
-          alert("Debes seleccionar fecha de fin");
-          return;
-        }
-
-        const inicio = inicioEl.value;
-        const fin = finEl.value;
-
-        if (!inicio || !fin) {
-          alert("Completa el horario");
-          throw new Error("Horario incompleto");
-        }
-
-        data[campo.id] = `${inicio} - ${fin}`;
       } else if (campo.tipo === "multiselect") {
-        const seleccionados = [
+        data[campo.id] = [
           ...document.querySelectorAll(`input[name="${campo.id}"]:checked`),
         ].map((el) => el.value);
+      } else if (campo.tipo === "time_range") {
+        const inicio = document.getElementById(campo.id + "_inicio").value;
+        const fin = document.getElementById(campo.id + "_fin").value;
 
-        data[campo.id] = seleccionados;
+        data[campo.id] = `${inicio} - ${fin}`;
       } else {
-        const value = el.value?.trim();
-        data[campo.id] = value !== "" ? value : null;
+        data[campo.id] = el.value?.trim() || null;
       }
     }
   });
-
-  // 🔹 Validaciones
-  if (!validarCorreo(data.correo)) {
-    alert("Correo inválido");
-    return;
-  }
-
-  if (!validarTelefono(data.telefono)) {
-    alert("Teléfono inválido (10 dígitos)");
-    return;
-  }
-
-  if (data.espacio === "Auditorio" && data.personas > 110) {
-    alert("Capacidad máxima Auditorio: 110");
-    return;
-  }
-
-  if (data.espacio === "Sala de Consejo" && data.personas > 50) {
-    alert("Capacidad máxima Sala: 50");
-    return;
-  }
 
   try {
     await addDoc(collection(db, "solicitudes"), data);
