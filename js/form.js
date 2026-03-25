@@ -144,6 +144,12 @@ setTimeout(() => {
   const microInput = document.getElementById("microfonos");
   const persInput = document.getElementById("personificadores");
 
+  if (microInput) {
+    microInput.min = 0;
+    microInput.max = 2;
+    microInput.value = 0; // 🔥 valor inicial
+  }
+
   // 🔹 VALIDACIONES
 
   correo.addEventListener("input", () => {
@@ -167,12 +173,31 @@ setTimeout(() => {
     }
   });
 
+  document.querySelectorAll('input[type="number"]').forEach((input) => {
+    input.addEventListener("input", () => {
+      let value = parseInt(input.value);
+
+      if (isNaN(value)) return;
+
+      if (value < 0) {
+        input.value = 0;
+      }
+    });
+  });
+
   if (microInput) {
     microInput.addEventListener("input", () => {
-      const num = parseInt(microInput.value);
+      let num = parseInt(microInput.value);
 
-      if (num < 1 || num > 2) {
-        mostrarError(microInput, "Máximo 2 micrófonos");
+      if (isNaN(num)) num = 0;
+
+      if (num < 0) num = 0;
+      if (num > 2) num = 2;
+
+      microInput.value = num;
+
+      if (num < 0 || num > 2) {
+        mostrarError(microInput, "Debe estar entre 0 y 2 micrófonos");
       } else {
         limpiarError(microInput);
       }
