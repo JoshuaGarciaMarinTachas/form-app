@@ -142,6 +142,8 @@ setTimeout(() => {
   const espacio = document.getElementById("espacio");
   const montaje = document.getElementById("montaje").parentElement;
   const personasInput = document.getElementById("personas");
+  const valor = espacio.value;
+  const num = parseInt(personasInput.value);
 
   // 🔹 Mensaje visual (alerta pequeña)
   const aviso = document.createElement("div");
@@ -154,16 +156,22 @@ setTimeout(() => {
 
   // 🔹 Actualizar placeholder según espacio
   function actualizarPersonas() {
-    const valor = espacio.value;
-
-    if (valor === "Auditorio") {
-      personasInput.placeholder = "Máximo 110 personas";
-    } else if (valor === "Sala de Consejo") {
-      personasInput.placeholder = "Máximo 50 personas";
-    } else {
-      personasInput.placeholder = "";
+    // 🔹 Validación final (bloquea envío)
+    if (valor === "Auditorio" && num > 110) {
+      alert(
+        "No puedes enviar: se supera el máximo de 110 personas en Auditorio",
+      );
+      personasInput.focus();
+      return;
     }
 
+    if (valor === "Sala de Consejo" && num > 50) {
+      alert(
+        "No puedes enviar: se supera el máximo de 50 personas en Sala de Consejo",
+      );
+      personasInput.focus();
+      return;
+    }
     validarPersonas();
   }
 
