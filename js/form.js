@@ -139,6 +139,23 @@ setTimeout(() => {
   const cargo = document.getElementById("cargo_responsable");
   const campoAdmin = document.getElementById("cargo_admin").parentElement;
   const campoUnidad = document.getElementById("unidad").parentElement;
+  const espacio = document.getElementById("espacio");
+  const montaje = document.getElementById("montaje").parentElement;
+
+  function controlarMontaje() {
+    const valor = espacio.value;
+
+    if (valor === "Auditorio" || valor === "Sala de Consejo") {
+      montaje.style.display = "block";
+    } else {
+      montaje.style.display = "none";
+    }
+  }
+
+  espacio.addEventListener("change", controlarMontaje);
+
+  // Ejecutar al inicio
+  controlarMontaje();
 
   function actualizarCamposCargo() {
     const valor = cargo.value;
