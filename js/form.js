@@ -144,6 +144,12 @@ setTimeout(() => {
   const microInput = document.getElementById("microfonos");
   const persInput = document.getElementById("personificadores");
 
+  if (persInput) {
+    persInput.min = 0;
+    persInput.max = 7;
+    persInput.value = 0; // 🔥 valor inicial
+  }
+
   if (microInput) {
     microInput.min = 0;
     microInput.max = 2;
@@ -206,10 +212,17 @@ setTimeout(() => {
 
   if (persInput) {
     persInput.addEventListener("input", () => {
-      const num = parseInt(persInput.value);
+      let num = parseInt(persInput.value);
 
-      if (num < 1 || num > 7) {
-        mostrarError(persInput, "Entre 1 y 7");
+      if (isNaN(num)) num = 0;
+
+      if (num < 0) num = 0;
+      if (num > 7) num = 7;
+
+      persInput.value = num;
+
+      if (num < 0 || num > 7) {
+        mostrarError(persInput, "Debe estar entre 0 y 7");
       } else {
         limpiarError(persInput);
       }
