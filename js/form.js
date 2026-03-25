@@ -31,7 +31,7 @@ bloques.forEach((b) => b.classList.add("bloque"));
 const titulos = [
   "Datos del solicitante",
   "Detalles del evento",
-  "Logística",
+  "Logística del evento",
   "Recursos",
   "Descripción",
   "Observaciones",
