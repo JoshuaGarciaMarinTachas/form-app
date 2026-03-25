@@ -23,7 +23,7 @@ export function crearCampo(campo) {
 
   let label = null;
 
-  if (campo.tipo !== "textarea") {
+  if (campo.tipo !== "textarea" && campo.tipo !== "time_range") {
     label = document.createElement("label");
     label.textContent = campo.label;
   }
@@ -85,16 +85,57 @@ export function crearCampo(campo) {
     case "time_range":
       input = document.createElement("div");
 
+      // 🔹 Título en negrita
+      const titulo = document.createElement("div");
+      titulo.textContent = campo.label;
+      titulo.style.fontWeight = "bold";
+      titulo.style.marginBottom = "8px";
+
+      // 🔹 Contenedor de horas
+      const cont = document.createElement("div");
+      cont.style.display = "flex";
+      cont.style.gap = "10px";
+
+      // 🔹 INICIO
+      const contInicio = document.createElement("div");
+      contInicio.style.display = "flex";
+      contInicio.style.flexDirection = "column";
+      contInicio.style.flex = "1";
+
+      const lblInicio = document.createElement("span");
+      lblInicio.textContent = "Hora de inicio";
+      lblInicio.style.fontSize = "12px";
+
       const start = document.createElement("input");
       start.type = "time";
       start.id = campo.id + "_inicio";
+
+      contInicio.appendChild(lblInicio);
+      contInicio.appendChild(start);
+
+      // 🔹 FIN
+      const contFin = document.createElement("div");
+      contFin.style.display = "flex";
+      contFin.style.flexDirection = "column";
+      contFin.style.flex = "1";
+
+      const lblFin = document.createElement("span");
+      lblFin.textContent = "Hora de fin";
+      lblFin.style.fontSize = "12px";
 
       const end = document.createElement("input");
       end.type = "time";
       end.id = campo.id + "_fin";
 
-      input.appendChild(start);
-      input.appendChild(end);
+      contFin.appendChild(lblFin);
+      contFin.appendChild(end);
+
+      cont.appendChild(contInicio);
+      cont.appendChild(contFin);
+
+      input.appendChild(titulo);
+      input.appendChild(cont);
+
       break;
 
     default:

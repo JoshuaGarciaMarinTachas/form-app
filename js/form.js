@@ -18,7 +18,7 @@ titulo.textContent = formularioData.titulo;
 const bloques = [
   document.createElement("div"), // 0 → Datos básicos
   document.createElement("div"), // 1 → Evento
-  document.createElement("div"), // 2 → Logística
+  document.createElement("div"), // 2 → Logística del evento
   document.createElement("div"), // 3 → Recursos
   document.createElement("div"), // 4 → Descripción
   document.createElement("div"), // 5 → Observaciones
