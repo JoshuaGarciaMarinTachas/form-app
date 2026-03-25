@@ -160,8 +160,8 @@ setTimeout(() => {
   telefono.addEventListener("input", () => {
     const value = telefono.value.trim();
 
-    if (!/^\d{10}$/.test(value)) {
-      mostrarError(telefono, "Debe tener 10 dígitos");
+    if (!/^\d{12}$/.test(value)) {
+      mostrarError(telefono, "Debe tener 12 dígitos");
     } else {
       limpiarError(telefono);
     }
