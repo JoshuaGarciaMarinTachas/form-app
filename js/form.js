@@ -136,6 +136,32 @@ setTimeout(() => {
   const fechaEvento = document.getElementById("fecha_evento");
   const fechaFin = document.getElementById("fecha_fin");
   const multiDia = document.getElementById("multi_dia");
+  const cargo = document.getElementById("cargo_responsable");
+  const campoAdmin = document.getElementById("cargo_admin").parentElement;
+  const campoUnidad = document.getElementById("unidad").parentElement;
+
+  function actualizarCamposCargo() {
+    const valor = cargo.value;
+
+    // Ocultar todo primero
+    campoAdmin.style.display = "none";
+    campoUnidad.style.display = "none";
+
+    if (valor === "Administrativo") {
+      campoAdmin.style.display = "block";
+    }
+
+    if (valor === "Estudiante" || valor === "Docente") {
+      campoUnidad.style.display = "block";
+    }
+
+    // Externo → no muestra nada
+  }
+
+  cargo.addEventListener("change", actualizarCamposCargo);
+
+  // Ejecutar al cargar
+  actualizarCamposCargo();
 
   // 🟢 --- FECHA INICIO BLOQUEADA ---
   fechaInicio.readOnly = true;

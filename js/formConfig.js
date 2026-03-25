@@ -12,7 +12,13 @@ export const formularioData = {
     // 🔹 BLOQUE 1 (DATOS BÁSICOS)
     // 🔹 =========================
     { id: "correo", label: "Correo", tipo: "email", required: true },
-    { id: "nombre", label: "Nombre", tipo: "text", required: true },
+    {
+      id: "responsable",
+      label: "Responsable del evento (Nombre completo)",
+      tipo: "text",
+      required: true,
+    },
+    ,
     { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
 
     {
@@ -22,8 +28,6 @@ export const formularioData = {
       required: true,
     },
 
-    { id: "responsable", label: "Responsable del evento", tipo: "text" },
-
     {
       id: "cargo_responsable",
       label: "Cargo del responsable",
@@ -31,13 +35,18 @@ export const formularioData = {
       opciones: ["Administrativo", "Estudiante", "Docente", "Externo"],
     },
 
-    { id: "cargo_admin", label: "Cargo administrativo", tipo: "text" },
+    {
+      id: "cargo_admin",
+      label: "Cargo administrativo",
+      tipo: "text",
+      oculto: true,
+    },
 
     {
       id: "unidad",
       label: "Unidad de aprendizaje",
-      tipo: "select",
-      opciones: ["Estudiante", "Docente", "Externo"],
+      tipo: "text",
+      oculto: true,
     },
 
     { id: "telefono", label: "Teléfono", tipo: "tel" },
@@ -82,7 +91,7 @@ export const formularioData = {
     { id: "horario", label: "Horario", tipo: "time_range" },
 
     // 🔹 =========================
-    // 🔹 BLOQUE 3 (LOGÍSTICA)
+    // 🔹 BLOQUE 3 (LOGÍSTICA DEL EVENTO)
     // 🔹 =========================
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
