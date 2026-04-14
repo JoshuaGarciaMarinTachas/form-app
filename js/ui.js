@@ -165,28 +165,48 @@ export function crearCampo(campo) {
       input = document.createElement("div");
       input.id = campo.id;
 
+      // 🔹 TÍTULO
+      const titulo = document.createElement("div");
+      titulo.textContent = campo.label;
+      titulo.style.fontWeight = "bold";
+      titulo.style.marginBottom = "6px";
+
+      // 🔹 CONTENEDOR
       const cont = document.createElement("div");
       cont.style.display = "flex";
       cont.style.gap = "10px";
 
-      const crearHora = (id) => {
+      const crearHora = (texto, id) => {
+        const box = document.createElement("div");
+        box.style.display = "flex";
+        box.style.flexDirection = "column";
+
+        const lbl = document.createElement("span");
+        lbl.textContent = texto;
+        lbl.style.fontSize = "12px";
+
         const inp = document.createElement("input");
         inp.type = "time";
         inp.id = id;
-        return inp;
+
+        box.appendChild(lbl);
+        box.appendChild(inp);
+
+        return box;
       };
 
-      const inicio = crearHora(campo.id + "_inicio");
-      const fin = crearHora(campo.id + "_fin");
+      const inicio = crearHora("Hora inicio", campo.id + "_inicio");
+      const fin = crearHora("Hora fin", campo.id + "_fin");
 
       cont.appendChild(inicio);
       cont.appendChild(fin);
 
+      input.appendChild(titulo);
       input.appendChild(cont);
 
       input.getValores = () => ({
-        inicio: inicio.value,
-        fin: fin.value,
+        inicio: document.getElementById(campo.id + "_inicio")?.value || "",
+        fin: document.getElementById(campo.id + "_fin")?.value || "",
       });
 
       break;
