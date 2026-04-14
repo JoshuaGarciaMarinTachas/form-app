@@ -46,37 +46,40 @@ export function crearCampo(campo) {
       input.id = campo.id;
 
       input.dataset.value = "false";
-      input.value = "false";
 
       input.addEventListener("click", () => {
         input.classList.toggle("active");
-
         const val = input.classList.contains("active") ? "true" : "false";
-
         input.dataset.value = val;
-        input.value = val;
-
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
 
+    // 🔥 MULTISELECT PRO
     case "multiselect":
       input = document.createElement("div");
       input.id = campo.id;
 
-      campo.opciones.forEach((op) => {
-        const wrap = document.createElement("div");
+      campo.opciones.forEach((op, i) => {
+        const wrap = document.createElement("label");
+        wrap.style.display = "flex";
+        wrap.style.alignItems = "center";
+        wrap.style.gap = "8px";
+        wrap.style.marginBottom = "6px";
+        wrap.style.cursor = "pointer";
 
         const chk = document.createElement("input");
         chk.type = "checkbox";
         chk.value = op;
         chk.name = campo.id;
+        chk.id = `${campo.id}_${i}`;
 
-        const lbl = document.createElement("span");
-        lbl.textContent = op;
+        const span = document.createElement("span");
+        span.textContent = op;
 
         wrap.appendChild(chk);
-        wrap.appendChild(lbl);
+        wrap.appendChild(span);
+
         input.appendChild(wrap);
       });
 
@@ -85,93 +88,146 @@ export function crearCampo(campo) {
           (chk) => chk.value,
         );
       };
+
       break;
 
+    // 🔥 SONIDO PRO
     case "recurso_sonido":
       input = document.createElement("div");
       input.id = campo.id;
 
+      const wrapPrincipal = document.createElement("label");
+      wrapPrincipal.style.display = "flex";
+      wrapPrincipal.style.alignItems = "center";
+      wrapPrincipal.style.gap = "8px";
+      wrapPrincipal.style.cursor = "pointer";
+
       const chkSonido = document.createElement("input");
       chkSonido.type = "checkbox";
 
-      const contOpciones = document.createElement("div");
-      contOpciones.style.display = "none";
-      contOpciones.style.marginLeft = "20px";
+      const title = document.createElement("strong");
+      title.textContent = "Sonido";
+
+      wrapPrincipal.appendChild(chkSonido);
+      wrapPrincipal.appendChild(title);
+
+      const cont = document.createElement("div");
+      cont.style.marginLeft = "20px";
+      cont.style.display = "none";
+
+      // Micro
+      const microWrap = document.createElement("label");
+      microWrap.style.display = "flex";
+      microWrap.style.alignItems = "center";
+      microWrap.style.gap = "8px";
 
       const chkMicro = document.createElement("input");
       chkMicro.type = "checkbox";
+
+      const txtMicro = document.createElement("span");
+      txtMicro.textContent = "Micrófonos";
 
       const inputMicro = document.createElement("input");
       inputMicro.type = "number";
       inputMicro.min = 0;
       inputMicro.max = 2;
       inputMicro.value = 0;
+      inputMicro.style.width = "60px";
       inputMicro.style.display = "none";
-
-      const chkBocina = document.createElement("input");
-      chkBocina.type = "checkbox";
-
-      chkSonido.addEventListener("change", () => {
-        contOpciones.style.display = chkSonido.checked ? "block" : "none";
-      });
 
       chkMicro.addEventListener("change", () => {
         inputMicro.style.display = chkMicro.checked ? "inline-block" : "none";
       });
 
-      contOpciones.appendChild(chkMicro);
-      contOpciones.appendChild(inputMicro);
-      contOpciones.appendChild(chkBocina);
+      microWrap.appendChild(chkMicro);
+      microWrap.appendChild(txtMicro);
+      microWrap.appendChild(inputMicro);
 
-      input.appendChild(chkSonido);
-      input.appendChild(contOpciones);
+      // Bocina
+      const bocinaWrap = document.createElement("label");
+      bocinaWrap.style.display = "flex";
+      bocinaWrap.style.alignItems = "center";
+      bocinaWrap.style.gap = "8px";
+
+      const chkBocina = document.createElement("input");
+      chkBocina.type = "checkbox";
+
+      const txtBocina = document.createElement("span");
+      txtBocina.textContent = "Bocina";
+
+      bocinaWrap.appendChild(chkBocina);
+      bocinaWrap.appendChild(txtBocina);
+
+      chkSonido.addEventListener("change", () => {
+        cont.style.display = chkSonido.checked ? "block" : "none";
+      });
+
+      cont.appendChild(microWrap);
+      cont.appendChild(bocinaWrap);
+
+      input.appendChild(wrapPrincipal);
+      input.appendChild(cont);
 
       input.getValores = () => ({
-        sonido: chkSonido.checked,
-        microfono: chkMicro.checked,
-        cantidad_microfonos: inputMicro.value,
+        activo: chkSonido.checked,
+        microfonos: chkMicro.checked ? parseInt(inputMicro.value) || 0 : 0,
         bocina: chkBocina.checked,
       });
+
       break;
 
+    // 🔥 PERSONIFICADORES PRO
     case "personificadores_custom":
       input = document.createElement("div");
       input.id = campo.id;
 
-      const chkPers = document.createElement("input");
-      chkPers.type = "checkbox";
+      const wrap = document.createElement("label");
+      wrap.style.display = "flex";
+      wrap.style.alignItems = "center";
+      wrap.style.gap = "8px";
+      wrap.style.cursor = "pointer";
 
-      const inputPers = document.createElement("input");
-      inputPers.type = "number";
-      inputPers.min = 0;
-      inputPers.max = 7;
-      inputPers.value = 0;
-      inputPers.style.display = "none";
+      const chk = document.createElement("input");
+      chk.type = "checkbox";
 
-      chkPers.addEventListener("change", () => {
-        inputPers.style.display = chkPers.checked ? "inline-block" : "none";
+      const txt = document.createElement("span");
+      txt.textContent = "Personificadores";
+
+      const num = document.createElement("input");
+      num.type = "number";
+      num.min = 0;
+      num.max = 7;
+      num.value = 0;
+      num.style.width = "60px";
+      num.style.display = "none";
+
+      chk.addEventListener("change", () => {
+        num.style.display = chk.checked ? "inline-block" : "none";
       });
 
-      input.appendChild(chkPers);
-      input.appendChild(inputPers);
+      wrap.appendChild(chk);
+      wrap.appendChild(txt);
+      wrap.appendChild(num);
+
+      input.appendChild(wrap);
 
       input.getValores = () => ({
-        activo: chkPers.checked,
-        cantidad: inputPers.value,
+        activo: chk.checked,
+        cantidad: chk.checked ? parseInt(num.value) || 0 : 0,
       });
+
       break;
 
+    // 🔥 TIME RANGE PRO
     case "time_range":
       input = document.createElement("div");
       input.id = campo.id;
 
-      // 🔹 TÍTULO
       const titulo = document.createElement("div");
       titulo.textContent = campo.label;
       titulo.style.fontWeight = "bold";
       titulo.style.marginBottom = "6px";
 
-      // 🔹 CONTENEDOR
       const cont = document.createElement("div");
       cont.style.display = "flex";
       cont.style.gap = "10px";
@@ -195,11 +251,8 @@ export function crearCampo(campo) {
         return box;
       };
 
-      const inicio = crearHora("Hora inicio", campo.id + "_inicio");
-      const fin = crearHora("Hora fin", campo.id + "_fin");
-
-      cont.appendChild(inicio);
-      cont.appendChild(fin);
+      cont.appendChild(crearHora("Hora inicio", campo.id + "_inicio"));
+      cont.appendChild(crearHora("Hora fin", campo.id + "_fin"));
 
       input.appendChild(titulo);
       input.appendChild(cont);
@@ -220,11 +273,10 @@ export function crearCampo(campo) {
   if (label) div.appendChild(label);
   div.appendChild(input);
 
-  // 🔥 DEPENDENCIAS PRO
+  // 🔥 DEPENDENCIAS
   if (campo.dependsOn) {
     setTimeout(() => {
       const config = campo.dependsOn;
-
       const controladorId = typeof config === "string" ? config : config.campo;
 
       const controlador = document.getElementById(controladorId);
@@ -247,7 +299,6 @@ export function crearCampo(campo) {
           if ("valor" in config) {
             visible = valor == config.valor;
           }
-
           if ("valores" in config) {
             visible = config.valores.includes(valor);
           }
