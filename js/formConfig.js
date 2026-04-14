@@ -4,13 +4,11 @@ export const formularioData = {
   titulo: "Solicitud de Evento",
 
   campos: [
-    // 🔹 AUTO (no visibles)
+    // 🔹 AUTO
     { id: "hora_inicio", tipo: "auto_time" },
     { id: "fecha_llenado", tipo: "auto_date" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 1 (DATOS BÁSICOS)
-    // 🔹 =========================
+    // 🔹 BLOQUE 1
     { id: "correo", label: "Correo", tipo: "email", required: true },
 
     {
@@ -36,33 +34,40 @@ export const formularioData = {
       opciones: ["Administrativo", "Estudiante", "Docente", "Externo"],
     },
 
+    // 🔥 DEPENDENCIAS REALES
     {
       id: "cargo_admin",
       label: "Cargo administrativo",
       tipo: "text",
-      oculto: true,
+      dependsOn: {
+        campo: "cargo_responsable",
+        valor: "Administrativo",
+      },
     },
 
     {
       id: "unidad",
       label: "Unidad de aprendizaje",
       tipo: "text",
-      oculto: true,
+      dependsOn: {
+        campo: "cargo_responsable",
+        valores: ["Docente", "Estudiante"],
+      },
     },
 
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 2 (EVENTO)
-    // 🔹 =========================
+    // 🔹 BLOQUE 2
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
 
     {
       id: "fecha_aprobacion",
       label: "Fecha de aprobación",
       tipo: "date",
-      dependsOn: "consejo",
-      oculto: true,
+      dependsOn: {
+        campo: "consejo",
+        valor: true,
+      },
     },
 
     {
@@ -78,22 +83,25 @@ export const formularioData = {
       id: "fecha_inicio",
       label: "Fecha inicio",
       tipo: "date",
-      dependsOn: "multi_dia",
-      oculto: true,
+      dependsOn: {
+        campo: "multi_dia",
+        valor: true,
+      },
     },
+
     {
       id: "fecha_fin",
       label: "Fecha fin",
       tipo: "date",
-      dependsOn: "multi_dia",
-      oculto: true,
+      dependsOn: {
+        campo: "multi_dia",
+        valor: true,
+      },
     },
 
     { id: "horario", label: "Horario", tipo: "time_range" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 3 (LOGÍSTICA)
-    // 🔹 =========================
+    // 🔹 BLOQUE 3
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
     {
@@ -117,9 +125,7 @@ export const formularioData = {
       tipo: "number",
     },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 4 (RECURSOS)
-    // 🔹 =========================
+    // 🔹 BLOQUE 4
     {
       id: "materiales",
       label: "Recursos materiales",
@@ -133,7 +139,6 @@ export const formularioData = {
       ],
     },
 
-    // 🔥 NUEVO (reemplaza microfonos + bocina)
     {
       id: "sonido",
       label: "",
@@ -158,14 +163,10 @@ export const formularioData = {
       ],
     },
 
-    // 🔹 =========================
     // 🔹 BLOQUE 5
-    // 🔹 =========================
     { id: "descripcion", label: "Descripción", tipo: "textarea" },
 
-    // 🔹 =========================
     // 🔹 BLOQUE 6
-    // 🔹 =========================
     { id: "observaciones", label: "Observaciones", tipo: "textarea" },
   ],
 };
