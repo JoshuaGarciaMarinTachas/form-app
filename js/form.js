@@ -36,10 +36,9 @@ bloques.forEach((bloque, i) => {
   bloque.appendChild(h3);
 });
 
-// 🔹 CREAR Y ASIGNAR CAMPOS (🔥 CORREGIDO)
+// 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
-  const el = crearCampo(campo); // ✅ ahora sí se crean
-
+  const el = crearCampo(campo);
   if (!el) return;
 
   if (
@@ -84,7 +83,7 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
-// 🔹 agregar bloques al form
+// 🔹 agregar bloques
 bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 BOTÓN
@@ -94,7 +93,49 @@ btn.type = "submit";
 form.appendChild(btn);
 
 // 🔥 =========================
-// 🔥 SUBMIT CORREGIDO
+// 🔥 FECHAS PRO (AQUÍ ESTÁ LO IMPORTANTE)
+// 🔥 =========================
+setTimeout(() => {
+  const fechaEvento = document.getElementById("fecha_evento");
+  const fechaInicio = document.getElementById("fecha_inicio");
+  const fechaFin = document.getElementById("fecha_fin");
+  const multiDia = document.getElementById("multi_dia");
+
+  if (!fechaEvento || !fechaInicio || !multiDia) return;
+
+  // 🔒 inicio bloqueado por defecto
+  fechaInicio.disabled = true;
+  fechaInicio.style.backgroundColor = "#eee";
+
+  const syncFecha = () => {
+    if (fechaEvento.value) {
+      fechaInicio.value = fechaEvento.value;
+    }
+  };
+
+  const toggleMultiDia = () => {
+    const activo = multiDia.dataset.value === "true";
+
+    if (activo) {
+      fechaInicio.disabled = false;
+      fechaInicio.style.backgroundColor = "";
+    } else {
+      fechaInicio.disabled = true;
+      fechaInicio.style.backgroundColor = "#eee";
+      syncFecha();
+    }
+  };
+
+  fechaEvento.addEventListener("change", syncFecha);
+  multiDia.addEventListener("change", toggleMultiDia);
+
+  // inicializar
+  syncFecha();
+  toggleMultiDia();
+}, 200);
+
+// 🔥 =========================
+// 🔥 SUBMIT
 // 🔥 =========================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -115,19 +156,16 @@ form.addEventListener("submit", async (e) => {
     const el = document.getElementById(campo.id);
     if (!el) return;
 
-    // 🔥 COMPONENTES CUSTOM (clave)
     if (typeof el.getValores === "function") {
       data[campo.id] = el.getValores();
       return;
     }
 
-    // 🔹 SWITCH
     if (el.classList.contains("switch")) {
       data[campo.id] = el.dataset.value === "true";
       return;
     }
 
-    // 🔹 NORMAL
     data[campo.id] = el.value?.trim() || null;
   });
 
@@ -140,7 +178,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // 🔹 VALIDACIONES ESPECÍFICAS
+  // 🔹 VALIDACIONES
   if (data.correo && !validarCorreo(data.correo)) {
     alert("Correo inválido");
     return;
