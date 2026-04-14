@@ -11,7 +11,7 @@ import { crearCampo } from "./ui.js";
 const form = document.getElementById("formulario");
 const titulo = document.getElementById("titulo");
 
-// 🔹 Render título
+// 🔹 TÍTULO
 titulo.textContent = formularioData.titulo;
 
 // 🔹 BLOQUES
@@ -36,11 +36,19 @@ bloques.forEach((bloque, i) => {
   bloque.appendChild(h3);
 });
 
+// 🔥 CONTENEDOR ESPECIAL PARA BLOQUE 4 (IZQ / DER)
+const contMaterial = document.createElement("div");
+contMaterial.classList.add("col-material");
+
+const contHumano = document.createElement("div");
+contHumano.classList.add("col-humano");
+
 // 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
   if (!el) return;
 
+  // 🔹 BLOQUE 1
   if (
     [
       "correo",
@@ -54,7 +62,10 @@ formularioData.campos.forEach((campo) => {
     ].includes(campo.id)
   ) {
     bloques[0].appendChild(el);
-  } else if (
+  }
+
+  // 🔹 BLOQUE 2
+  else if (
     [
       "consejo",
       "fecha_aprobacion",
@@ -66,24 +77,40 @@ formularioData.campos.forEach((campo) => {
     ].includes(campo.id)
   ) {
     bloques[1].appendChild(el);
-  } else if (
+  }
+
+  // 🔹 BLOQUE 3
+  else if (
     ["externos", "discapacidad", "espacio", "montaje", "personas"].includes(
       campo.id,
     )
   ) {
     bloques[2].appendChild(el);
-  } else if (
-    ["materiales", "sonido", "personificadores", "humanos"].includes(campo.id)
-  ) {
-    bloques[3].appendChild(el);
-  } else if (campo.id === "descripcion") {
+  }
+
+  // 🔥 BLOQUE 4 (ORDENADO)
+  else if (campo.id === "materiales" || campo.id === "sonido") {
+    contMaterial.appendChild(el);
+  } else if (campo.id === "personificadores" || campo.id === "humanos") {
+    contHumano.appendChild(el);
+  }
+
+  // 🔹 BLOQUE 5
+  else if (campo.id === "descripcion") {
     bloques[4].appendChild(el);
-  } else if (campo.id === "observaciones") {
+  }
+
+  // 🔹 BLOQUE 6
+  else if (campo.id === "observaciones") {
     bloques[5].appendChild(el);
   }
 });
 
-// 🔹 agregar bloques
+// 🔥 INSERTAR COLUMNAS EN BLOQUE 4
+bloques[3].appendChild(contMaterial);
+bloques[3].appendChild(contHumano);
+
+// 🔹 AGREGAR BLOQUES AL FORM
 bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 BOTÓN
@@ -93,7 +120,7 @@ btn.type = "submit";
 form.appendChild(btn);
 
 // 🔥 =========================
-// 🔥 FECHAS PRO (AQUÍ ESTÁ LO IMPORTANTE)
+// 🔥 FECHAS PRO
 // 🔥 =========================
 setTimeout(() => {
   const fechaEvento = document.getElementById("fecha_evento");
@@ -103,7 +130,6 @@ setTimeout(() => {
 
   if (!fechaEvento || !fechaInicio || !multiDia) return;
 
-  // 🔒 inicio bloqueado por defecto
   fechaInicio.disabled = true;
   fechaInicio.style.backgroundColor = "#eee";
 
@@ -129,7 +155,6 @@ setTimeout(() => {
   fechaEvento.addEventListener("change", syncFecha);
   multiDia.addEventListener("change", toggleMultiDia);
 
-  // inicializar
   syncFecha();
   toggleMultiDia();
 }, 200);
@@ -189,7 +214,6 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // 🔹 VALIDACIÓN PERSONAS
   if (data.espacio === "Auditorio" && data.personas > 110) {
     alert("Máximo 110 personas en Auditorio");
     return;
