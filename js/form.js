@@ -36,19 +36,11 @@ bloques.forEach((bloque, i) => {
   bloque.appendChild(h3);
 });
 
-// 🔹 ASIGNACIÓN
+// 🔹 CREAR Y ASIGNAR CAMPOS (🔥 CORREGIDO)
 formularioData.campos.forEach((campo) => {
-  const el = document.getElementById(campo.id);
+  const el = crearCampo(campo); // ✅ ahora sí se crean
 
-  // permitir campos especiales
-  if (
-    !el &&
-    !["multiselect", "recurso_sonido", "personificadores_custom"].includes(
-      campo.tipo,
-    )
-  ) {
-    return;
-  }
+  if (!el) return;
 
   if (
     [
@@ -92,6 +84,7 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
+// 🔹 agregar bloques al form
 bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 BOTÓN
@@ -100,72 +93,61 @@ btn.textContent = "Enviar";
 btn.type = "submit";
 form.appendChild(btn);
 
-// 🔹 SUBMIT
+// 🔥 =========================
+// 🔥 SUBMIT CORREGIDO
+// 🔥 =========================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const data = {}; // ✅ AHORA SÍ primero
+  const data = {};
 
-  // 🔹 BASE
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
       data[campo.id] = new Date().toLocaleTimeString();
-    } else if (campo.tipo === "auto_date") {
-      data[campo.id] = new Date().toLocaleDateString();
-    } else {
-      const el = document.getElementById(campo.id);
-
-      if (!el && campo.tipo !== "multiselect") return;
-
-      if (campo.tipo === "switch") {
-        data[campo.id] = el.dataset.value === "true";
-      } else if (campo.tipo === "multiselect") {
-        data[campo.id] = [
-          ...document.querySelectorAll(`input[name="${campo.id}"]:checked`),
-        ].map((el) => el.value);
-      } else if (campo.tipo === "time_range") {
-        const inicio = document.getElementById(campo.id + "_inicio").value;
-        const fin = document.getElementById(campo.id + "_fin").value;
-
-        data[campo.id] = `${inicio} - ${fin}`;
-      } else {
-        data[campo.id] = el.value?.trim() || null;
-      }
+      return;
     }
+
+    if (campo.tipo === "auto_date") {
+      data[campo.id] = new Date().toLocaleDateString();
+      return;
+    }
+
+    const el = document.getElementById(campo.id);
+    if (!el) return;
+
+    // 🔥 COMPONENTES CUSTOM (clave)
+    if (typeof el.getValores === "function") {
+      data[campo.id] = el.getValores();
+      return;
+    }
+
+    // 🔹 SWITCH
+    if (el.classList.contains("switch")) {
+      data[campo.id] = el.dataset.value === "true";
+      return;
+    }
+
+    // 🔹 NORMAL
+    data[campo.id] = el.value?.trim() || null;
   });
 
-  // 🔥 =========================
-  // 🔥 PERSONALIZADOS (NUEVO)
-  // 🔥 =========================
-
-  // 👤 PERSONIFICADORES
-  const persChk = document.getElementById("personificadores_check");
-  const persVal = document.getElementById("cantidad_personificadores");
-
-  data.personificadores = persChk?.checked
-    ? Math.min(7, Math.max(0, parseInt(persVal.value) || 0))
-    : 0;
-
-  // 🔊 SONIDO
-  const sonidoChk = document.getElementById("sonido_check");
-  const microChk = document.getElementById("micro_check");
-  const microVal = document.getElementById("cantidad_microfonos");
-  const bocinaChk = document.getElementById("bocina");
-
-  data.sonido = sonidoChk?.checked || false;
-
-  data.microfonos = microChk?.checked
-    ? Math.min(2, Math.max(0, parseInt(microVal.value) || 0))
-    : 0;
-
-  data.bocina = bocinaChk?.checked || false;
-
-  // 🔴 VALIDACIÓN FINAL
+  // 🔴 VALIDACIÓN VISUAL
   const errores = document.querySelectorAll(".input-error");
 
   if (errores.length > 0) {
     alert("Corrige los campos marcados antes de enviar");
     errores[0].focus();
+    return;
+  }
+
+  // 🔹 VALIDACIONES ESPECÍFICAS
+  if (data.correo && !validarCorreo(data.correo)) {
+    alert("Correo inválido");
+    return;
+  }
+
+  if (data.telefono && !validarTelefono(data.telefono)) {
+    alert("Teléfono inválido");
     return;
   }
 
