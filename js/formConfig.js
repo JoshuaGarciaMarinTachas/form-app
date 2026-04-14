@@ -8,7 +8,9 @@ export const formularioData = {
     { id: "hora_inicio", tipo: "auto_time" },
     { id: "fecha_llenado", tipo: "auto_date" },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 1
+    // 🔹 =========================
     { id: "correo", label: "Correo", tipo: "email", required: true },
 
     {
@@ -34,7 +36,7 @@ export const formularioData = {
       opciones: ["Administrativo", "Estudiante", "Docente", "Externo"],
     },
 
-    // 🔥 DEPENDENCIAS REALES
+    // 🔥 DEPENDENCIAS CORRECTAS
     {
       id: "cargo_admin",
       label: "Cargo administrativo",
@@ -57,7 +59,9 @@ export const formularioData = {
 
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 2
+    // 🔹 =========================
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
 
     {
@@ -79,14 +83,11 @@ export const formularioData = {
 
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
+    // 🔥 SIEMPRE VISIBLE (controlado en form.js)
     {
       id: "fecha_inicio",
       label: "Fecha inicio",
       tipo: "date",
-      dependsOn: {
-        campo: "multi_dia",
-        valor: true,
-      },
     },
 
     {
@@ -101,7 +102,9 @@ export const formularioData = {
 
     { id: "horario", label: "Horario", tipo: "time_range" },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 3
+    // 🔹 =========================
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
     {
@@ -117,15 +120,30 @@ export const formularioData = {
       opciones: ["Explanada", "Auditorio", "Sala de Consejo"],
     },
 
-    { id: "montaje", label: "Montaje", tipo: "text" },
+    // 🔥 OCULTO SI ES EXPLANADA
+    {
+      id: "montaje",
+      label: "Montaje",
+      tipo: "text",
+      dependsOn: {
+        campo: "espacio",
+        valores: ["Auditorio", "Sala de Consejo"],
+      },
+    },
 
     {
       id: "personas",
       label: "Número aproximado de personas",
       tipo: "number",
+      dependsOn: {
+        campo: "espacio",
+        valores: ["Auditorio", "Sala de Consejo"],
+      },
     },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 4
+    // 🔹 =========================
     {
       id: "materiales",
       label: "Recursos materiales",
@@ -163,10 +181,14 @@ export const formularioData = {
       ],
     },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 5
+    // 🔹 =========================
     { id: "descripcion", label: "Descripción", tipo: "textarea" },
 
+    // 🔹 =========================
     // 🔹 BLOQUE 6
+    // 🔹 =========================
     { id: "observaciones", label: "Observaciones", tipo: "textarea" },
   ],
 };
