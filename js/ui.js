@@ -53,7 +53,8 @@ export function crearCampo(campo) {
           ? "true"
           : "false";
 
-        input.dispatchEvent(new Event("change"));
+        // 🔥 ESTO DISPARA EL CAMBIO (clave para multi_dia)
+        input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
 
@@ -246,6 +247,60 @@ export function crearCampo(campo) {
 
   if (label) div.appendChild(label);
   div.appendChild(input);
+
+  // 🔥 DEPENDENCIAS (NUEVO)
+  if (campo.dependsOn) {
+    setTimeout(() => {
+      const controlador = document.getElementById(campo.dependsOn);
+
+      if (!controlador) return;
+
+      const actualizar = () => {
+        let activo;
+
+        // switch
+        if (controlador.classList.contains("switch")) {
+          activo = controlador.dataset.value === "true";
+        } else {
+          activo = controlador.checked;
+        }
+
+        div.style.display = activo ? "block" : "none";
+      };
+
+      // escuchar cambios
+      controlador.addEventListener("change", actualizar);
+
+      // ejecutar al inicio
+      actualizar();
+    }, 0);
+  }
+
+  // DEPENDENCIAS (AQUÍ SE ARREGLA multi_dia)
+  if (campo.dependsOn) {
+    setTimeout(() => {
+      const controlador = document.getElementById(campo.dependsOn);
+
+      if (!controlador) return;
+
+      const actualizar = () => {
+        let activo;
+
+        // detectar si es switch
+        if (controlador.classList.contains("switch")) {
+          activo = controlador.dataset.value === "true";
+        } else {
+          activo = controlador.checked;
+        }
+
+        div.style.display = activo ? "block" : "none";
+      };
+
+      controlador.addEventListener("change", actualizar);
+
+      actualizar(); // importante
+    }, 0);
+  }
 
   return div;
 }

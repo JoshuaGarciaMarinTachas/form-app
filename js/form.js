@@ -1,3 +1,4 @@
+import { validarCorreo, validarTelefono } from "./validations.js";
 import { db } from "./firebase.js";
 import {
   collection,
@@ -37,8 +38,17 @@ bloques.forEach((bloque, i) => {
 
 // 🔹 ASIGNACIÓN
 formularioData.campos.forEach((campo) => {
-  const el = crearCampo(campo);
-  if (!el) return;
+  const el = document.getElementById(campo.id);
+
+  // permitir campos especiales
+  if (
+    !el &&
+    !["multiselect", "recurso_sonido", "personificadores_custom"].includes(
+      campo.tipo,
+    )
+  ) {
+    return;
+  }
 
   if (
     [
