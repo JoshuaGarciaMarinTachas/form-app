@@ -248,32 +248,34 @@ export function crearCampo(campo) {
   if (label) div.appendChild(label);
   div.appendChild(input);
 
-  // 🔥 DEPENDENCIAS (NUEVO)
+  // DEPENDENCIAS (VERSIÓN SEGURA)
   if (campo.dependsOn) {
     setTimeout(() => {
       const controlador = document.getElementById(campo.dependsOn);
 
+      // 🔴 evitar que rompa el render
       if (!controlador) return;
 
       const actualizar = () => {
-        let activo;
+        let activo = false;
 
-        // switch
         if (controlador.classList.contains("switch")) {
           activo = controlador.dataset.value === "true";
-        } else {
+        } else if (controlador.type === "checkbox") {
           activo = controlador.checked;
+        } else {
+          activo = !!controlador.value;
         }
 
         div.style.display = activo ? "block" : "none";
       };
 
-      // escuchar cambios
+      // 🔥 IMPORTANTE: evitar duplicados
+      controlador.removeEventListener("change", actualizar);
       controlador.addEventListener("change", actualizar);
 
-      // ejecutar al inicio
       actualizar();
-    }, 0);
+    }, 100); // 🔥 antes era 0 → puede fallar
   }
 
   // DEPENDENCIAS (AQUÍ SE ARREGLA multi_dia)
