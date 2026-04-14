@@ -14,10 +14,6 @@ export function crearCampo(campo) {
     div.classList.add("full");
   }
 
-  if (campo.oculto) {
-    div.style.display = "none";
-  }
-
   let label = null;
 
   if (campo.tipo !== "textarea" && campo.tipo !== "time_range") {
@@ -54,6 +50,7 @@ export function crearCampo(campo) {
 
       input.addEventListener("click", () => {
         input.classList.toggle("active");
+
         const val = input.classList.contains("active") ? "true" : "false";
 
         input.dataset.value = val;
@@ -203,24 +200,40 @@ export function crearCampo(campo) {
   if (label) div.appendChild(label);
   div.appendChild(input);
 
-  // DEPENDENCIAS SEGURAS
+  // 🔥 DEPENDENCIAS PRO
   if (campo.dependsOn) {
     setTimeout(() => {
-      const controlador = document.getElementById(campo.dependsOn);
+      const config = campo.dependsOn;
+
+      const controladorId = typeof config === "string" ? config : config.campo;
+
+      const controlador = document.getElementById(controladorId);
       if (!controlador) return;
 
-      const actualizar = () => {
-        let activo = false;
-
+      const obtenerValor = () => {
         if (controlador.classList.contains("switch")) {
-          activo = controlador.dataset.value === "true";
-        } else if (controlador.type === "checkbox") {
-          activo = controlador.checked;
+          return controlador.dataset.value === "true";
+        }
+        return controlador.value;
+      };
+
+      const actualizar = () => {
+        const valor = obtenerValor();
+        let visible = false;
+
+        if (typeof config === "string") {
+          visible = !!valor;
         } else {
-          activo = !!controlador.value;
+          if ("valor" in config) {
+            visible = valor == config.valor;
+          }
+
+          if ("valores" in config) {
+            visible = config.valores.includes(valor);
+          }
         }
 
-        div.style.display = activo ? "block" : "none";
+        div.style.display = visible ? "block" : "none";
       };
 
       controlador.addEventListener("change", actualizar);
