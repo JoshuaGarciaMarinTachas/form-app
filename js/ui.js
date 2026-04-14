@@ -36,30 +36,36 @@ export function crearCampo(campo) {
         option.textContent = op;
         input.appendChild(option);
       });
+      input.id = campo.id;
       break;
 
     case "textarea":
       input = document.createElement("textarea");
+      input.id = campo.id;
       break;
 
     case "switch":
       input = document.createElement("div");
       input.classList.add("switch");
+      input.id = campo.id;
+
       input.dataset.value = "false";
+      input.value = "false";
 
       input.addEventListener("click", () => {
         input.classList.toggle("active");
-        input.dataset.value = input.classList.contains("active")
-          ? "true"
-          : "false";
+        const val = input.classList.contains("active") ? "true" : "false";
 
-        // 🔥 ESTO DISPARA EL CAMBIO (clave para multi_dia)
+        input.dataset.value = val;
+        input.value = val;
+
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
 
     case "multiselect":
       input = document.createElement("div");
+      input.id = campo.id;
 
       campo.opciones.forEach((op) => {
         const wrap = document.createElement("div");
@@ -74,78 +80,40 @@ export function crearCampo(campo) {
 
         wrap.appendChild(chk);
         wrap.appendChild(lbl);
-
         input.appendChild(wrap);
       });
+
+      input.getValores = () => {
+        return Array.from(input.querySelectorAll("input:checked")).map(
+          (chk) => chk.value,
+        );
+      };
       break;
 
-    // 🔊 SONIDO COMPLETO
     case "recurso_sonido":
       input = document.createElement("div");
-
-      const wrapSonido = document.createElement("div");
-      wrapSonido.style.display = "flex";
-      wrapSonido.style.alignItems = "center";
-      wrapSonido.style.gap = "8px";
+      input.id = campo.id;
 
       const chkSonido = document.createElement("input");
       chkSonido.type = "checkbox";
-      chkSonido.id = "sonido_check";
 
-      const lblSonido = document.createElement("span");
-      lblSonido.textContent = "Sonido";
-
-      wrapSonido.appendChild(chkSonido);
-      wrapSonido.appendChild(lblSonido);
-
-      // 🔽 contenedor opciones
       const contOpciones = document.createElement("div");
       contOpciones.style.display = "none";
       contOpciones.style.marginLeft = "20px";
 
-      // 🎤 MICRO
-      const wrapMicro = document.createElement("div");
-      wrapMicro.style.display = "flex";
-      wrapMicro.style.alignItems = "center";
-      wrapMicro.style.gap = "8px";
-
       const chkMicro = document.createElement("input");
       chkMicro.type = "checkbox";
-      chkMicro.id = "micro_check";
-
-      const lblMicro = document.createElement("span");
-      lblMicro.textContent = "Micrófono";
 
       const inputMicro = document.createElement("input");
       inputMicro.type = "number";
-      inputMicro.id = "cantidad_microfonos";
       inputMicro.min = 0;
       inputMicro.max = 2;
       inputMicro.value = 0;
-      inputMicro.style.width = "60px";
       inputMicro.style.display = "none";
-
-      wrapMicro.appendChild(chkMicro);
-      wrapMicro.appendChild(lblMicro);
-      wrapMicro.appendChild(inputMicro);
-
-      // 🔊 BOCINA
-      const wrapBocina = document.createElement("div");
-      wrapBocina.style.display = "flex";
-      wrapBocina.style.alignItems = "center";
-      wrapBocina.style.gap = "8px";
 
       const chkBocina = document.createElement("input");
       chkBocina.type = "checkbox";
-      chkBocina.id = "bocina";
 
-      const lblBocina = document.createElement("span");
-      lblBocina.textContent = "Bocina";
-
-      wrapBocina.appendChild(chkBocina);
-      wrapBocina.appendChild(lblBocina);
-
-      // 🔹 EVENTOS
       chkSonido.addEventListener("change", () => {
         contOpciones.style.display = chkSonido.checked ? "block" : "none";
       });
@@ -154,106 +122,91 @@ export function crearCampo(campo) {
         inputMicro.style.display = chkMicro.checked ? "inline-block" : "none";
       });
 
-      contOpciones.appendChild(wrapMicro);
-      contOpciones.appendChild(wrapBocina);
+      contOpciones.appendChild(chkMicro);
+      contOpciones.appendChild(inputMicro);
+      contOpciones.appendChild(chkBocina);
 
-      input.appendChild(wrapSonido);
+      input.appendChild(chkSonido);
       input.appendChild(contOpciones);
 
+      input.getValores = () => ({
+        sonido: chkSonido.checked,
+        microfono: chkMicro.checked,
+        cantidad_microfonos: inputMicro.value,
+        bocina: chkBocina.checked,
+      });
       break;
 
-    // 👤 PERSONIFICADORES
     case "personificadores_custom":
       input = document.createElement("div");
-
-      const wrapPers = document.createElement("div");
-      wrapPers.style.display = "flex";
-      wrapPers.style.alignItems = "center";
-      wrapPers.style.gap = "8px";
+      input.id = campo.id;
 
       const chkPers = document.createElement("input");
       chkPers.type = "checkbox";
-      chkPers.id = "personificadores_check";
-
-      const lblPers = document.createElement("span");
-      lblPers.textContent = "Personificadores";
 
       const inputPers = document.createElement("input");
       inputPers.type = "number";
-      inputPers.id = "cantidad_personificadores";
       inputPers.min = 0;
       inputPers.max = 7;
       inputPers.value = 0;
-      inputPers.style.width = "60px";
       inputPers.style.display = "none";
 
       chkPers.addEventListener("change", () => {
         inputPers.style.display = chkPers.checked ? "inline-block" : "none";
       });
 
-      wrapPers.appendChild(chkPers);
-      wrapPers.appendChild(lblPers);
-      wrapPers.appendChild(inputPers);
+      input.appendChild(chkPers);
+      input.appendChild(inputPers);
 
-      input.appendChild(wrapPers);
-
+      input.getValores = () => ({
+        activo: chkPers.checked,
+        cantidad: inputPers.value,
+      });
       break;
 
     case "time_range":
       input = document.createElement("div");
-
-      const titulo = document.createElement("div");
-      titulo.textContent = campo.label;
-      titulo.style.fontWeight = "bold";
-      titulo.style.marginBottom = "8px";
+      input.id = campo.id;
 
       const cont = document.createElement("div");
       cont.style.display = "flex";
       cont.style.gap = "10px";
 
-      const crearHora = (texto, id) => {
-        const box = document.createElement("div");
-        box.style.display = "flex";
-        box.style.flexDirection = "column";
-        box.style.flex = "1";
-
-        const lbl = document.createElement("span");
-        lbl.textContent = texto;
-        lbl.style.fontSize = "12px";
-
+      const crearHora = (id) => {
         const inp = document.createElement("input");
         inp.type = "time";
         inp.id = id;
-
-        box.appendChild(lbl);
-        box.appendChild(inp);
-        return box;
+        return inp;
       };
 
-      cont.appendChild(crearHora("Hora de inicio", campo.id + "_inicio"));
-      cont.appendChild(crearHora("Hora de fin", campo.id + "_fin"));
+      const inicio = crearHora(campo.id + "_inicio");
+      const fin = crearHora(campo.id + "_fin");
 
-      input.appendChild(titulo);
+      cont.appendChild(inicio);
+      cont.appendChild(fin);
+
       input.appendChild(cont);
+
+      input.getValores = () => ({
+        inicio: inicio.value,
+        fin: fin.value,
+      });
 
       break;
 
     default:
       input = document.createElement("input");
       input.type = campo.tipo;
+      input.id = campo.id;
   }
-
-  if (input && !input.id) input.id = campo.id;
 
   if (label) div.appendChild(label);
   div.appendChild(input);
 
-  // DEPENDENCIAS (VERSIÓN SEGURA)
+  // DEPENDENCIAS SEGURAS
   if (campo.dependsOn) {
     setTimeout(() => {
       const controlador = document.getElementById(campo.dependsOn);
-
-      // 🔴 evitar que rompa el render
       if (!controlador) return;
 
       const actualizar = () => {
@@ -270,11 +223,9 @@ export function crearCampo(campo) {
         div.style.display = activo ? "block" : "none";
       };
 
-      // 🔥 IMPORTANTE: evitar duplicados
       controlador.addEventListener("change", actualizar);
-
       actualizar();
-    }, 100); // 🔥 antes era 0 → puede fallar
+    }, 150);
   }
 
   return div;
