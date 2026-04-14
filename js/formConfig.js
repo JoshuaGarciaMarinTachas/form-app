@@ -137,7 +137,7 @@ export const formularioData = {
       tipo: "number",
       dependsOn: {
         campo: "espacio",
-        valores: ["Auditorio", "Sala de Consejo"],
+        valores: ["Auditorio", "Sala de Consejo", "Explanada"],
       },
     },
 
