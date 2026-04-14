@@ -271,37 +271,10 @@ export function crearCampo(campo) {
       };
 
       // 🔥 IMPORTANTE: evitar duplicados
-      controlador.removeEventListener("change", actualizar);
       controlador.addEventListener("change", actualizar);
 
       actualizar();
     }, 100); // 🔥 antes era 0 → puede fallar
-  }
-
-  // DEPENDENCIAS (AQUÍ SE ARREGLA multi_dia)
-  if (campo.dependsOn) {
-    setTimeout(() => {
-      const controlador = document.getElementById(campo.dependsOn);
-
-      if (!controlador) return;
-
-      const actualizar = () => {
-        let activo;
-
-        // detectar si es switch
-        if (controlador.classList.contains("switch")) {
-          activo = controlador.dataset.value === "true";
-        } else {
-          activo = controlador.checked;
-        }
-
-        div.style.display = activo ? "block" : "none";
-      };
-
-      controlador.addEventListener("change", actualizar);
-
-      actualizar(); // importante
-    }, 0);
   }
 
   return div;
