@@ -24,7 +24,7 @@ export function crearCampo(campo) {
   let input;
 
   switch (campo.tipo) {
-    case "select":
+    case "select": {
       input = document.createElement("select");
       campo.opciones.forEach((op) => {
         const option = document.createElement("option");
@@ -34,13 +34,15 @@ export function crearCampo(campo) {
       });
       input.id = campo.id;
       break;
+    }
 
-    case "textarea":
+    case "textarea": {
       input = document.createElement("textarea");
       input.id = campo.id;
       break;
+    }
 
-    case "switch":
+    case "switch": {
       input = document.createElement("div");
       input.classList.add("switch");
       input.id = campo.id;
@@ -54,9 +56,9 @@ export function crearCampo(campo) {
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
+    }
 
-    // 🔥 MULTISELECT PRO
-    case "multiselect":
+    case "multiselect": {
       input = document.createElement("div");
       input.id = campo.id;
 
@@ -90,9 +92,9 @@ export function crearCampo(campo) {
       };
 
       break;
+    }
 
-    // 🔥 SONIDO PRO
-    case "recurso_sonido":
+    case "recurso_sonido": {
       input = document.createElement("div");
       input.id = campo.id;
 
@@ -111,9 +113,9 @@ export function crearCampo(campo) {
       wrapPrincipal.appendChild(chkSonido);
       wrapPrincipal.appendChild(title);
 
-      const cont = document.createElement("div");
-      cont.style.marginLeft = "20px";
-      cont.style.display = "none";
+      const contSonido = document.createElement("div");
+      contSonido.style.marginLeft = "20px";
+      contSonido.style.display = "none";
 
       // Micro
       const microWrap = document.createElement("label");
@@ -159,14 +161,14 @@ export function crearCampo(campo) {
       bocinaWrap.appendChild(txtBocina);
 
       chkSonido.addEventListener("change", () => {
-        cont.style.display = chkSonido.checked ? "block" : "none";
+        contSonido.style.display = chkSonido.checked ? "block" : "none";
       });
 
-      cont.appendChild(microWrap);
-      cont.appendChild(bocinaWrap);
+      contSonido.appendChild(microWrap);
+      contSonido.appendChild(bocinaWrap);
 
       input.appendChild(wrapPrincipal);
-      input.appendChild(cont);
+      input.appendChild(contSonido);
 
       input.getValores = () => ({
         activo: chkSonido.checked,
@@ -175,9 +177,9 @@ export function crearCampo(campo) {
       });
 
       break;
+    }
 
-    // 🔥 PERSONIFICADORES PRO
-    case "personificadores_custom":
+    case "personificadores_custom": {
       input = document.createElement("div");
       input.id = campo.id;
 
@@ -217,9 +219,9 @@ export function crearCampo(campo) {
       });
 
       break;
+    }
 
-    // 🔥 TIME RANGE PRO
-    case "time_range":
+    case "time_range": {
       input = document.createElement("div");
       input.id = campo.id;
 
@@ -228,9 +230,9 @@ export function crearCampo(campo) {
       titulo.style.fontWeight = "bold";
       titulo.style.marginBottom = "6px";
 
-      const cont = document.createElement("div");
-      cont.style.display = "flex";
-      cont.style.gap = "10px";
+      const contHorario = document.createElement("div");
+      contHorario.style.display = "flex";
+      contHorario.style.gap = "10px";
 
       const crearHora = (texto, id) => {
         const box = document.createElement("div");
@@ -251,11 +253,11 @@ export function crearCampo(campo) {
         return box;
       };
 
-      cont.appendChild(crearHora("Hora inicio", campo.id + "_inicio"));
-      cont.appendChild(crearHora("Hora fin", campo.id + "_fin"));
+      contHorario.appendChild(crearHora("Hora inicio", campo.id + "_inicio"));
+      contHorario.appendChild(crearHora("Hora fin", campo.id + "_fin"));
 
       input.appendChild(titulo);
-      input.appendChild(cont);
+      input.appendChild(contHorario);
 
       input.getValores = () => ({
         inicio: document.getElementById(campo.id + "_inicio")?.value || "",
@@ -263,11 +265,13 @@ export function crearCampo(campo) {
       });
 
       break;
+    }
 
-    default:
+    default: {
       input = document.createElement("input");
       input.type = campo.tipo;
       input.id = campo.id;
+    }
   }
 
   if (label) div.appendChild(label);
@@ -296,12 +300,8 @@ export function crearCampo(campo) {
         if (typeof config === "string") {
           visible = !!valor;
         } else {
-          if ("valor" in config) {
-            visible = valor == config.valor;
-          }
-          if ("valores" in config) {
-            visible = config.valores.includes(valor);
-          }
+          if ("valor" in config) visible = valor == config.valor;
+          if ("valores" in config) visible = config.valores.includes(valor);
         }
 
         div.style.display = visible ? "block" : "none";
