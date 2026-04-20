@@ -37,7 +37,7 @@ bloques.forEach((bloque, i) => {
 });
 
 // 🔥 =========================
-// 🔥 BLOQUE 4 PRO (GRID REAL)
+// 🔥 BLOQUE 4 LIMPIO (SIN TÍTULOS INTERNOS)
 // 🔥 =========================
 const requerimientosGrid = document.createElement("div");
 requerimientosGrid.classList.add("requerimientos-grid");
@@ -47,16 +47,6 @@ colMaterial.classList.add("columna");
 
 const colHumano = document.createElement("div");
 colHumano.classList.add("columna");
-
-// 🔹 títulos de columnas
-const tituloMaterial = document.createElement("h4");
-tituloMaterial.textContent = "Recursos materiales";
-
-const tituloHumano = document.createElement("h4");
-tituloHumano.textContent = "Recursos humanos";
-
-colMaterial.appendChild(tituloMaterial);
-colHumano.appendChild(tituloHumano);
 
 // 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
@@ -103,10 +93,11 @@ formularioData.campos.forEach((campo) => {
     bloques[2].appendChild(el);
   }
 
-  // 🔥 BLOQUE 4 ORDENADO
-  else if (["materiales", "sonido"].includes(campo.id)) {
+  // 🔥 BLOQUE 4 CORRECTO
+  else if (["materiales", "sonido", "personificadores"].includes(campo.id)) {
+    // 👈 PERSONIFICADORES AHORA ES MATERIAL
     colMaterial.appendChild(el);
-  } else if (["personificadores", "humanos"].includes(campo.id)) {
+  } else if (["humanos"].includes(campo.id)) {
     colHumano.appendChild(el);
   }
 
@@ -121,12 +112,12 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
-// 🔥 insertar columnas dentro del grid
+// 🔥 INSERTAR GRID
 requerimientosGrid.appendChild(colMaterial);
 requerimientosGrid.appendChild(colHumano);
 bloques[3].appendChild(requerimientosGrid);
 
-// 🔹 agregar bloques al form
+// 🔹 AGREGAR BLOQUES
 bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 BOTÓN

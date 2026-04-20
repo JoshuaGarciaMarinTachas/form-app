@@ -16,13 +16,16 @@ export function crearCampo(campo) {
 
   let label = null;
 
-  if (campo.tipo !== "textarea" && campo.tipo !== "time_range") {
+  if (campo.label && campo.tipo !== "time_range") {
     label = document.createElement("label");
     label.textContent = campo.label;
   }
 
   let input;
 
+  // =========================
+  // 🔹 TIPOS DE CAMPOS
+  // =========================
   switch (campo.tipo) {
     // 🔹 SELECT
     case "select": {
@@ -55,21 +58,25 @@ export function crearCampo(campo) {
 
       input.addEventListener("click", () => {
         input.classList.toggle("active");
-        const val = input.classList.contains("active") ? "true" : "false";
-        input.dataset.value = val;
+        input.dataset.value = input.classList.contains("active")
+          ? "true"
+          : "false";
+
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
     }
 
-    // 🔥 MULTISELECT LIMPIO (SIN estilos inline conflictivos)
+    // =========================
+    // 🔥 MULTISELECT LIMPIO
+    // =========================
     case "multiselect": {
       input = document.createElement("div");
       input.id = campo.id;
       input.classList.add("multi-group");
 
       campo.opciones.forEach((op, i) => {
-        const labelRow = document.createElement("label");
+        const row = document.createElement("label");
 
         const chk = document.createElement("input");
         chk.type = "checkbox";
@@ -80,10 +87,10 @@ export function crearCampo(campo) {
         const span = document.createElement("span");
         span.textContent = op;
 
-        labelRow.appendChild(chk);
-        labelRow.appendChild(span);
+        row.appendChild(chk);
+        row.appendChild(span);
 
-        input.appendChild(labelRow);
+        input.appendChild(row);
       });
 
       input.getValores = () =>
@@ -94,13 +101,16 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔥 SONIDO (ESTRUCTURA LIMPIA)
+    // =========================
+    // 🔥 SONIDO
+    // =========================
     case "recurso_sonido": {
       input = document.createElement("div");
       input.id = campo.id;
+      input.classList.add("multi-group");
 
-      const principal = document.createElement("label");
-      principal.classList.add("multi-group");
+      // principal
+      const main = document.createElement("label");
 
       const chkSonido = document.createElement("input");
       chkSonido.type = "checkbox";
@@ -108,9 +118,10 @@ export function crearCampo(campo) {
       const title = document.createElement("span");
       title.textContent = "Sonido";
 
-      principal.appendChild(chkSonido);
-      principal.appendChild(title);
+      main.appendChild(chkSonido);
+      main.appendChild(title);
 
+      // subopciones
       const sub = document.createElement("div");
       sub.classList.add("sub-opciones");
       sub.style.display = "none";
@@ -151,14 +162,15 @@ export function crearCampo(campo) {
       bocina.appendChild(chkBocina);
       bocina.appendChild(txtBocina);
 
+      // toggle
       chkSonido.addEventListener("change", () => {
-        sub.style.display = chkSonido.checked ? "block" : "none";
+        sub.style.display = chkSonido.checked ? "flex" : "none";
       });
 
       sub.appendChild(micro);
       sub.appendChild(bocina);
 
-      input.appendChild(principal);
+      input.appendChild(main);
       input.appendChild(sub);
 
       input.getValores = () => ({
@@ -170,10 +182,13 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
     // 🔥 PERSONIFICADORES
+    // =========================
     case "personificadores_custom": {
       input = document.createElement("div");
       input.id = campo.id;
+      input.classList.add("multi-group");
 
       const row = document.createElement("label");
 
@@ -208,7 +223,9 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
     // 🔥 HORARIO
+    // =========================
     case "time_range": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -250,6 +267,7 @@ export function crearCampo(campo) {
       break;
     }
 
+    // 🔹 DEFAULT
     default: {
       input = document.createElement("input");
       input.type = campo.tipo;
@@ -257,10 +275,13 @@ export function crearCampo(campo) {
     }
   }
 
+  // 🔹 ensamblar
   if (label) div.appendChild(label);
   div.appendChild(input);
 
+  // =========================
   // 🔥 DEPENDENCIAS
+  // =========================
   if (campo.dependsOn) {
     setTimeout(() => {
       const config = campo.dependsOn;
