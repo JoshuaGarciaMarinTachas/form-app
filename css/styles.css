@@ -297,3 +297,24 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* 🔥 TÍTULOS VISUALES DE COLUMNAS */
+.requerimientos-grid .columna:first-child::before {
+  content: "Recursos materiales";
+  font-weight: bold;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+.requerimientos-grid .columna:last-child::before {
+  content: "Recursos humanos";
+  font-weight: bold;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
