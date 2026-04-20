@@ -62,23 +62,14 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔥 MULTISELECT ORDENADO
+    // 🔥 MULTISELECT LIMPIO (SIN estilos inline conflictivos)
     case "multiselect": {
       input = document.createElement("div");
       input.id = campo.id;
+      input.classList.add("multi-group");
 
       campo.opciones.forEach((op, i) => {
-        const row = document.createElement("label");
-        row.style.display = "flex";
-        row.style.alignItems = "center";
-        row.style.justifyContent = "space-between";
-        row.style.marginBottom = "6px";
-        row.style.cursor = "pointer";
-
-        const left = document.createElement("div");
-        left.style.display = "flex";
-        left.style.alignItems = "center";
-        left.style.gap = "8px";
+        const labelRow = document.createElement("label");
 
         const chk = document.createElement("input");
         chk.type = "checkbox";
@@ -89,12 +80,10 @@ export function crearCampo(campo) {
         const span = document.createElement("span");
         span.textContent = op;
 
-        left.appendChild(chk);
-        left.appendChild(span);
+        labelRow.appendChild(chk);
+        labelRow.appendChild(span);
 
-        row.appendChild(left);
-
-        input.appendChild(row);
+        input.appendChild(labelRow);
       });
 
       input.getValores = () =>
@@ -105,42 +94,29 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔥 SONIDO (ALINEADO PRO)
+    // 🔥 SONIDO (ESTRUCTURA LIMPIA)
     case "recurso_sonido": {
       input = document.createElement("div");
       input.id = campo.id;
 
-      const main = document.createElement("label");
-      main.style.display = "flex";
-      main.style.alignItems = "center";
-      main.style.gap = "8px";
-      main.style.cursor = "pointer";
+      const principal = document.createElement("label");
+      principal.classList.add("multi-group");
 
       const chkSonido = document.createElement("input");
       chkSonido.type = "checkbox";
 
-      const title = document.createElement("strong");
+      const title = document.createElement("span");
       title.textContent = "Sonido";
 
-      main.appendChild(chkSonido);
-      main.appendChild(title);
+      principal.appendChild(chkSonido);
+      principal.appendChild(title);
 
-      const cont = document.createElement("div");
-      cont.style.marginLeft = "20px";
-      cont.style.display = "none";
+      const sub = document.createElement("div");
+      sub.classList.add("sub-opciones");
+      sub.style.display = "none";
 
       // 🔹 MICRO
-      const microRow = document.createElement("label");
-      microRow.style.display = "flex";
-      microRow.style.alignItems = "center";
-      microRow.style.justifyContent = "space-between";
-      microRow.style.marginBottom = "6px";
-      microRow.style.cursor = "pointer";
-
-      const leftMicro = document.createElement("div");
-      leftMicro.style.display = "flex";
-      leftMicro.style.alignItems = "center";
-      leftMicro.style.gap = "8px";
+      const micro = document.createElement("label");
 
       const chkMicro = document.createElement("input");
       chkMicro.type = "checkbox";
@@ -148,30 +124,23 @@ export function crearCampo(campo) {
       const txtMicro = document.createElement("span");
       txtMicro.textContent = "Micrófonos";
 
-      leftMicro.appendChild(chkMicro);
-      leftMicro.appendChild(txtMicro);
-
-      const inputMicro = document.createElement("input");
-      inputMicro.type = "number";
-      inputMicro.min = 0;
-      inputMicro.max = 2;
-      inputMicro.value = 0;
-      inputMicro.style.width = "60px";
-      inputMicro.style.display = "none";
+      const numMicro = document.createElement("input");
+      numMicro.type = "number";
+      numMicro.min = 0;
+      numMicro.max = 2;
+      numMicro.value = 0;
+      numMicro.style.display = "none";
 
       chkMicro.addEventListener("change", () => {
-        inputMicro.style.display = chkMicro.checked ? "inline-block" : "none";
+        numMicro.style.display = chkMicro.checked ? "inline-block" : "none";
       });
 
-      microRow.appendChild(leftMicro);
-      microRow.appendChild(inputMicro);
+      micro.appendChild(chkMicro);
+      micro.appendChild(txtMicro);
+      micro.appendChild(numMicro);
 
       // 🔹 BOCINA
-      const bocinaRow = document.createElement("label");
-      bocinaRow.style.display = "flex";
-      bocinaRow.style.alignItems = "center";
-      bocinaRow.style.gap = "8px";
-      bocinaRow.style.cursor = "pointer";
+      const bocina = document.createElement("label");
 
       const chkBocina = document.createElement("input");
       chkBocina.type = "checkbox";
@@ -179,22 +148,22 @@ export function crearCampo(campo) {
       const txtBocina = document.createElement("span");
       txtBocina.textContent = "Bocina";
 
-      bocinaRow.appendChild(chkBocina);
-      bocinaRow.appendChild(txtBocina);
+      bocina.appendChild(chkBocina);
+      bocina.appendChild(txtBocina);
 
       chkSonido.addEventListener("change", () => {
-        cont.style.display = chkSonido.checked ? "block" : "none";
+        sub.style.display = chkSonido.checked ? "block" : "none";
       });
 
-      cont.appendChild(microRow);
-      cont.appendChild(bocinaRow);
+      sub.appendChild(micro);
+      sub.appendChild(bocina);
 
-      input.appendChild(main);
-      input.appendChild(cont);
+      input.appendChild(principal);
+      input.appendChild(sub);
 
       input.getValores = () => ({
         activo: chkSonido.checked,
-        microfonos: chkMicro.checked ? parseInt(inputMicro.value) || 0 : 0,
+        microfonos: chkMicro.checked ? parseInt(numMicro.value) || 0 : 0,
         bocina: chkBocina.checked,
       });
 
@@ -207,15 +176,6 @@ export function crearCampo(campo) {
       input.id = campo.id;
 
       const row = document.createElement("label");
-      row.style.display = "flex";
-      row.style.alignItems = "center";
-      row.style.justifyContent = "space-between";
-      row.style.cursor = "pointer";
-
-      const left = document.createElement("div");
-      left.style.display = "flex";
-      left.style.alignItems = "center";
-      left.style.gap = "8px";
 
       const chk = document.createElement("input");
       chk.type = "checkbox";
@@ -223,22 +183,19 @@ export function crearCampo(campo) {
       const txt = document.createElement("span");
       txt.textContent = "Personificadores";
 
-      left.appendChild(chk);
-      left.appendChild(txt);
-
       const num = document.createElement("input");
       num.type = "number";
       num.min = 0;
       num.max = 7;
       num.value = 0;
-      num.style.width = "60px";
       num.style.display = "none";
 
       chk.addEventListener("change", () => {
         num.style.display = chk.checked ? "inline-block" : "none";
       });
 
-      row.appendChild(left);
+      row.appendChild(chk);
+      row.appendChild(txt);
       row.appendChild(num);
 
       input.appendChild(row);
@@ -259,20 +216,15 @@ export function crearCampo(campo) {
       const titulo = document.createElement("div");
       titulo.textContent = campo.label;
       titulo.style.fontWeight = "bold";
-      titulo.style.marginBottom = "6px";
 
       const cont = document.createElement("div");
-      cont.style.display = "flex";
-      cont.style.gap = "10px";
+      cont.classList.add("time-range");
 
       const crearHora = (texto, id) => {
         const box = document.createElement("div");
-        box.style.display = "flex";
-        box.style.flexDirection = "column";
 
         const lbl = document.createElement("span");
         lbl.textContent = texto;
-        lbl.style.fontSize = "12px";
 
         const inp = document.createElement("input");
         inp.type = "time";
@@ -284,8 +236,8 @@ export function crearCampo(campo) {
         return box;
       };
 
-      cont.appendChild(crearHora("Hora inicio", campo.id + "_inicio"));
-      cont.appendChild(crearHora("Hora fin", campo.id + "_fin"));
+      cont.appendChild(crearHora("Inicio", campo.id + "_inicio"));
+      cont.appendChild(crearHora("Fin", campo.id + "_fin"));
 
       input.appendChild(titulo);
       input.appendChild(cont);

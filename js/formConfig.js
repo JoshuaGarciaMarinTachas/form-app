@@ -36,7 +36,6 @@ export const formularioData = {
       opciones: ["Administrativo", "Estudiante", "Docente", "Externo"],
     },
 
-    // 🔥 DEPENDENCIAS CORRECTAS
     {
       id: "cargo_admin",
       label: "Cargo administrativo",
@@ -83,7 +82,7 @@ export const formularioData = {
 
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
-    // 🔥 SIEMPRE VISIBLE (controlado en form.js)
+    // 🔥 CONTROLADO POR JS
     {
       id: "fecha_inicio",
       label: "Fecha inicio",
@@ -120,7 +119,7 @@ export const formularioData = {
       opciones: ["Explanada", "Auditorio", "Sala de Consejo"],
     },
 
-    // 🔥 OCULTO SI ES EXPLANADA
+    // 🔥 SOLO SI NO ES EXPLANADA
     {
       id: "montaje",
       label: "Montaje",
@@ -131,14 +130,11 @@ export const formularioData = {
       },
     },
 
+    // 🔥 SIEMPRE VISIBLE
     {
       id: "personas",
       label: "Número aproximado de personas",
       tipo: "number",
-      dependsOn: {
-        campo: "espacio",
-        valores: ["Auditorio", "Sala de Consejo", "Explanada"],
-      },
     },
 
     // 🔹 =========================

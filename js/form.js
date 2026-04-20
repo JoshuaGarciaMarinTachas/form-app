@@ -36,12 +36,27 @@ bloques.forEach((bloque, i) => {
   bloque.appendChild(h3);
 });
 
-// 🔥 CONTENEDOR ESPECIAL PARA BLOQUE 4 (IZQ / DER)
-const contMaterial = document.createElement("div");
-contMaterial.classList.add("col-material");
+// 🔥 =========================
+// 🔥 BLOQUE 4 PRO (GRID REAL)
+// 🔥 =========================
+const requerimientosGrid = document.createElement("div");
+requerimientosGrid.classList.add("requerimientos-grid");
 
-const contHumano = document.createElement("div");
-contHumano.classList.add("col-humano");
+const colMaterial = document.createElement("div");
+colMaterial.classList.add("columna");
+
+const colHumano = document.createElement("div");
+colHumano.classList.add("columna");
+
+// 🔹 títulos de columnas
+const tituloMaterial = document.createElement("h4");
+tituloMaterial.textContent = "Recursos materiales";
+
+const tituloHumano = document.createElement("h4");
+tituloHumano.textContent = "Recursos humanos";
+
+colMaterial.appendChild(tituloMaterial);
+colHumano.appendChild(tituloHumano);
 
 // 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
@@ -88,11 +103,11 @@ formularioData.campos.forEach((campo) => {
     bloques[2].appendChild(el);
   }
 
-  // 🔥 BLOQUE 4 (ORDENADO)
-  else if (campo.id === "materiales" || campo.id === "sonido") {
-    contMaterial.appendChild(el);
-  } else if (campo.id === "personificadores" || campo.id === "humanos") {
-    contHumano.appendChild(el);
+  // 🔥 BLOQUE 4 ORDENADO
+  else if (["materiales", "sonido"].includes(campo.id)) {
+    colMaterial.appendChild(el);
+  } else if (["personificadores", "humanos"].includes(campo.id)) {
+    colHumano.appendChild(el);
   }
 
   // 🔹 BLOQUE 5
@@ -106,11 +121,12 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
-// 🔥 INSERTAR COLUMNAS EN BLOQUE 4
-bloques[3].appendChild(contMaterial);
-bloques[3].appendChild(contHumano);
+// 🔥 insertar columnas dentro del grid
+requerimientosGrid.appendChild(colMaterial);
+requerimientosGrid.appendChild(colHumano);
+bloques[3].appendChild(requerimientosGrid);
 
-// 🔹 AGREGAR BLOQUES AL FORM
+// 🔹 agregar bloques al form
 bloques.forEach((b) => form.appendChild(b));
 
 // 🔹 BOTÓN
@@ -125,7 +141,6 @@ form.appendChild(btn);
 setTimeout(() => {
   const fechaEvento = document.getElementById("fecha_evento");
   const fechaInicio = document.getElementById("fecha_inicio");
-  const fechaFin = document.getElementById("fecha_fin");
   const multiDia = document.getElementById("multi_dia");
 
   if (!fechaEvento || !fechaInicio || !multiDia) return;

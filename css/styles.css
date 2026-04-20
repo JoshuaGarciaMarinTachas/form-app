@@ -6,7 +6,7 @@ body {
   padding: 20px;
 }
 
-/* 🔹 Contenedor principal */
+/* 🔹 Contenedor */
 .container {
   max-width: 950px;
   margin: auto;
@@ -23,7 +23,7 @@ body {
   font-weight: bold;
 }
 
-/* 🔴 FORMULARIO */
+/* 🔴 FORM */
 #formulario {
   display: flex;
   flex-direction: column;
@@ -32,7 +32,7 @@ body {
 
 /* 🔹 BLOQUES */
 .bloque {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-left: 5px solid #3b82f6;
   border-radius: 10px;
@@ -81,7 +81,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: #3b82f6;
-  background: white;
+  background: #fff;
 }
 
 /* 🔹 Placeholder */
@@ -97,7 +97,7 @@ textarea {
   resize: vertical;
 }
 
-/* 🔹 Input montaje */
+/* 🔹 Montaje */
 input[id="montaje"] {
   height: 45px;
 }
@@ -151,28 +151,11 @@ button:hover {
   transform: translateX(24px);
 }
 
-/* 🔥 MULTISELECT LIMPIO */
-.multi-group label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-  cursor: pointer;
-}
+/* 🔥 =========================
+   🔥 REQUERIMIENTOS (CLAVE)
+   🔥 ========================= */
 
-/* 🔥 INPUT NUMÉRICO INLINE */
-input[type="number"] {
-  width: 60px;
-  padding: 4px;
-}
-
-/* 🔥 SUBOPCIONES */
-.sub-opciones {
-  margin-left: 20px;
-  margin-top: 6px;
-}
-
-/* 🔥 GRID REQUERIMIENTOS (CLAVE) */
+/* contenedor general */
 .requerimientos-grid {
   grid-column: span 2;
   display: grid;
@@ -180,14 +163,14 @@ input[type="number"] {
   gap: 30px;
 }
 
-/* 🔹 Columnas */
+/* columnas */
 .columna {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
-/* 🔹 Títulos columnas */
+/* títulos */
 .columna h4 {
   margin: 0;
   font-size: 14px;
@@ -196,7 +179,50 @@ input[type="number"] {
   padding-bottom: 5px;
 }
 
-/* 🔹 Switch group */
+/* 🔹 MULTISELECT ORDENADO */
+.multi-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.multi-group label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* 🔹 CHECKBOX + TEXTO */
+.multi-group label span {
+  flex: 1;
+}
+
+/* 🔹 INPUT NUMÉRICO PEGADO */
+.multi-group input[type="number"] {
+  width: 55px;
+  padding: 4px;
+  margin-left: 10px;
+}
+
+/* 🔹 SUBOPCIONES (sonido, etc.) */
+.sub-opciones {
+  margin-left: 20px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 🔹 PERSONIFICADORES */
+.personificador-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 🔹 SWITCH GROUP */
 .switch-group {
   grid-column: span 2;
   display: flex;
@@ -204,13 +230,13 @@ input[type="number"] {
   gap: 20px;
 }
 
-/* 🔹 Error */
+/* 🔴 ERROR */
 .input-error {
   border: 1px solid #ef4444 !important;
   background: #fff5f5;
 }
 
-/* 🔹 Mensaje error */
+/* 🔴 TEXTO ERROR */
 .error-msg {
   color: #ef4444;
   font-size: 12px;
