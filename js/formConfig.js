@@ -142,7 +142,6 @@ export const formularioData = {
     // 🔹 =========================
     {
       id: "materiales",
-      label: "Recursos materiales",
       tipo: "multiselect",
       opciones: [
         "Laptop",
@@ -167,7 +166,6 @@ export const formularioData = {
 
     {
       id: "humanos",
-      label: "Recursos humanos",
       tipo: "multiselect",
       opciones: [
         "Logística del evento",
