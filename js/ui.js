@@ -23,9 +23,6 @@ export function crearCampo(campo) {
 
   let input;
 
-  // =========================
-  // 🔹 TIPOS DE CAMPOS
-  // =========================
   switch (campo.tipo) {
     case "select": {
       input = document.createElement("select");
@@ -64,9 +61,6 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔥 MULTISELECT
-    // =========================
     case "multiselect": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -98,9 +92,6 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔥 SONIDO
-    // =========================
     case "recurso_sonido": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -121,7 +112,6 @@ export function crearCampo(campo) {
       sub.classList.add("sub-opciones");
       sub.style.display = "none";
 
-      // 🔹 MICRO
       const micro = document.createElement("label");
 
       const chkMicro = document.createElement("input");
@@ -145,7 +135,6 @@ export function crearCampo(campo) {
       micro.appendChild(txtMicro);
       micro.appendChild(numMicro);
 
-      // 🔹 BOCINA
       const bocina = document.createElement("label");
 
       const chkBocina = document.createElement("input");
@@ -176,9 +165,6 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔥 PERSONIFICADORES
-    // =========================
     case "personificadores_custom": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -217,9 +203,7 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔥 MONTAJE DINÁMICO + ORDEN
-    // =========================
+    // 🔥 MONTAJE DINÁMICO (CORREGIDO)
     case "text": {
       input = document.createElement("input");
       input.type = "text";
@@ -238,43 +222,23 @@ export function crearCampo(campo) {
 
         setTimeout(() => {
           const espacio = document.getElementById("espacio");
-          const personas = document.getElementById("personas");
-
-          if (!espacio || !personas) return;
-
-          const personasDiv = personas.parentElement;
+          if (!espacio) return;
 
           const actualizar = () => {
             const val = espacio.value;
 
-            // 🔹 AUDITORIO
             if (val === "Auditorio") {
               input.style.display = "block";
               selectExtra.style.display = "none";
 
               if (label)
                 label.textContent = "Montaje (Número de curules a ocupar)";
-
-              // regresar debajo de personas
-              personasDiv.parentElement.insertBefore(
-                div,
-                personasDiv.nextSibling,
-              );
-            }
-
-            // 🔹 SALA CONSEJO
-            else if (val === "Sala de Consejo") {
+            } else if (val === "Sala de Consejo") {
               input.style.display = "none";
               selectExtra.style.display = "block";
 
               if (label) label.textContent = "Montaje";
-
-              // 🔥 MOVER ARRIBA DE PERSONAS
-              personasDiv.parentElement.insertBefore(div, personasDiv);
-            }
-
-            // 🔹 OTROS
-            else {
+            } else {
               input.style.display = "none";
               selectExtra.style.display = "none";
             }
@@ -285,21 +249,22 @@ export function crearCampo(campo) {
         }, 200);
 
         div.getValores = () => {
-          if (selectExtra.style.display === "block") {
-            return selectExtra.value;
-          }
-          return input.value;
+          return selectExtra.style.display === "block"
+            ? selectExtra.value
+            : input.value;
         };
 
+        // 🔥 ORDEN CORRECTO
+        if (label) div.appendChild(label);
         div.appendChild(selectExtra);
+        div.appendChild(input);
+
+        return div; // 👈 IMPORTANTE
       }
 
       break;
     }
 
-    // =========================
-    // 🔥 HORARIO
-    // =========================
     case "time_range": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -350,43 +315,6 @@ export function crearCampo(campo) {
 
   if (label) div.appendChild(label);
   div.appendChild(input);
-
-  // =========================
-  // 🔥 DEPENDENCIAS
-  // =========================
-  if (campo.dependsOn) {
-    setTimeout(() => {
-      const config = campo.dependsOn;
-      const controladorId = typeof config === "string" ? config : config.campo;
-
-      const controlador = document.getElementById(controladorId);
-      if (!controlador) return;
-
-      const obtenerValor = () => {
-        if (controlador.classList.contains("switch")) {
-          return controlador.dataset.value === "true";
-        }
-        return controlador.value;
-      };
-
-      const actualizar = () => {
-        const valor = obtenerValor();
-        let visible = false;
-
-        if (typeof config === "string") {
-          visible = !!valor;
-        } else {
-          if ("valor" in config) visible = valor == config.valor;
-          if ("valores" in config) visible = config.valores.includes(valor);
-        }
-
-        div.style.display = visible ? "block" : "none";
-      };
-
-      controlador.addEventListener("change", actualizar);
-      actualizar();
-    }, 150);
-  }
 
   return div;
 }
