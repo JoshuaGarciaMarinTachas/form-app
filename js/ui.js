@@ -68,7 +68,7 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 MULTISELECT LIMPIO
+    // 🔥 MULTISELECT
     // =========================
     case "multiselect": {
       input = document.createElement("div");
@@ -109,7 +109,6 @@ export function crearCampo(campo) {
       input.id = campo.id;
       input.classList.add("multi-group");
 
-      // principal
       const main = document.createElement("label");
 
       const chkSonido = document.createElement("input");
@@ -121,7 +120,6 @@ export function crearCampo(campo) {
       main.appendChild(chkSonido);
       main.appendChild(title);
 
-      // subopciones
       const sub = document.createElement("div");
       sub.classList.add("sub-opciones");
       sub.style.display = "none";
@@ -162,7 +160,6 @@ export function crearCampo(campo) {
       bocina.appendChild(chkBocina);
       bocina.appendChild(txtBocina);
 
-      // toggle
       chkSonido.addEventListener("change", () => {
         sub.style.display = chkSonido.checked ? "flex" : "none";
       });
@@ -224,6 +221,66 @@ export function crearCampo(campo) {
     }
 
     // =========================
+    // 🔥 MONTAJE DINÁMICO
+    // =========================
+    case "text": {
+      input = document.createElement("input");
+      input.type = "text";
+      input.id = campo.id;
+
+      if (campo.id === "montaje") {
+        const selectExtra = document.createElement("select");
+        selectExtra.style.display = "none";
+
+        ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
+          const option = document.createElement("option");
+          option.value = op;
+          option.textContent = op;
+          selectExtra.appendChild(option);
+        });
+
+        setTimeout(() => {
+          const espacio = document.getElementById("espacio");
+          if (!espacio) return;
+
+          const actualizar = () => {
+            const val = espacio.value;
+
+            if (val === "Auditorio") {
+              input.style.display = "block";
+              selectExtra.style.display = "none";
+
+              if (label)
+                label.textContent = "Montaje (Número de curules a ocupar)";
+            } else if (val === "Sala de Consejo") {
+              input.style.display = "none";
+              selectExtra.style.display = "block";
+
+              if (label) label.textContent = "Montaje";
+            } else {
+              input.style.display = "none";
+              selectExtra.style.display = "none";
+            }
+          };
+
+          espacio.addEventListener("change", actualizar);
+          actualizar();
+        }, 200);
+
+        div.getValores = () => {
+          if (selectExtra.style.display === "block") {
+            return selectExtra.value;
+          }
+          return input.value;
+        };
+
+        div.appendChild(selectExtra);
+      }
+
+      break;
+    }
+
+    // =========================
     // 🔥 HORARIO
     // =========================
     case "time_range": {
@@ -267,7 +324,6 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔹 DEFAULT
     default: {
       input = document.createElement("input");
       input.type = campo.tipo;
@@ -275,7 +331,6 @@ export function crearCampo(campo) {
     }
   }
 
-  // 🔹 ensamblar
   if (label) div.appendChild(label);
   div.appendChild(input);
 
