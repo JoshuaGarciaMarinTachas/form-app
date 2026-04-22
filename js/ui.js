@@ -27,7 +27,6 @@ export function crearCampo(campo) {
   // 🔹 TIPOS DE CAMPOS
   // =========================
   switch (campo.tipo) {
-    // 🔹 SELECT
     case "select": {
       input = document.createElement("select");
       input.id = campo.id;
@@ -41,14 +40,12 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔹 TEXTAREA
     case "textarea": {
       input = document.createElement("textarea");
       input.id = campo.id;
       break;
     }
 
-    // 🔹 SWITCH
     case "switch": {
       input = document.createElement("div");
       input.classList.add("switch");
@@ -221,88 +218,84 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 MONTAJE DINÁMICO
+    // 🔥 MONTAJE DINÁMICO + ORDEN
     // =========================
-    case "text":
-      {
-        input = document.createElement("input");
-        input.type = "text";
-        input.id = campo.id;
+    case "text": {
+      input = document.createElement("input");
+      input.type = "text";
+      input.id = campo.id;
 
-        if (campo.id === "montaje") {
-          const selectExtra = document.createElement("select");
-          selectExtra.style.display = "none";
+      if (campo.id === "montaje") {
+        const selectExtra = document.createElement("select");
+        selectExtra.style.display = "none";
 
-          ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
-            const option = document.createElement("option");
-            option.value = op;
-            option.textContent = op;
-            selectExtra.appendChild(option);
-          });
+        ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
+          const option = document.createElement("option");
+          option.value = op;
+          option.textContent = op;
+          selectExtra.appendChild(option);
+        });
 
-          setTimeout(() => {
-            const espacio = document.getElementById("espacio");
-            if (!espacio) return;
+        setTimeout(() => {
+          const espacio = document.getElementById("espacio");
+          const personas = document.getElementById("personas");
 
-            const actualizar = () => {
-              const val = espacio.value;
+          if (!espacio || !personas) return;
 
-              if (val === "Auditorio") {
-                input.style.display = "block";
-                selectExtra.style.display = "none";
+          const personasDiv = personas.parentElement;
 
-                if (label)
-                  label.textContent = "Montaje (Número de curules a ocupar)";
-              } else if (val === "Sala de Consejo") {
-                input.style.display = "none";
-                selectExtra.style.display = "block";
+          const actualizar = () => {
+            const val = espacio.value;
 
-                if (label) label.textContent = "Montaje";
-              } else {
-                input.style.display = "none";
-                selectExtra.style.display = "none";
-              }
-            };
+            // 🔹 AUDITORIO
+            if (val === "Auditorio") {
+              input.style.display = "block";
+              selectExtra.style.display = "none";
 
-            espacio.addEventListener("change", actualizar);
-            actualizar();
-          }, 200);
+              if (label)
+                label.textContent = "Montaje (Número de curules a ocupar)";
 
-          div.getValores = () => {
-            if (selectExtra.style.display === "block") {
-              return selectExtra.value;
+              // regresar debajo de personas
+              personasDiv.parentElement.insertBefore(
+                div,
+                personasDiv.nextSibling,
+              );
             }
-            return input.value;
+
+            // 🔹 SALA CONSEJO
+            else if (val === "Sala de Consejo") {
+              input.style.display = "none";
+              selectExtra.style.display = "block";
+
+              if (label) label.textContent = "Montaje";
+
+              // 🔥 MOVER ARRIBA DE PERSONAS
+              personasDiv.parentElement.insertBefore(div, personasDiv);
+            }
+
+            // 🔹 OTROS
+            else {
+              input.style.display = "none";
+              selectExtra.style.display = "none";
+            }
           };
 
-          div.appendChild(selectExtra);
-        }
+          espacio.addEventListener("change", actualizar);
+          actualizar();
+        }, 200);
 
-        break;
-      }
-
-      // 🔥 AJUSTE ESPECIAL PARA MONTAJE DINÁMICO
-      if (campo.id === "montaje") {
-        controlador.addEventListener("change", () => {
-          const valor = controlador.value;
-
-          const personasDiv =
-            document.getElementById("personas")?.parentElement;
-
-          if (!personasDiv) return;
-
-          if (valor === "Sala de Consejo") {
-            // mover montaje arriba de personas
-            personasDiv.parentElement.insertBefore(div, personasDiv);
-          } else {
-            // devolver a posición normal (después)
-            personasDiv.parentElement.insertBefore(
-              div,
-              personasDiv.nextSibling,
-            );
+        div.getValores = () => {
+          if (selectExtra.style.display === "block") {
+            return selectExtra.value;
           }
-        });
+          return input.value;
+        };
+
+        div.appendChild(selectExtra);
       }
+
+      break;
+    }
 
     // =========================
     // 🔥 HORARIO
