@@ -24,6 +24,9 @@ export function crearCampo(campo) {
   let input;
 
   switch (campo.tipo) {
+    // =========================
+    // 🔹 SELECT
+    // =========================
     case "select": {
       input = document.createElement("select");
       input.id = campo.id;
@@ -37,12 +40,18 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
+    // 🔹 TEXTAREA
+    // =========================
     case "textarea": {
       input = document.createElement("textarea");
       input.id = campo.id;
       break;
     }
 
+    // =========================
+    // 🔹 SWITCH
+    // =========================
     case "switch": {
       input = document.createElement("div");
       input.classList.add("switch");
@@ -61,6 +70,9 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
+    // 🔥 MULTISELECT
+    // =========================
     case "multiselect": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -92,6 +104,9 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
+    // 🔥 SONIDO
+    // =========================
     case "recurso_sonido": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -165,6 +180,9 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
+    // 🔥 PERSONIFICADORES
+    // =========================
     case "personificadores_custom": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -203,7 +221,9 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔥 MONTAJE DINÁMICO (CORREGIDO)
+    // =========================
+    // 🔥 MONTAJE DINÁMICO PRO
+    // =========================
     case "text": {
       input = document.createElement("input");
       input.type = "text";
@@ -227,20 +247,28 @@ export function crearCampo(campo) {
           const actualizar = () => {
             const val = espacio.value;
 
+            // 🔴 EXPLANADA
+            if (val === "Explanada") {
+              div.style.display = "none";
+              return;
+            }
+
+            // 🔹 mostrar bloque
+            div.style.display = "block";
+
             if (val === "Auditorio") {
               input.style.display = "block";
               selectExtra.style.display = "none";
 
               if (label)
                 label.textContent = "Montaje (Número de curules a ocupar)";
-            } else if (val === "Sala de Consejo") {
+            }
+
+            if (val === "Sala de Consejo") {
               input.style.display = "none";
               selectExtra.style.display = "block";
 
               if (label) label.textContent = "Montaje";
-            } else {
-              input.style.display = "none";
-              selectExtra.style.display = "none";
             }
           };
 
@@ -254,17 +282,19 @@ export function crearCampo(campo) {
             : input.value;
         };
 
-        // 🔥 ORDEN CORRECTO
         if (label) div.appendChild(label);
         div.appendChild(selectExtra);
         div.appendChild(input);
 
-        return div; // 👈 IMPORTANTE
+        return div;
       }
 
       break;
     }
 
+    // =========================
+    // 🔥 HORARIO
+    // =========================
     case "time_range": {
       input = document.createElement("div");
       input.id = campo.id;
@@ -306,6 +336,9 @@ export function crearCampo(campo) {
       break;
     }
 
+    // =========================
+    // 🔹 DEFAULT
+    // =========================
     default: {
       input = document.createElement("input");
       input.type = campo.tipo;
