@@ -169,7 +169,7 @@ export const formularioData = {
       tipo: "multiselect",
       opciones: [
         "Logística del evento",
-        "Pase de lista",
+        "Lista de asistencia",
         "Fotografía",
         "Maestro de ceremonias",
       ],
