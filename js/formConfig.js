@@ -42,7 +42,7 @@ export const formularioData = {
       tipo: "text",
       dependsOn: {
         campo: "cargo_responsable",
-        valores: ["Administrativo", "Docente"],
+        valores: ["Administrativo"],
       },
     },
 
@@ -52,7 +52,7 @@ export const formularioData = {
       tipo: "text",
       dependsOn: {
         campo: "cargo_responsable",
-        valor: "Estudiante",
+        valores: ["Estudiante", "Docente"],
       },
     },
 

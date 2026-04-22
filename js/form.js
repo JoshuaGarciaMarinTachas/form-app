@@ -26,7 +26,7 @@ const titulos = [
   "Detalles del evento",
   "Logística del evento",
   "Requerimientos del evento",
-  "Descripción",
+  "Descripción del evento",
   "Observaciones",
 ];
 
