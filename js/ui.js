@@ -223,62 +223,86 @@ export function crearCampo(campo) {
     // =========================
     // 🔥 MONTAJE DINÁMICO
     // =========================
-    case "text": {
-      input = document.createElement("input");
-      input.type = "text";
-      input.id = campo.id;
+    case "text":
+      {
+        input = document.createElement("input");
+        input.type = "text";
+        input.id = campo.id;
 
-      if (campo.id === "montaje") {
-        const selectExtra = document.createElement("select");
-        selectExtra.style.display = "none";
+        if (campo.id === "montaje") {
+          const selectExtra = document.createElement("select");
+          selectExtra.style.display = "none";
 
-        ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
-          const option = document.createElement("option");
-          option.value = op;
-          option.textContent = op;
-          selectExtra.appendChild(option);
-        });
+          ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
+            const option = document.createElement("option");
+            option.value = op;
+            option.textContent = op;
+            selectExtra.appendChild(option);
+          });
 
-        setTimeout(() => {
-          const espacio = document.getElementById("espacio");
-          if (!espacio) return;
+          setTimeout(() => {
+            const espacio = document.getElementById("espacio");
+            if (!espacio) return;
 
-          const actualizar = () => {
-            const val = espacio.value;
+            const actualizar = () => {
+              const val = espacio.value;
 
-            if (val === "Auditorio") {
-              input.style.display = "block";
-              selectExtra.style.display = "none";
+              if (val === "Auditorio") {
+                input.style.display = "block";
+                selectExtra.style.display = "none";
 
-              if (label)
-                label.textContent = "Montaje (Número de curules a ocupar)";
-            } else if (val === "Sala de Consejo") {
-              input.style.display = "none";
-              selectExtra.style.display = "block";
+                if (label)
+                  label.textContent = "Montaje (Número de curules a ocupar)";
+              } else if (val === "Sala de Consejo") {
+                input.style.display = "none";
+                selectExtra.style.display = "block";
 
-              if (label) label.textContent = "Montaje";
-            } else {
-              input.style.display = "none";
-              selectExtra.style.display = "none";
+                if (label) label.textContent = "Montaje";
+              } else {
+                input.style.display = "none";
+                selectExtra.style.display = "none";
+              }
+            };
+
+            espacio.addEventListener("change", actualizar);
+            actualizar();
+          }, 200);
+
+          div.getValores = () => {
+            if (selectExtra.style.display === "block") {
+              return selectExtra.value;
             }
+            return input.value;
           };
 
-          espacio.addEventListener("change", actualizar);
-          actualizar();
-        }, 200);
+          div.appendChild(selectExtra);
+        }
 
-        div.getValores = () => {
-          if (selectExtra.style.display === "block") {
-            return selectExtra.value;
-          }
-          return input.value;
-        };
-
-        div.appendChild(selectExtra);
+        break;
       }
 
-      break;
-    }
+      // 🔥 AJUSTE ESPECIAL PARA MONTAJE DINÁMICO
+      if (campo.id === "montaje") {
+        controlador.addEventListener("change", () => {
+          const valor = controlador.value;
+
+          const personasDiv =
+            document.getElementById("personas")?.parentElement;
+
+          if (!personasDiv) return;
+
+          if (valor === "Sala de Consejo") {
+            // mover montaje arriba de personas
+            personasDiv.parentElement.insertBefore(div, personasDiv);
+          } else {
+            // devolver a posición normal (después)
+            personasDiv.parentElement.insertBefore(
+              div,
+              personasDiv.nextSibling,
+            );
+          }
+        });
+      }
 
     // =========================
     // 🔥 HORARIO
