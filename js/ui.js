@@ -23,10 +23,10 @@ export function crearCampo(campo) {
 
   let input;
 
+  // =========================
+  // 🔹 TIPOS
+  // =========================
   switch (campo.tipo) {
-    // =========================
-    // 🔹 SELECT
-    // =========================
     case "select": {
       input = document.createElement("select");
       input.id = campo.id;
@@ -40,23 +40,16 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔹 TEXTAREA
-    // =========================
     case "textarea": {
       input = document.createElement("textarea");
       input.id = campo.id;
       break;
     }
 
-    // =========================
-    // 🔹 SWITCH
-    // =========================
     case "switch": {
       input = document.createElement("div");
       input.classList.add("switch");
       input.id = campo.id;
-
       input.dataset.value = "false";
 
       input.addEventListener("click", () => {
@@ -64,7 +57,6 @@ export function crearCampo(campo) {
         input.dataset.value = input.classList.contains("active")
           ? "true"
           : "false";
-
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       break;
@@ -84,15 +76,12 @@ export function crearCampo(campo) {
         const chk = document.createElement("input");
         chk.type = "checkbox";
         chk.value = op;
-        chk.name = campo.id;
-        chk.id = `${campo.id}_${i}`;
 
         const span = document.createElement("span");
         span.textContent = op;
 
         row.appendChild(chk);
         row.appendChild(span);
-
         input.appendChild(row);
       });
 
@@ -105,87 +94,10 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 SONIDO
-    // =========================
-    case "recurso_sonido": {
-      input = document.createElement("div");
-      input.id = campo.id;
-      input.classList.add("multi-group");
-
-      const main = document.createElement("label");
-
-      const chkSonido = document.createElement("input");
-      chkSonido.type = "checkbox";
-
-      const title = document.createElement("span");
-      title.textContent = "Sonido";
-
-      main.appendChild(chkSonido);
-      main.appendChild(title);
-
-      const sub = document.createElement("div");
-      sub.classList.add("sub-opciones");
-      sub.style.display = "none";
-
-      const micro = document.createElement("label");
-
-      const chkMicro = document.createElement("input");
-      chkMicro.type = "checkbox";
-
-      const txtMicro = document.createElement("span");
-      txtMicro.textContent = "Micrófonos";
-
-      const numMicro = document.createElement("input");
-      numMicro.type = "number";
-      numMicro.min = 0;
-      numMicro.max = 2;
-      numMicro.value = 0;
-      numMicro.style.display = "none";
-
-      chkMicro.addEventListener("change", () => {
-        numMicro.style.display = chkMicro.checked ? "inline-block" : "none";
-      });
-
-      micro.appendChild(chkMicro);
-      micro.appendChild(txtMicro);
-      micro.appendChild(numMicro);
-
-      const bocina = document.createElement("label");
-
-      const chkBocina = document.createElement("input");
-      chkBocina.type = "checkbox";
-
-      const txtBocina = document.createElement("span");
-      txtBocina.textContent = "Bocina";
-
-      bocina.appendChild(chkBocina);
-      bocina.appendChild(txtBocina);
-
-      chkSonido.addEventListener("change", () => {
-        sub.style.display = chkSonido.checked ? "flex" : "none";
-      });
-
-      sub.appendChild(micro);
-      sub.appendChild(bocina);
-
-      input.appendChild(main);
-      input.appendChild(sub);
-
-      input.getValores = () => ({
-        activo: chkSonido.checked,
-        microfonos: chkMicro.checked ? parseInt(numMicro.value) || 0 : 0,
-        bocina: chkBocina.checked,
-      });
-
-      break;
-    }
-
-    // =========================
     // 🔥 PERSONIFICADORES
     // =========================
     case "personificadores_custom": {
       input = document.createElement("div");
-      input.id = campo.id;
       input.classList.add("multi-group");
 
       const row = document.createElement("label");
@@ -222,7 +134,7 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 MONTAJE DINÁMICO PRO
+    // 🔥 MONTAJE DINÁMICO
     // =========================
     case "text": {
       input = document.createElement("input");
@@ -247,16 +159,9 @@ export function crearCampo(campo) {
           const actualizar = () => {
             const val = espacio.value;
 
-            // 🔴 EXPLANADA
-            if (val === "Explanada") {
-              div.style.display = "none";
-              return;
-            }
-
-            // 🔹 mostrar bloque
-            div.style.display = "block";
-
+            // 🔹 AUDITORIO
             if (val === "Auditorio") {
+              div.style.display = "block";
               input.style.display = "block";
               selectExtra.style.display = "none";
 
@@ -264,11 +169,20 @@ export function crearCampo(campo) {
                 label.textContent = "Montaje (Número de curules a ocupar)";
             }
 
-            if (val === "Sala de Consejo") {
+            // 🔹 SALA CONSEJO
+            else if (val === "Sala de Consejo") {
+              div.style.display = "block";
               input.style.display = "none";
               selectExtra.style.display = "block";
 
               if (label) label.textContent = "Montaje";
+            }
+
+            // 🔹 EXPLANADA (OCULTAR TODO)
+            else if (val === "Explanada") {
+              div.style.display = "none";
+            } else {
+              div.style.display = "none";
             }
           };
 
@@ -276,11 +190,10 @@ export function crearCampo(campo) {
           actualizar();
         }, 200);
 
-        div.getValores = () => {
-          return selectExtra.style.display === "block"
+        div.getValores = () =>
+          selectExtra.style.display === "block"
             ? selectExtra.value
             : input.value;
-        };
 
         if (label) div.appendChild(label);
         div.appendChild(selectExtra);
@@ -297,7 +210,6 @@ export function crearCampo(campo) {
     // =========================
     case "time_range": {
       input = document.createElement("div");
-      input.id = campo.id;
 
       const titulo = document.createElement("div");
       titulo.textContent = campo.label;
@@ -318,7 +230,6 @@ export function crearCampo(campo) {
 
         box.appendChild(lbl);
         box.appendChild(inp);
-
         return box;
       };
 
@@ -336,9 +247,6 @@ export function crearCampo(campo) {
       break;
     }
 
-    // =========================
-    // 🔹 DEFAULT
-    // =========================
     default: {
       input = document.createElement("input");
       input.type = campo.tipo;
@@ -348,6 +256,32 @@ export function crearCampo(campo) {
 
   if (label) div.appendChild(label);
   div.appendChild(input);
+
+  // =========================
+  // 🔥 VALIDACIÓN TIPO USUARIO
+  // =========================
+  if (campo.id === "cargo_admin" || campo.id === "unidad") {
+    setTimeout(() => {
+      const tipo = document.getElementById("acudio_dep"); // 👈 ajusta si tu id es otro
+      if (!tipo) return;
+
+      const actualizar = () => {
+        const val = tipo.value;
+
+        if (campo.id === "cargo_admin") {
+          div.style.display = val === "Administrativo" ? "block" : "none";
+        }
+
+        if (campo.id === "unidad") {
+          div.style.display =
+            val === "Docente" || val === "Estudiante" ? "block" : "none";
+        }
+      };
+
+      tipo.addEventListener("change", actualizar);
+      actualizar();
+    }, 200);
+  }
 
   return div;
 }
