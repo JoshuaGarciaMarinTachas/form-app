@@ -221,6 +221,7 @@ form.addEventListener("submit", async (e) => {
     data[campo.id] = el.value?.trim() || null;
   });
 
+  // 🔥 INSERTAR SWITCHES LOGÍSTICA (AQUÍ ES DONDE VA)
   bloques[2].insertBefore(
     switchesContainerLogistica,
     bloques[2].children[1] || null,
