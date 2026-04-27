@@ -388,7 +388,7 @@ button:hover {
   position: absolute;
   width: 50%;
   height: 100%;
-  background: #dcd9d9; /* 🔥 blanco sólido */
+  background: #efefef; /* 🔥 blanco sólido */
   border-radius: 25px;
   left: 0;
   transition: transform 0.35s ease;
