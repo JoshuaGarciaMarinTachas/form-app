@@ -161,6 +161,28 @@ export function crearCampo(campo) {
       input.appendChild(main);
       input.appendChild(sub);
 
+      // 🔥 MOVER "SONIDO" DEBAJO DE "LAPTOP"
+      setTimeout(() => {
+        const materiales = document.getElementById("materiales");
+        if (!materiales) return;
+
+        const rows = materiales.querySelectorAll("label");
+
+        let laptopRow = null;
+
+        rows.forEach((r) => {
+          const texto = r.querySelector("span")?.textContent;
+          if (texto === "Laptop") {
+            laptopRow = r;
+          }
+        });
+
+        if (laptopRow) {
+          // Insertar después de Laptop
+          laptopRow.insertAdjacentElement("afterend", input);
+        }
+      }, 200);
+
       input.getValores = () => ({
         activo: chkSonido.checked,
         microfonos: chkMicro.checked ? parseInt(numMicro.value) || 0 : 0,
