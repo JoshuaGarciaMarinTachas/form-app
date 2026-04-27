@@ -56,9 +56,9 @@ formularioData.campos.forEach((campo) => {
   // 🔹 BLOQUE 1
   if (
     [
+      "acudio_dep",
       "correo",
       "responsable",
-      "acudio_dep",
       "nombre_evento",
       "cargo_responsable",
       "cargo_admin",
