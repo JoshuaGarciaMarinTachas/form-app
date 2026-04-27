@@ -133,6 +133,12 @@ formularioData.campos.forEach((campo) => {
 // 🔥 INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
+// 🔥 INSERTAR SWITCHES LOGÍSTICA (AQUÍ SÍ VA)
+bloques[2].insertBefore(
+  switchesContainerLogistica,
+  bloques[2].children[1] || null,
+);
+
 // 🔥 INSERTAR GRID
 requerimientosGrid.appendChild(colMaterial);
 requerimientosGrid.appendChild(colHumano);
@@ -220,12 +226,6 @@ form.addEventListener("submit", async (e) => {
 
     data[campo.id] = el.value?.trim() || null;
   });
-
-  // 🔥 INSERTAR SWITCHES LOGÍSTICA (AQUÍ ES DONDE VA)
-  bloques[2].insertBefore(
-    switchesContainerLogistica,
-    bloques[2].children[1] || null,
-  );
 
   // 🔴 VALIDACIÓN VISUAL
   const errores = document.querySelectorAll(".input-error");
