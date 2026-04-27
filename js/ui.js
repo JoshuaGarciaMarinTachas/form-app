@@ -221,6 +221,27 @@ export function crearCampo(campo) {
 
       input.appendChild(row);
 
+      // 🔥 MOVER "PERSONIFICADORES" DEBAJO DE "MAMPARAS"
+      setTimeout(() => {
+        const materiales = document.getElementById("materiales");
+        if (!materiales) return;
+
+        const rows = materiales.querySelectorAll("label");
+
+        let mamparasRow = null;
+
+        rows.forEach((r) => {
+          const texto = r.querySelector("span")?.textContent;
+          if (texto === "Mamparas") {
+            mamparasRow = r;
+          }
+        });
+
+        if (mamparasRow) {
+          mamparasRow.insertAdjacentElement("afterend", input);
+        }
+      }, 200);
+
       input.getValores = () => ({
         activo: chk.checked,
         cantidad: chk.checked ? parseInt(num.value) || 0 : 0,
