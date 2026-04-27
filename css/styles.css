@@ -382,6 +382,10 @@ button:hover {
   opacity: 1; /* SI */
 }
 
+.full {
+  grid-column: 1 / -1;
+}
+
 /* 🔹 INDICADOR DESLIZANTE */
 .toggle-btn::after {
   content: "";
