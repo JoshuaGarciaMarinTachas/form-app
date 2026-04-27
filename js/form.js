@@ -56,9 +56,9 @@ formularioData.campos.forEach((campo) => {
   // 🔹 BLOQUE 1
   if (
     [
-      "acudio_dep",
       "correo",
       "responsable",
+      "acudio_dep",
       "nombre_evento",
       "cargo_responsable",
       "cargo_admin",
@@ -66,7 +66,12 @@ formularioData.campos.forEach((campo) => {
       "telefono",
     ].includes(campo.id)
   ) {
-    bloques[0].appendChild(el);
+    // 🔥 SI ES EL SWITCH → VA ARRIBA DE TODO
+    if (campo.id === "acudio_dep") {
+      bloques[0].insertBefore(el, bloques[0].children[1] || null);
+    } else {
+      bloques[0].appendChild(el);
+    }
   }
 
   // 🔹 BLOQUE 2
