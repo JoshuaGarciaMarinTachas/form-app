@@ -44,19 +44,29 @@ export function crearCampo(campo) {
     }
 
     case "switch": {
-      input = document.createElement("div");
-      input.classList.add("switch");
+      input = document.createElement("input");
+      input.type = "checkbox";
       input.id = campo.id;
-      input.dataset.value = "false";
+      input.classList.add("toggle-input");
 
-      input.addEventListener("click", () => {
-        input.classList.toggle("active");
-        input.dataset.value = input.classList.contains("active")
-          ? "true"
-          : "false";
+      const toggleLabel = document.createElement("label");
+      toggleLabel.setAttribute("for", campo.id);
+      toggleLabel.classList.add("toggle-btn");
 
-        input.dispatchEvent(new Event("change", { bubbles: true }));
-      });
+      const spanSi = document.createElement("span");
+      spanSi.textContent = "Sí";
+
+      const spanNo = document.createElement("span");
+      spanNo.textContent = "No";
+
+      toggleLabel.appendChild(spanSi);
+      toggleLabel.appendChild(spanNo);
+
+      // 🔥 IMPORTANTE: meter label visual al contenedor
+      setTimeout(() => {
+        if (div) div.appendChild(toggleLabel);
+      }, 0);
+
       break;
     }
 
@@ -354,8 +364,8 @@ export function crearCampo(campo) {
       if (!controlador) return;
 
       const obtenerValor = () => {
-        if (controlador.classList.contains("switch")) {
-          return controlador.dataset.value === "true";
+        if (controlador.type === "checkbox") {
+          return controlador.checked;
         }
         return controlador.value;
       };

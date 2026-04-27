@@ -146,7 +146,7 @@ setTimeout(() => {
   };
 
   const toggleMultiDia = () => {
-    const activo = multiDia.dataset.value === "true";
+    const activo = multiDia.checked;
 
     if (activo) {
       fechaInicio.disabled = false;
@@ -192,8 +192,8 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    if (el.classList.contains("switch")) {
-      data[campo.id] = el.dataset.value === "true";
+    if (el.type === "checkbox") {
+      data[campo.id] = el.checked;
       return;
     }
 

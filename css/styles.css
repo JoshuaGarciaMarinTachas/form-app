@@ -318,3 +318,46 @@ button:hover {
   border-bottom: 1px solid #ddd;
   padding-bottom: 5px;
 }
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-btn {
+  position: relative;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  background: #e74c3c;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.toggle-btn span {
+  flex: 1;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  z-index: 2;
+}
+
+.toggle-btn::before {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  transition: 0.3s;
+  left: 0;
+}
+
+.toggle-input:checked + .toggle-btn {
+  background: #2ecc71;
+}
+
+.toggle-input:checked + .toggle-btn::before {
+  left: 50%;
+}
