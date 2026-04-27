@@ -348,24 +348,55 @@ button:hover {
 }
 
 .toggle-btn {
+  position: relative;
   display: flex;
-  width: 100px;
-  height: 40px;
+  width: 110px;
+  height: 42px;
   background: #e74c3c; /* 🔴 NO */
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
   overflow: hidden;
   font-weight: bold;
-  transition: 0.3s;
+  transition: background 0.35s ease;
 }
 
+/* TEXTO */
 .toggle-btn span {
   flex: 1;
   text-align: center;
-  line-height: 40px;
+  line-height: 42px;
   color: white;
+  z-index: 2;
+  transition: 0.3s;
+  opacity: 0.5;
 }
 
+/* TEXTO ACTIVO */
+.toggle-input:not(:checked) + .toggle-btn span:last-child {
+  opacity: 1; /* NO */
+}
+
+.toggle-input:checked + .toggle-btn span:first-child {
+  opacity: 1; /* SI */
+}
+
+/* 🔥 INDICADOR DESLIZANTE (LA CLAVE) */
+.toggle-btn::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 25px;
+  left: 0;
+  transition: transform 0.35s ease;
+}
+
+/* 🟢 CUANDO ES SI */
 .toggle-input:checked + .toggle-btn {
   background: #2ecc71;
+}
+
+.toggle-input:checked + .toggle-btn::after {
+  transform: translateX(100%);
 }
