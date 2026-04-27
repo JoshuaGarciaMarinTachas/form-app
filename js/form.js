@@ -51,6 +51,8 @@ colHumano.classList.add("columna");
 // 🔥 CONTENEDOR CORRECTO (AQUÍ VA)
 const switchesContainer = document.createElement("div");
 switchesContainer.classList.add("switches-row");
+const switchesContainerLogistica = document.createElement("div");
+switchesContainerLogistica.classList.add("switches-row");
 
 // 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
@@ -103,7 +105,11 @@ formularioData.campos.forEach((campo) => {
       campo.id,
     )
   ) {
-    bloques[2].appendChild(el);
+    if (campo.id === "externos" || campo.id === "discapacidad") {
+      switchesContainerLogistica.appendChild(el);
+    } else {
+      bloques[2].appendChild(el);
+    }
   }
 
   // 🔥 BLOQUE 4 CORRECTO
@@ -214,6 +220,11 @@ form.addEventListener("submit", async (e) => {
 
     data[campo.id] = el.value?.trim() || null;
   });
+
+  bloques[2].insertBefore(
+    switchesContainerLogistica,
+    bloques[2].children[1] || null,
+  );
 
   // 🔴 VALIDACIÓN VISUAL
   const errores = document.querySelectorAll(".input-error");
