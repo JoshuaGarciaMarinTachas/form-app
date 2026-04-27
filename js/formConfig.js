@@ -11,6 +11,8 @@ export const formularioData = {
     // 🔹 =========================
     // 🔹 BLOQUE 1
     // 🔹 =========================
+    { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
+
     { id: "correo", label: "Correo", tipo: "email", required: true },
 
     {
@@ -19,8 +21,6 @@ export const formularioData = {
       tipo: "text",
       required: true,
     },
-
-    { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
 
     {
       id: "nombre_evento",
