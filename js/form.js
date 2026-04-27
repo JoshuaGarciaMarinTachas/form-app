@@ -48,6 +48,10 @@ colMaterial.classList.add("columna");
 const colHumano = document.createElement("div");
 colHumano.classList.add("columna");
 
+// 🔥 CONTENEDOR CORRECTO (AQUÍ VA)
+const switchesContainer = document.createElement("div");
+switchesContainer.classList.add("switches-row");
+
 // 🔹 CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
@@ -75,32 +79,23 @@ formularioData.campos.forEach((campo) => {
   }
 
   // 🔹 BLOQUE 2
-// 🔥 CONTENEDOR PARA SWITCHES
-let switchesContainer = document.createElement("div");
-switchesContainer.classList.add("switches-row");
-
-else if (
-  [
-    "consejo",
-    "fecha_aprobacion",
-    "fecha_evento",
-    "multi_dia",
-    "fecha_inicio",
-    "fecha_fin",
-    "horario",
-  ].includes(campo.id)
-) {
-  if (campo.id === "consejo" || campo.id === "multi_dia") {
-    switchesContainer.appendChild(el);
-
-    // 🔥 insertar contenedor solo una vez
-    if (!bloques[1].contains(switchesContainer)) {
-      bloques[1].appendChild(switchesContainer);
+  else if (
+    [
+      "consejo",
+      "fecha_aprobacion",
+      "fecha_evento",
+      "multi_dia",
+      "fecha_inicio",
+      "fecha_fin",
+      "horario",
+    ].includes(campo.id)
+  ) {
+    if (campo.id === "consejo" || campo.id === "multi_dia") {
+      switchesContainer.appendChild(el);
+    } else {
+      bloques[1].appendChild(el);
     }
-  } else {
-    bloques[1].appendChild(el);
   }
-}
 
   // 🔹 BLOQUE 3
   else if (
@@ -113,7 +108,6 @@ else if (
 
   // 🔥 BLOQUE 4 CORRECTO
   else if (["materiales", "sonido", "personificadores"].includes(campo.id)) {
-    // 👈 PERSONIFICADORES AHORA ES MATERIAL
     colMaterial.appendChild(el);
   } else if (["humanos"].includes(campo.id)) {
     colHumano.appendChild(el);
@@ -129,6 +123,9 @@ else if (
     bloques[5].appendChild(el);
   }
 });
+
+// 🔥 INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
+bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
 // 🔥 INSERTAR GRID
 requerimientosGrid.appendChild(colMaterial);
