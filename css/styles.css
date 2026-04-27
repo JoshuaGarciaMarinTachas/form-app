@@ -343,21 +343,29 @@ button:hover {
   z-index: 2;
 }
 
-.toggle-btn::before {
-  content: "";
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
+.toggle-input {
+  display: none;
+}
+
+.toggle-btn {
+  display: flex;
+  width: 100px;
+  height: 40px;
+  background: #e74c3c; /* 🔴 NO */
   border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  font-weight: bold;
   transition: 0.3s;
-  left: 0;
+}
+
+.toggle-btn span {
+  flex: 1;
+  text-align: center;
+  line-height: 40px;
+  color: white;
 }
 
 .toggle-input:checked + .toggle-btn {
   background: #2ecc71;
-}
-
-.toggle-input:checked + .toggle-btn::before {
-  left: 50%;
 }
