@@ -6,10 +6,6 @@ export function crearCampo(campo) {
   const div = document.createElement("div");
   div.classList.add("form-group");
 
-  if (campo.id === "acudio_dep") {
-    div.classList.add("full"); // ocupa toda la fila
-  }
-
   if (
     campo.tipo === "textarea" ||
     campo.id === "descripcion" ||
