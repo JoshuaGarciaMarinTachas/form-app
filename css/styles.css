@@ -343,24 +343,26 @@ button:hover {
   z-index: 2;
 }
 
+/* 🔹 OCULTAR CHECKBOX */
 .toggle-input {
   display: none;
 }
 
+/* 🔹 CONTENEDOR PRINCIPAL */
 .toggle-btn {
   position: relative;
   display: flex;
   width: 110px;
   height: 42px;
-  background: #e74c3c; /* 🔴 NO */
+  background: #ef9a9a; /* 🔴 NO (suave) */
   border-radius: 25px;
   cursor: pointer;
   overflow: hidden;
-  font-weight: bold;
+  font-weight: 600;
   transition: background 0.35s ease;
 }
 
-/* TEXTO */
+/* 🔹 TEXTO */
 .toggle-btn span {
   flex: 1;
   text-align: center;
@@ -371,7 +373,7 @@ button:hover {
   opacity: 0.5;
 }
 
-/* TEXTO ACTIVO */
+/* 🔹 TEXTO ACTIVO */
 .toggle-input:not(:checked) + .toggle-btn span:last-child {
   opacity: 1; /* NO */
 }
@@ -380,21 +382,21 @@ button:hover {
   opacity: 1; /* SI */
 }
 
-/* 🔥 INDICADOR DESLIZANTE (LA CLAVE) */
+/* 🔹 INDICADOR DESLIZANTE */
 .toggle-btn::after {
   content: "";
   position: absolute;
   width: 50%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 25px;
   left: 0;
   transition: transform 0.35s ease;
 }
 
-/* 🟢 CUANDO ES SI */
+/* 🟢 ESTADO SI */
 .toggle-input:checked + .toggle-btn {
-  background: #2ecc71;
+  background: #a5d6a7; /* verde suave */
 }
 
 .toggle-input:checked + .toggle-btn::after {
