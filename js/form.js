@@ -75,7 +75,7 @@ formularioData.campos.forEach((campo) => {
   }
 
   // 🔹 BLOQUE 2
-  // 🔥 CONTENEDOR PARA SWITCHES
+// 🔥 CONTENEDOR PARA SWITCHES
 let switchesContainer = document.createElement("div");
 switchesContainer.classList.add("switches-row");
 
