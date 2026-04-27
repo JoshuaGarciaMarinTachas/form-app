@@ -382,10 +382,6 @@ button:hover {
   opacity: 1; /* SI */
 }
 
-.full {
-  grid-column: 1 / -1;
-}
-
 /* 🔹 INDICADOR DESLIZANTE */
 .toggle-btn::after {
   content: "";
@@ -405,4 +401,14 @@ button:hover {
 
 .toggle-input:checked + .toggle-btn::after {
   transform: translateX(100%);
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.form-group.full {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
