@@ -402,3 +402,25 @@ button:hover {
 .toggle-input:checked + .toggle-btn::after {
   transform: translateX(100%);
 }
+
+/* 🔥 FILA DE SWITCHES */
+.switches-row {
+  grid-column: 1 / -1; /* ocupa toda la fila */
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 🔥 cada switch más ordenado */
+.switches-row .form-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 🔥 etiqueta más limpia */
+.switches-row label {
+  margin: 0;
+  font-size: 14px;
+}

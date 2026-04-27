@@ -75,19 +75,32 @@ formularioData.campos.forEach((campo) => {
   }
 
   // 🔹 BLOQUE 2
-  else if (
-    [
-      "consejo",
-      "fecha_aprobacion",
-      "fecha_evento",
-      "multi_dia",
-      "fecha_inicio",
-      "fecha_fin",
-      "horario",
-    ].includes(campo.id)
-  ) {
+  // 🔥 CONTENEDOR PARA SWITCHES
+let switchesContainer = document.createElement("div");
+switchesContainer.classList.add("switches-row");
+
+else if (
+  [
+    "consejo",
+    "fecha_aprobacion",
+    "fecha_evento",
+    "multi_dia",
+    "fecha_inicio",
+    "fecha_fin",
+    "horario",
+  ].includes(campo.id)
+) {
+  if (campo.id === "consejo" || campo.id === "multi_dia") {
+    switchesContainer.appendChild(el);
+
+    // 🔥 insertar contenedor solo una vez
+    if (!bloques[1].contains(switchesContainer)) {
+      bloques[1].appendChild(switchesContainer);
+    }
+  } else {
     bloques[1].appendChild(el);
   }
+}
 
   // 🔹 BLOQUE 3
   else if (
