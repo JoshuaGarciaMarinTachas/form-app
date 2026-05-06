@@ -5,7 +5,6 @@ export const formularioData = {
 
   campos: [
     // 🔹 AUTO
-    { id: "hora_inicio", tipo: "auto_time" },
     { id: "fecha_llenado", tipo: "auto_date" },
 
     // 🔹 =========================
@@ -99,7 +98,19 @@ export const formularioData = {
       },
     },
 
-    { id: "horario", label: "Horario", tipo: "time_range" },
+    {
+      id: "hora_inicio",
+      label: "Hora inicio",
+      tipo: "time",
+      required: true,
+    },
+
+    {
+      id: "hora_fin",
+      label: "Hora fin",
+      tipo: "time",
+      required: true,
+    },
 
     // 🔹 =========================
     // 🔹 BLOQUE 3
