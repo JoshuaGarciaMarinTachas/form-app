@@ -300,3 +300,9 @@ form.addEventListener("submit", async (e) => {
     alert("Error al enviar");
   }
 });
+
+document.querySelectorAll("input, select, textarea").forEach((el) => {
+  el.addEventListener("input", () => {
+    el.classList.remove("input-error");
+  });
+});
