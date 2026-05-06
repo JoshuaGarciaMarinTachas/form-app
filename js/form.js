@@ -227,7 +227,7 @@ form.addEventListener("submit", async (e) => {
     data[campo.id] = el.value?.trim() || null;
   });
 
-  // 🔥 CAMPOS OBLIGATORIOS
+  //  CAMPOS OBLIGATORIOS
   const obligatorios = [
     "correo",
     "telefono",
@@ -239,7 +239,7 @@ form.addEventListener("submit", async (e) => {
 
   let hayError = false;
 
-  // 🔥 VALIDAR CAMPOS OBLIGATORIOS
+  //  VALIDAR CAMPOS OBLIGATORIOS
   obligatorios.forEach((id) => {
     const valor = data[id];
     const el = document.getElementById(id);
@@ -252,7 +252,7 @@ form.addEventListener("submit", async (e) => {
     }
   });
 
-  // 🔥 VALIDAR SWITCH (ACUDIÓ)
+  //  VALIDAR SWITCH (ACUDIÓ)
   const acudio = document.getElementById("acudio_dep");
   const toggle = acudio?.nextElementSibling;
 
@@ -263,7 +263,7 @@ form.addEventListener("submit", async (e) => {
     if (toggle) toggle.classList.remove("input-error");
   }
 
-  // 🔥 BLOQUEAR ENVÍO SI HAY ERROR
+  //  BLOQUEAR ENVÍO SI HAY ERROR
   if (hayError) {
     alert("Completa todos los campos obligatorios");
     return;
