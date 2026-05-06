@@ -11,10 +11,10 @@ import { crearCampo } from "./ui.js";
 const form = document.getElementById("formulario");
 const titulo = document.getElementById("titulo");
 
-// 🔹 TÍTULO
+// TÍTULO
 titulo.textContent = formularioData.titulo;
 
-// 🔹 BLOQUES
+// BLOQUES
 const bloques = Array.from({ length: 6 }, () => {
   const div = document.createElement("div");
   div.classList.add("bloque");
@@ -36,9 +36,9 @@ bloques.forEach((bloque, i) => {
   bloque.appendChild(h3);
 });
 
-// 🔥 =========================
-// 🔥 BLOQUE 4 LIMPIO (SIN TÍTULOS INTERNOS)
-// 🔥 =========================
+//  =========================
+//  BLOQUE 4 LIMPIO (SIN TÍTULOS INTERNOS)
+//  =========================
 const requerimientosGrid = document.createElement("div");
 requerimientosGrid.classList.add("requerimientos-grid");
 
@@ -48,18 +48,18 @@ colMaterial.classList.add("columna");
 const colHumano = document.createElement("div");
 colHumano.classList.add("columna");
 
-// 🔥 CONTENEDOR CORRECTO (AQUÍ VA)
+// CONTENEDOR CORRECTO (AQUÍ VA)
 const switchesContainer = document.createElement("div");
 switchesContainer.classList.add("switches-row");
 const switchesContainerLogistica = document.createElement("div");
 switchesContainerLogistica.classList.add("switches-row");
 
-// 🔹 CREAR CAMPOS
+// CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
   const el = crearCampo(campo);
   if (!el) return;
 
-  // 🔹 BLOQUE 1
+  // BLOQUE 1
   if (
     [
       "correo",
@@ -72,7 +72,7 @@ formularioData.campos.forEach((campo) => {
       "telefono",
     ].includes(campo.id)
   ) {
-    // 🔥 SI ES EL SWITCH → VA ARRIBA DE TODO
+    // SI ES EL SWITCH → VA ARRIBA DE TODO
     if (campo.id === "acudio_dep") {
       bloques[0].insertBefore(el, bloques[0].children[1] || null);
     } else {
@@ -80,7 +80,7 @@ formularioData.campos.forEach((campo) => {
     }
   }
 
-  // 🔹 BLOQUE 2
+  // BLOQUE 2
   else if (
     [
       "consejo",
@@ -99,7 +99,7 @@ formularioData.campos.forEach((campo) => {
     }
   }
 
-  // 🔹 BLOQUE 3
+  // BLOQUE 3
   else if (
     ["externos", "discapacidad", "espacio", "montaje", "personas"].includes(
       campo.id,
@@ -112,50 +112,50 @@ formularioData.campos.forEach((campo) => {
     }
   }
 
-  // 🔥 BLOQUE 4 CORRECTO
+  // BLOQUE 4 CORRECTO
   else if (["materiales", "sonido", "personificadores"].includes(campo.id)) {
     colMaterial.appendChild(el);
   } else if (["humanos"].includes(campo.id)) {
     colHumano.appendChild(el);
   }
 
-  // 🔹 BLOQUE 5
+  // BLOQUE 5
   else if (campo.id === "descripcion") {
     bloques[4].appendChild(el);
   }
 
-  // 🔹 BLOQUE 6
+  // BLOQUE 6
   else if (campo.id === "observaciones") {
     bloques[5].appendChild(el);
   }
 });
 
-// 🔥 INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
+// INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
-// 🔥 INSERTAR SWITCHES LOGÍSTICA (AQUÍ SÍ VA)
+// INSERTAR SWITCHES LOGÍSTICA (AQUÍ SÍ VA)
 bloques[2].insertBefore(
   switchesContainerLogistica,
   bloques[2].children[1] || null,
 );
 
-// 🔥 INSERTAR GRID
+// INSERTAR GRID
 requerimientosGrid.appendChild(colMaterial);
 requerimientosGrid.appendChild(colHumano);
 bloques[3].appendChild(requerimientosGrid);
 
-// 🔹 AGREGAR BLOQUES
+//  AGREGAR BLOQUES
 bloques.forEach((b) => form.appendChild(b));
 
-// 🔹 BOTÓN
+//  BOTÓN
 const btn = document.createElement("button");
 btn.textContent = "Enviar";
 btn.type = "submit";
 form.appendChild(btn);
 
-// 🔥 =========================
-// 🔥 FECHAS PRO
-// 🔥 =========================
+// =========================
+// FECHAS
+// =========================
 setTimeout(() => {
   const fechaEvento = document.getElementById("fecha_evento");
   const fechaInicio = document.getElementById("fecha_inicio");
@@ -192,9 +192,9 @@ setTimeout(() => {
   toggleMultiDia();
 }, 200);
 
-// 🔥 =========================
-// 🔥 SUBMIT
-// 🔥 =========================
+//  =========================
+//  SUBMIT
+//  =========================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -229,6 +229,17 @@ form.addEventListener("submit", async (e) => {
 
   // 🔴 VALIDACIÓN VISUAL
   const errores = document.querySelectorAll(".input-error");
+  // 🔥 VALIDACIÓN: ACUDIÓ AL DEPARTAMENTO
+  const acudio = document.getElementById("acudio_dep");
+  const toggle = acudio?.nextElementSibling;
+
+  if (acudio && acudio.checked === false) {
+    if (toggle) toggle.classList.add("input-error");
+    alert("Debes indicar que sí acudió al departamento");
+    return;
+  } else {
+    if (toggle) toggle.classList.remove("input-error");
+  }
 
   if (errores.length > 0) {
     alert("Corrige los campos marcados antes de enviar");
@@ -236,7 +247,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // 🔹 VALIDACIONES
+  // VALIDACIONES
   if (data.correo && !validarCorreo(data.correo)) {
     alert("Correo inválido");
     return;
