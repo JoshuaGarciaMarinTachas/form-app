@@ -230,6 +230,7 @@ form.addEventListener("submit", async (e) => {
   // 🔥 CAMPOS OBLIGATORIOS
   const obligatorios = [
     "correo",
+    "telefono",
     "responsable",
     "espacio",
     "horario",
