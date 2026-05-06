@@ -130,32 +130,6 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
-// 🔥 VALIDACIÓN: FORMULARIO VACÍO / CAMPOS REQUERIDOS
-const camposVacios = [];
-
-formularioData.campos.forEach((campo) => {
-  // Ignorar campos automáticos
-  if (campo.tipo === "auto_time" || campo.tipo === "auto_date") return;
-
-  const valor = data[campo.id];
-
-  if (
-    valor === null ||
-    valor === "" ||
-    (Array.isArray(valor) && valor.length === 0)
-  ) {
-    camposVacios.push(campo.id);
-
-    const el = document.getElementById(campo.id);
-    if (el) el.classList.add("input-error");
-  }
-});
-
-if (camposVacios.length > 0) {
-  alert("No puedes enviar el formulario vacío o con campos sin llenar");
-  return;
-}
-
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
@@ -225,6 +199,31 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {};
+  // 🔥 VALIDACIÓN: FORMULARIO VACÍO / CAMPOS REQUERIDOS
+  const camposVacios = [];
+
+  formularioData.campos.forEach((campo) => {
+    // Ignorar campos automáticos
+    if (campo.tipo === "auto_time" || campo.tipo === "auto_date") return;
+
+    const valor = data[campo.id];
+
+    if (
+      valor === null ||
+      valor === "" ||
+      (Array.isArray(valor) && valor.length === 0)
+    ) {
+      camposVacios.push(campo.id);
+
+      const el = document.getElementById(campo.id);
+      if (el) el.classList.add("input-error");
+    }
+  });
+
+  if (camposVacios.length > 0) {
+    alert("No puedes enviar el formulario vacío o con campos sin llenar");
+    return;
+  }
 
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
