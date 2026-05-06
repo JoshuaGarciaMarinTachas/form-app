@@ -255,7 +255,9 @@ form.addEventListener("submit", async (e) => {
   }
 
   if (data.telefono && !validarTelefono(data.telefono)) {
-    alert("Teléfono inválido");
+    alert(
+      "El teléfono debe tener 10 o 12 dígitos y no debe contener símbolos (ej: 7221234567 o 527221234567)",
+    );
     return;
   }
 
