@@ -53,6 +53,8 @@ const switchesContainer = document.createElement("div");
 switchesContainer.classList.add("switches-row");
 const switchesContainerLogistica = document.createElement("div");
 switchesContainerLogistica.classList.add("switches-row");
+const horarioRow = document.createElement("div");
+horarioRow.classList.add("horario-row");
 
 // CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
@@ -89,12 +91,22 @@ formularioData.campos.forEach((campo) => {
       "multi_dia",
       "fecha_inicio",
       "fecha_fin",
-      "horario",
+      "hora_inicio",
+      "hora_fin",
     ].includes(campo.id)
   ) {
-    if (campo.id === "consejo" || campo.id === "multi_dia") {
+    // 🔥 HORARIO EN FILA (PRIMERO)
+    if (campo.id === "hora_inicio" || campo.id === "hora_fin") {
+      horarioRow.appendChild(el);
+    }
+
+    // 🔥 SWITCHES
+    else if (campo.id === "consejo" || campo.id === "multi_dia") {
       switchesContainer.appendChild(el);
-    } else {
+    }
+
+    // 🔥 RESTO
+    else {
       bloques[1].appendChild(el);
     }
   }
@@ -129,6 +141,8 @@ formularioData.campos.forEach((campo) => {
     bloques[5].appendChild(el);
   }
 });
+
+bloques[1].appendChild(horarioRow);
 
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
