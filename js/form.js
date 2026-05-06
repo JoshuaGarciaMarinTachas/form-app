@@ -231,6 +231,7 @@ form.addEventListener("submit", async (e) => {
   const obligatorios = [
     "correo",
     "telefono",
+    "nombre_evento",
     "responsable",
     "espacio",
     "horario",
