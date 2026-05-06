@@ -199,31 +199,6 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = {};
-  // 🔥 VALIDACIÓN: FORMULARIO VACÍO / CAMPOS REQUERIDOS
-  const camposVacios = [];
-
-  formularioData.campos.forEach((campo) => {
-    // Ignorar campos automáticos
-    if (campo.tipo === "auto_time" || campo.tipo === "auto_date") return;
-
-    const valor = data[campo.id];
-
-    if (
-      valor === null ||
-      valor === "" ||
-      (Array.isArray(valor) && valor.length === 0)
-    ) {
-      camposVacios.push(campo.id);
-
-      const el = document.getElementById(campo.id);
-      if (el) el.classList.add("input-error");
-    }
-  });
-
-  if (camposVacios.length > 0) {
-    alert("No puedes enviar el formulario vacío o con campos sin llenar");
-    return;
-  }
 
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
@@ -252,24 +227,44 @@ form.addEventListener("submit", async (e) => {
     data[campo.id] = el.value?.trim() || null;
   });
 
-  // 🔥 VALIDACIÓN: ACUDIÓ AL DEPARTAMENTO
+  // 🔥 CAMPOS OBLIGATORIOS
+  const obligatorios = [
+    "correo",
+    "responsable",
+    "espacio",
+    "horario",
+    "fecha_evento",
+  ];
+
+  let hayError = false;
+
+  // 🔥 VALIDAR CAMPOS OBLIGATORIOS
+  obligatorios.forEach((id) => {
+    const valor = data[id];
+    const el = document.getElementById(id);
+
+    if (!valor || valor === "") {
+      hayError = true;
+      if (el) el.classList.add("input-error");
+    } else {
+      if (el) el.classList.remove("input-error");
+    }
+  });
+
+  // 🔥 VALIDAR SWITCH (ACUDIÓ)
   const acudio = document.getElementById("acudio_dep");
   const toggle = acudio?.nextElementSibling;
 
-  if (acudio && acudio.checked === false) {
+  if (!acudio || acudio.checked === false) {
+    hayError = true;
     if (toggle) toggle.classList.add("input-error");
-    alert("Debes indicar que sí acudió al departamento");
-    return;
   } else {
     if (toggle) toggle.classList.remove("input-error");
   }
 
-  // 🔴 VALIDACIÓN VISUAL (DESPUÉS)
-  const errores = document.querySelectorAll(".input-error");
-
-  if (errores.length > 0) {
-    alert("Corrige los campos marcados antes de enviar");
-    errores[0].focus();
+  // 🔥 BLOQUEAR ENVÍO SI HAY ERROR
+  if (hayError) {
+    alert("Completa todos los campos obligatorios");
     return;
   }
 
