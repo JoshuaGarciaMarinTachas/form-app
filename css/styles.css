@@ -21,8 +21,9 @@ body {
 /*  TÍTULO */
 #titulo {
   margin-bottom: 25px;
-  font-size: 22px;
+  font-size: 32px; /* más grande */
   font-weight: bold;
+  text-align: center; /* centrado */
 }
 
 /*  FORM */
