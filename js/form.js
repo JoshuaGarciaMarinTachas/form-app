@@ -227,8 +227,6 @@ form.addEventListener("submit", async (e) => {
     data[campo.id] = el.value?.trim() || null;
   });
 
-  // 🔴 VALIDACIÓN VISUAL
-  const errores = document.querySelectorAll(".input-error");
   // 🔥 VALIDACIÓN: ACUDIÓ AL DEPARTAMENTO
   const acudio = document.getElementById("acudio_dep");
   const toggle = acudio?.nextElementSibling;
@@ -240,6 +238,9 @@ form.addEventListener("submit", async (e) => {
   } else {
     if (toggle) toggle.classList.remove("input-error");
   }
+
+  // 🔴 VALIDACIÓN VISUAL (DESPUÉS)
+  const errores = document.querySelectorAll(".input-error");
 
   if (errores.length > 0) {
     alert("Corrige los campos marcados antes de enviar");
