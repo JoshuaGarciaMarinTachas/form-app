@@ -1,6 +1,6 @@
-/* 🔹 =========================
-🔹 BASE
-🔹 ========================= */
+/*  =========================
+ BASE
+ ========================= */
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f8;
@@ -8,7 +8,7 @@ body {
   padding: 20px;
 }
 
-/* 🔹 CONTENEDOR */
+/*  CONTENEDOR */
 .container {
   max-width: 950px;
   margin: auto;
@@ -18,21 +18,21 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* 🔹 TÍTULO */
+/*  TÍTULO */
 #titulo {
   margin-bottom: 25px;
   font-size: 22px;
   font-weight: bold;
 }
 
-/* 🔴 FORM */
+/*  FORM */
 #formulario {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* 🔹 BLOQUES */
+/*  BLOQUES */
 .bloque {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -48,21 +48,21 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* 🔹 GRUPO */
+/*  GRUPO */
 .form-group {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
 
-/* 🔹 LABELS */
+/*  LABELS */
 .form-group label {
   font-size: 13px;
   margin-bottom: 5px;
   color: #444;
 }
 
-/* 🔹 INPUTS */
+/*  INPUTS */
 input,
 select,
 textarea {
@@ -77,7 +77,7 @@ textarea {
   box-sizing: border-box;
 }
 
-/* 🔹 FOCUS */
+/*  FOCUS */
 input:focus,
 select:focus,
 textarea:focus {
@@ -86,25 +86,25 @@ textarea:focus {
   background: #fff;
 }
 
-/* 🔹 PLACEHOLDER */
+/*  PLACEHOLDER */
 input::placeholder,
 textarea::placeholder {
   color: #aaa;
 }
 
-/* 🔹 TEXTAREA */
+/*  TEXTAREA */
 textarea {
   grid-column: span 2;
   min-height: 120px;
   resize: vertical;
 }
 
-/* 🔹 INPUT ESPECIAL */
+/*  INPUT ESPECIAL */
 input[id="montaje"] {
   height: 45px;
 }
 
-/* 🔹 BOTÓN */
+/*  BOTÓN */
 button {
   width: 100%;
   padding: 12px;
@@ -122,7 +122,7 @@ button:hover {
   background: #2563eb;
 }
 
-/* 🔹 SWITCH */
+/*  SWITCH */
 .switch {
   width: 50px;
   height: 26px;
@@ -153,7 +153,7 @@ button:hover {
   transform: translateX(24px);
 }
 
-/* 🔹 SWITCH GROUP */
+/*  SWITCH GROUP */
 .switch-group {
   grid-column: span 2;
   display: flex;
@@ -161,9 +161,9 @@ button:hover {
   gap: 20px;
 }
 
-/* 🔥 =========================
-🔥 REQUERIMIENTOS (FIX REAL)
-🔥 ========================= */
+/*  =========================
+ REQUERIMIENTOS (FIX REAL)
+ ========================= */
 
 /* contenedor principal */
 .requerimientos-grid {
@@ -189,14 +189,14 @@ button:hover {
   padding-bottom: 5px;
 }
 
-/* 🔹 MULTISELECT LIMPIO */
+/*  MULTISELECT LIMPIO */
 .multi-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* 🔥 FILA CORRECTA */
+/*  FILA CORRECTA */
 .multi-group label {
   display: flex;
   align-items: center;
@@ -216,7 +216,7 @@ button:hover {
   color: #333;
 }
 
-/* 🔹 INPUT NUM INLINE */
+/*  INPUT NUM INLINE */
 .inline-num {
   display: flex;
   align-items: center;
@@ -228,7 +228,7 @@ button:hover {
   padding: 4px;
 }
 
-/* 🔹 SUBOPCIONES (SONIDO) */
+/*  SUBOPCIONES (SONIDO) */
 .sub-opciones {
   margin-left: 24px;
   display: flex;
@@ -236,7 +236,7 @@ button:hover {
   gap: 6px;
 }
 
-/* 🔹 FILA CON INPUT DERECHA */
+/*  FILA CON INPUT DERECHA */
 .row-between {
   display: flex;
   align-items: center;
@@ -244,20 +244,20 @@ button:hover {
   gap: 10px;
 }
 
-/* 🔹 IZQUIERDA */
+/*  IZQUIERDA */
 .row-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* 🔹 INPUT NUM CHICO */
+/*  INPUT NUM CHICO */
 .row-between input[type="number"] {
   width: 55px;
   padding: 4px;
 }
 
-/* 🔹 PERSONIFICADORES */
+/*  PERSONIFICADORES */
 .personificador-inline {
   display: flex;
   align-items: center;
@@ -269,13 +269,13 @@ button:hover {
   padding: 4px;
 }
 
-/* 🔴 ERROR */
+/*  ERROR */
 .input-error {
   border: 1px solid #ef4444 !important;
   background: #fff5f5;
 }
 
-/* 🔴 MENSAJE ERROR */
+/*  MENSAJE ERROR */
 .error-msg {
   color: #ef4444;
   font-size: 12px;
@@ -283,7 +283,7 @@ button:hover {
   display: none;
 }
 
-/* 🔹 RESPONSIVE */
+/*  RESPONSIVE */
 @media (max-width: 600px) {
   .bloque {
     grid-template-columns: 1fr;
@@ -298,7 +298,7 @@ button:hover {
   }
 }
 
-/* 🔥 TÍTULOS VISUALES DE COLUMNAS */
+/*  TÍTULOS VISUALES DE COLUMNAS */
 .requerimientos-grid .columna:first-child::before {
   content: "Recursos materiales";
   font-weight: bold;
@@ -343,18 +343,18 @@ button:hover {
   z-index: 2;
 }
 
-/* 🔹 OCULTAR CHECKBOX */
+/*  OCULTAR CHECKBOX */
 .toggle-input {
   display: none;
 }
 
-/* 🔹 CONTENEDOR PRINCIPAL */
+/*  CONTENEDOR PRINCIPAL */
 .toggle-btn {
   position: relative;
   display: flex;
   width: 110px;
   height: 42px;
-  background: #d95252; /* 🔴 NO (suave) */
+  background: #d95252; /*  NO (suave) */
   border-radius: 25px;
   cursor: pointer;
   overflow: hidden;
@@ -362,7 +362,7 @@ button:hover {
   transition: background 0.35s ease;
 }
 
-/* 🔹 TEXTO */
+/*  TEXTO */
 .toggle-btn span {
   flex: 1;
   text-align: center;
@@ -373,7 +373,7 @@ button:hover {
   opacity: 0.5;
 }
 
-/* 🔹 TEXTO ACTIVO */
+/*  TEXTO ACTIVO */
 .toggle-input:not(:checked) + .toggle-btn span:last-child {
   opacity: 1; /* NO */
 }
@@ -382,19 +382,19 @@ button:hover {
   opacity: 1; /* SI */
 }
 
-/* 🔹 INDICADOR DESLIZANTE */
+/*  INDICADOR DESLIZANTE */
 .toggle-btn::after {
   content: "";
   position: absolute;
   width: 50%;
   height: 100%;
-  background: #efefef; /* 🔥 blanco sólido */
+  background: #efefef; /*  blanco sólido */
   border-radius: 25px;
   left: 0;
   transition: transform 0.35s ease;
 }
 
-/* 🟢 ESTADO SI */
+/* ESTADO SI */
 .toggle-input:checked + .toggle-btn {
   background: #a5d6a7; /* verde suave */
 }
@@ -403,7 +403,7 @@ button:hover {
   transform: translateX(100%);
 }
 
-/* 🔥 FILA DE SWITCHES */
+/*  FILA DE SWITCHES */
 .switches-row {
   grid-column: 1 / -1; /* ocupa toda la fila */
   display: flex;
@@ -412,14 +412,14 @@ button:hover {
   margin-bottom: 10px;
 }
 
-/* 🔥 cada switch más ordenado */
+/*  cada switch más ordenado */
 .switches-row .form-group {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* 🔥 etiqueta más limpia */
+/*  etiqueta más limpia */
 .switches-row label {
   margin: 0;
   font-size: 14px;
