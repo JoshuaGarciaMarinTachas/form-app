@@ -425,3 +425,14 @@ button:hover {
   margin: 0;
   font-size: 14px;
 }
+
+.horario-row {
+  display: flex;
+  gap: 15px;
+  grid-column: span 2; /* 🔥 CLAVE: ocupa toda la fila del grid */
+}
+
+.horario-row .form-group {
+  flex: 1;
+  margin: 0; /* evita saltos raros */
+}
