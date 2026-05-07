@@ -292,6 +292,14 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
+  //  VALIDAR HORARIO LÓGICO
+  if (data.hora_inicio && data.hora_fin) {
+    if (data.hora_fin <= data.hora_inicio) {
+      alert("La hora de fin debe ser mayor a la de inicio");
+      return;
+    }
+  }
+
   // VALIDACIONES
   if (data.correo && !validarCorreo(data.correo)) {
     alert("Correo inválido");
