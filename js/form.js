@@ -95,17 +95,17 @@ formularioData.campos.forEach((campo) => {
       "hora_fin",
     ].includes(campo.id)
   ) {
-    // 🔥 HORARIO EN FILA (PRIMERO)
+    // HORARIO EN FILA (PRIMERO)
     if (campo.id === "hora_inicio" || campo.id === "hora_fin") {
       horarioRow.appendChild(el);
     }
 
-    // 🔥 SWITCHES
+    // SWITCHES
     else if (campo.id === "consejo" || campo.id === "multi_dia") {
       switchesContainer.appendChild(el);
     }
 
-    // 🔥 RESTO
+    // RESTO
     else {
       bloques[1].appendChild(el);
     }
@@ -214,6 +214,11 @@ form.addEventListener("submit", async (e) => {
 
   const data = {};
 
+  //  FUNCIÓN PARA SABER SI EL CAMPO ES VISIBLE
+  const esVisible = (el) => {
+    return el && el.offsetParent !== null;
+  };
+
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
       data[campo.id] = new Date().toLocaleTimeString();
@@ -242,7 +247,15 @@ form.addEventListener("submit", async (e) => {
   });
 
   //  CAMPOS OBLIGATORIOS
-  const obligatorios = ["correo", "telefono", "nombre_evento", "horario"];
+  const obligatorios = [
+    "correo",
+    "telefono",
+    "nombre_evento",
+    "espacio",
+    "hora_inicio",
+    "hora_fin",
+    "fecha_evento",
+  ];
 
   let hayError = false;
 
@@ -251,11 +264,14 @@ form.addEventListener("submit", async (e) => {
     const valor = data[id];
     const el = document.getElementById(id);
 
+    //  IGNORAR SI NO EXISTE O NO ESTÁ VISIBLE
+    if (!el || !esVisible(el)) return;
+
     if (!valor || valor === "") {
       hayError = true;
-      if (el) el.classList.add("input-error");
+      el.classList.add("input-error");
     } else {
-      if (el) el.classList.remove("input-error");
+      el.classList.remove("input-error");
     }
   });
 
