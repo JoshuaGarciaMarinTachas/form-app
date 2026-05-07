@@ -228,7 +228,8 @@ form.addEventListener("submit", async (e) => {
     hora_inicio: "Hora de inicio",
     hora_fin: "Hora de fin",
     fecha_evento: "Fecha del evento",
-    acudio_dep: "¿Acudió al departamento?",
+    acudio_dep:
+      "¿Acudió al departamento? (Es obligatorio asistir al departamento para entregar esta solicitud)",
   };
 
   formularioData.campos.forEach((campo) => {
