@@ -4,77 +4,150 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   getDoc,
   setDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const tabla = document.querySelector("#tablaSolicitudes tbody");
-const encabezados = document.getElementById("encabezados");
-const toggleForm = document.getElementById("toggleForm");
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const configRef = doc(db, "config", "formulario");
+const auth = getAuth();
 
-async function cargarEstadoFormulario() {
-  const snap = await getDoc(configRef);
-
-  if (snap.exists()) {
-    toggleForm.checked = snap.data().habilitado;
+// 🔐 PROTEGER RUTA
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    init();
   }
-}
-
-toggleForm.addEventListener("change", async () => {
-  await setDoc(configRef, {
-    habilitado: toggleForm.checked,
-  });
 });
 
+function init() {
+  cargarSolicitudes();
+  initConfig();
+  initLogout();
+}
+
+const tbody = document.getElementById("tbody");
+const thead = document.getElementById("thead");
+
+let dataGlobal = [];
+
+// ==========================
+// 📊 CARGAR TABLA
+// ==========================
 async function cargarSolicitudes() {
-  const querySnapshot = await getDocs(collection(db, "solicitudes"));
+  const snap = await getDocs(collection(db, "solicitudes"));
 
-  tabla.innerHTML = "";
+  dataGlobal = snap.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  }));
 
-  let columnas = [];
+  renderTabla(dataGlobal);
+  initBuscador();
+}
 
-  querySnapshot.forEach((docSnap, index) => {
-    const data = docSnap.data();
+// ==========================
+// 🧠 RENDER TABLA
+// ==========================
+function renderTabla(data) {
+  tbody.innerHTML = "";
+  thead.innerHTML = "";
 
-    // 🔥 GENERAR ENCABEZADOS UNA SOLA VEZ
-    if (index === 0) {
-      columnas = Object.keys(data);
+  if (data.length === 0) return;
 
-      encabezados.innerHTML =
-        columnas.map((col) => `<th>${col}</th>`).join("") + "<th>Acciones</th>";
-    }
+  const columnas = Object.keys(data[0]).filter((c) => c !== "id");
 
-    const fila = document.createElement("tr");
+  thead.innerHTML =
+    "<tr>" +
+    columnas.map((c) => `<th>${c}</th>`).join("") +
+    "<th>Acciones</th></tr>";
+
+  data.forEach((row) => {
+    const tr = document.createElement("tr");
 
     columnas.forEach((col) => {
       const td = document.createElement("td");
-
-      td.textContent = data[col] ?? "";
-
-      // 🔥 HACER EDITABLE
+      td.textContent = row[col] ?? "";
       td.contentEditable = true;
 
       td.addEventListener("blur", async () => {
-        const nuevoValor = td.textContent;
-
-        await updateDoc(doc(db, "solicitudes", docSnap.id), {
-          [col]: nuevoValor,
+        await updateDoc(doc(db, "solicitudes", row.id), {
+          [col]: td.textContent,
         });
       });
 
-      fila.appendChild(td);
+      tr.appendChild(td);
     });
 
-    // 🔥 BOTÓN GUARDAR (opcional)
+    // 🔥 BOTÓN ELIMINAR
     const acciones = document.createElement("td");
-    acciones.innerHTML = `<button>✔</button>`;
-    fila.appendChild(acciones);
 
-    tabla.appendChild(fila);
+    const btnDelete = document.createElement("button");
+    btnDelete.textContent = "🗑";
+
+    btnDelete.onclick = async () => {
+      if (confirm("¿Eliminar solicitud?")) {
+        await deleteDoc(doc(db, "solicitudes", row.id));
+        tr.remove();
+      }
+    };
+
+    acciones.appendChild(btnDelete);
+    tr.appendChild(acciones);
+
+    tbody.appendChild(tr);
   });
 }
 
-cargarSolicitudes();
-cargarEstadoFormulario();
+// ==========================
+// 🔍 BUSCADOR
+// ==========================
+function initBuscador() {
+  const input = document.getElementById("buscador");
+
+  input.addEventListener("input", () => {
+    const texto = input.value.toLowerCase();
+
+    const filtrado = dataGlobal.filter((row) =>
+      Object.values(row).some((v) => String(v).toLowerCase().includes(texto)),
+    );
+
+    renderTabla(filtrado);
+  });
+}
+
+// ==========================
+// ⚙️ CONFIG FORMULARIO
+// ==========================
+function initConfig() {
+  const toggle = document.getElementById("toggleForm");
+  const ref = doc(db, "config", "formulario");
+
+  getDoc(ref).then((snap) => {
+    if (snap.exists()) {
+      toggle.checked = snap.data().habilitado;
+    }
+  });
+
+  toggle.addEventListener("change", async () => {
+    await setDoc(ref, {
+      habilitado: toggle.checked,
+    });
+  });
+}
+
+// ==========================
+// 🔐 LOGOUT
+// ==========================
+function initLogout() {
+  document.getElementById("logout").onclick = async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+  };
+}

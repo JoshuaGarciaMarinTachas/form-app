@@ -1,30 +1,33 @@
+<link rel="stylesheet" href="admin.css" />
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Panel de Administración</title>
+    <title>Panel Administrativo</title>
     <link rel="stylesheet" href="admin.css" />
   </head>
-  <body>
-    <h1>Panel de Solicitudes</h1>
 
-    <!-- 🔘 CONTROL DEL FORMULARIO -->
-    <div class="control">
+  <body>
+    <header>
+      <h1>Panel Administrativo</h1>
+      <button id="logout">Cerrar sesión</button>
+    </header>
+
+    <section class="controls">
       <label>
-        Formulario habilitado
+        Formulario activo
         <input type="checkbox" id="toggleForm" />
       </label>
-    </div>
 
-    <!-- 📊 TABLA -->
-    <div class="tabla-container">
-      <table id="tablaSolicitudes">
-        <thead>
-          <tr id="encabezados"></tr>
-        </thead>
-        <tbody></tbody>
+      <input id="buscador" placeholder="Buscar..." />
+    </section>
+
+    <section class="tabla-container">
+      <table>
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
       </table>
-    </div>
+    </section>
 
     <script type="module" src="./admin.js"></script>
   </body>

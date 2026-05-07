@@ -1,0 +1,20 @@
+<h2>Admin Login</h2>
+<input id="email" placeholder="Correo" />
+<input id="pass" type="password" placeholder="Contraseña" />
+<button id="loginBtn">Entrar</button>
+
+<script type="module">
+  import { login } from "./auth.js";
+
+  document.getElementById("loginBtn").onclick = async () => {
+    const email = email.value;
+    const pass = document.getElementById("pass").value;
+
+    try {
+      await login(email, pass);
+      window.location.href = "admin.html";
+    } catch {
+      alert("Error de login");
+    }
+  };
+</script>
