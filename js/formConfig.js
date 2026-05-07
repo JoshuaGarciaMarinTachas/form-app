@@ -19,8 +19,6 @@ export const formularioData = {
       required: true,
     },
 
-    { id: "acudio_dep", label: "¿Acudió al departamento?", tipo: "switch" },
-
     {
       id: "nombre_evento",
       label: "Nombre del evento",

@@ -66,7 +66,6 @@ formularioData.campos.forEach((campo) => {
     [
       "correo",
       "responsable",
-      "acudio_dep",
       "nombre_evento",
       "cargo_responsable",
       "cargo_admin",
@@ -74,12 +73,7 @@ formularioData.campos.forEach((campo) => {
       "telefono",
     ].includes(campo.id)
   ) {
-    // SI ES EL SWITCH → VA ARRIBA DE TODO
-    if (campo.id === "acudio_dep") {
-      bloques[0].insertBefore(el, bloques[0].children[1] || null);
-    } else {
-      bloques[0].appendChild(el);
-    }
+    bloques[0].appendChild(el);
   }
 
   // BLOQUE 2
@@ -228,8 +222,6 @@ form.addEventListener("submit", async (e) => {
     hora_inicio: "Hora de inicio",
     hora_fin: "Hora de fin",
     fecha_evento: "Fecha del evento",
-    acudio_dep:
-      "¿Acudió al departamento? (Es obligatorio asistir al departamento para entregar esta solicitud)",
   };
 
   formularioData.campos.forEach((campo) => {
@@ -288,19 +280,6 @@ form.addEventListener("submit", async (e) => {
       el.classList.remove("input-error");
     }
   });
-
-  //  VALIDAR SWITCH (ACUDIÓ)
-  const acudio = document.getElementById("acudio_dep");
-  const toggle = acudio?.nextElementSibling;
-
-  if (!acudio || acudio.checked === false) {
-    hayError = true;
-    faltantes.push(nombresCampos["acudio_dep"]);
-
-    if (toggle) toggle.classList.add("input-error");
-  } else {
-    if (toggle) toggle.classList.remove("input-error");
-  }
 
   //  BLOQUEAR ENVÍO SI HAY ERROR
   if (hayError) {
