@@ -242,15 +242,7 @@ form.addEventListener("submit", async (e) => {
   });
 
   //  CAMPOS OBLIGATORIOS
-  const obligatorios = [
-    "correo",
-    "telefono",
-    "nombre_evento",
-    "responsable",
-    "espacio",
-    "horario",
-    "fecha_evento",
-  ];
+  const obligatorios = ["correo", "telefono", "nombre_evento", "horario"];
 
   let hayError = false;
 
