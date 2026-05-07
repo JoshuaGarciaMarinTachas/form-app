@@ -1,0 +1,39 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.tabla-container {
+  overflow-x: auto;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  min-width: 1200px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+th {
+  background: #333;
+  color: white;
+}
+
+td[contenteditable="true"] {
+  background-color: #f9f9f9;
+}
+
+td:focus {
+  outline: 2px solid #007bff;
+}

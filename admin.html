@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <h1>Panel de Solicitudes</h1>
+
+    <!-- 🔘 CONTROL DEL FORMULARIO -->
+    <div class="control">
+      <label>
+        Formulario habilitado
+        <input type="checkbox" id="toggleForm" />
+      </label>
+    </div>
+
+    <!-- 📊 TABLA -->
+    <div class="tabla-container">
+      <table id="tablaSolicitudes">
+        <thead>
+          <tr id="encabezados"></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script type="module" src="./admin.js"></script>
+  </body>
+</html>
