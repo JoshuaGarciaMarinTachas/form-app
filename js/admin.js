@@ -1,4 +1,5 @@
 import { db } from "./firebase.js";
+
 import {
   collection,
   getDocs,
@@ -17,27 +18,14 @@ import {
 
 const auth = getAuth();
 
-//  PROTEGER RUTA
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
-    init();
-  }
-});
-
-function init() {
-  cargarSolicitudes();
-  initConfig();
-  initLogout();
-}
-
 const tbody = document.getElementById("tbody");
 const thead = document.getElementById("thead");
 
 let dataGlobal = [];
 
-// ORDEN DE COLUMNAS
+// ==========================
+// COLUMNAS
+// ==========================
 const ordenColumnas = [
   "correo",
   "responsable",
@@ -50,7 +38,6 @@ const ordenColumnas = [
   "hora_fin",
 ];
 
-//  NOMBRES BONITOS
 const nombresBonitos = {
   correo: "Correo",
   responsable: "Responsable",
@@ -63,29 +50,69 @@ const nombresBonitos = {
   hora_fin: "Fin",
 };
 
-// ==========================
-//  CARGAR TABLA
-// ==========================
-async function cargarSolicitudes() {
-  const snap = await getDocs(collection(db, "solicitudes"));
+// COLUMNAS NO EDITABLES
+const columnasNoEditables = ["correo"];
 
-  dataGlobal = snap.docs.map((d) => ({
-    id: d.id,
-    ...d.data(),
-  }));
+// COLUMNAS NUMÉRICAS
+const columnasNumericas = ["personas"];
 
-  renderTabla(dataGlobal);
+// ==========================
+// PROTEGER RUTA
+// ==========================
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  init();
+});
+
+// ==========================
+// INIT
+// ==========================
+function init() {
+  cargarSolicitudes();
+  initConfig();
+  initLogout();
   initBuscador();
 }
 
 // ==========================
-//  RENDER TABLA
+// CARGAR SOLICITUDES
+// ==========================
+async function cargarSolicitudes() {
+  try {
+    const snap = await getDocs(collection(db, "solicitudes"));
+
+    dataGlobal = snap.docs.map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
+
+    renderTabla(dataGlobal);
+  } catch (err) {
+    console.error(err);
+    alert("Error cargando solicitudes");
+  }
+}
+
+// ==========================
+// RENDER TABLA
 // ==========================
 function renderTabla(data) {
   tbody.innerHTML = "";
   thead.innerHTML = "";
 
-  if (data.length === 0) return;
+  if (data.length === 0) {
+    thead.innerHTML = `
+      <tr>
+        <th>No hay datos</th>
+      </tr>
+    `;
+
+    return;
+  }
 
   const columnas = ordenColumnas.filter((c) => c in data[0]);
 
@@ -102,7 +129,9 @@ function renderTabla(data) {
 
       const valor = row[col];
 
-      //  FORMATO VISUAL
+      // ==========================
+      // FORMATO VISUAL
+      // ==========================
       if (Array.isArray(valor)) {
         td.textContent = valor.join(", ");
       } else if (typeof valor === "boolean") {
@@ -111,9 +140,11 @@ function renderTabla(data) {
         td.textContent = valor ?? "";
       }
 
-      td.contentEditable = true;
+      // ==========================
+      // EDITABLE
+      // ==========================
+      td.contentEditable = !columnasNoEditables.includes(col);
 
-      //  EVITAR GUARDADO INNECESARIO
       let valorOriginal = td.textContent;
 
       td.addEventListener("focus", () => {
@@ -124,29 +155,29 @@ function renderTabla(data) {
       // GUARDAR CAMBIOS
       // ==========================
       td.addEventListener("blur", async () => {
+        if (columnasNoEditables.includes(col)) return;
+
         if (td.textContent === valorOriginal) return;
 
         let nuevoValor = td.textContent.trim();
 
-        // ARRAY
-        if (nuevoValor.includes(",")) {
-          nuevoValor = nuevoValor.split(",").map((v) => v.trim());
+        // NO GUARDAR VACÍOS
+        if (nuevoValor === "") {
+          td.textContent = valorOriginal;
+          return;
         }
 
-        // NÚMERO
-        else if (!isNaN(nuevoValor) && nuevoValor !== "") {
-          nuevoValor = Number(nuevoValor);
-        }
-
-        // BOOLEANO
-        else if (nuevoValor.toLowerCase() === "sí") {
+        // BOOLEANOS
+        if (nuevoValor.toLowerCase() === "sí") {
           nuevoValor = true;
         } else if (nuevoValor.toLowerCase() === "no") {
           nuevoValor = false;
         }
 
-        // NO GUARDAR VACÍOS
-        if (nuevoValor === "" || nuevoValor === null) return;
+        // NÚMEROS
+        else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
+          nuevoValor = Number(nuevoValor);
+        }
 
         td.style.backgroundColor = "#fff3cd";
 
@@ -156,9 +187,16 @@ function renderTabla(data) {
           });
 
           td.style.backgroundColor = "#d4edda";
+
+          // ACTUALIZAR EN MEMORIA
+          row[col] = nuevoValor;
         } catch (err) {
           console.error(err);
+
           td.style.backgroundColor = "#f8d7da";
+
+          // RESTAURAR VALOR ORIGINAL
+          td.textContent = valorOriginal;
         }
 
         setTimeout(() => {
@@ -169,20 +207,34 @@ function renderTabla(data) {
       tr.appendChild(td);
     });
 
-    // 🗑 ELIMINAR
+    // ==========================
+    // ELIMINAR
+    // ==========================
     const acciones = document.createElement("td");
 
     const btnDelete = document.createElement("button");
+
     btnDelete.textContent = "🗑";
 
     btnDelete.onclick = async () => {
-      if (confirm("¿Eliminar solicitud?")) {
+      const confirmar = confirm("¿Eliminar solicitud?");
+
+      if (!confirmar) return;
+
+      try {
         await deleteDoc(doc(db, "solicitudes", row.id));
+
         tr.remove();
+
+        dataGlobal = dataGlobal.filter((d) => d.id !== row.id);
+      } catch (err) {
+        console.error(err);
+        alert("Error eliminando solicitud");
       }
     };
 
     acciones.appendChild(btnDelete);
+
     tr.appendChild(acciones);
 
     tbody.appendChild(tr);
@@ -190,13 +242,13 @@ function renderTabla(data) {
 }
 
 // ==========================
-//  BUSCADOR
+// BUSCADOR
 // ==========================
 function initBuscador() {
   const input = document.getElementById("buscador");
 
   input.addEventListener("input", () => {
-    const texto = input.value.toLowerCase();
+    const texto = input.value.toLowerCase().trim();
 
     const filtrado = dataGlobal.filter((row) =>
       Object.values(row).some((v) => String(v).toLowerCase().includes(texto)),
@@ -211,18 +263,28 @@ function initBuscador() {
 // ==========================
 function initConfig() {
   const toggle = document.getElementById("toggleForm");
+
   const ref = doc(db, "config", "formulario");
 
-  getDoc(ref).then((snap) => {
-    if (snap.exists()) {
-      toggle.checked = snap.data().habilitado;
-    }
-  });
+  getDoc(ref)
+    .then((snap) => {
+      if (snap.exists()) {
+        toggle.checked = snap.data().habilitado;
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
   toggle.addEventListener("change", async () => {
-    await setDoc(ref, {
-      habilitado: toggle.checked,
-    });
+    try {
+      await setDoc(ref, {
+        habilitado: toggle.checked,
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Error guardando configuración");
+    }
   });
 }
 
@@ -230,8 +292,16 @@ function initConfig() {
 // LOGOUT
 // ==========================
 function initLogout() {
-  document.getElementById("logout").onclick = async () => {
-    await signOut(auth);
-    window.location.href = "login.html";
+  const logoutBtn = document.getElementById("logout");
+
+  logoutBtn.onclick = async () => {
+    try {
+      await signOut(auth);
+
+      window.location.href = "login.html";
+    } catch (err) {
+      console.error(err);
+      alert("Error cerrando sesión");
+    }
   };
 }

@@ -2,23 +2,33 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- RESPONSIVE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Panel Administrativo</title>
+
     <link rel="stylesheet" href="admin.css" />
   </head>
 
   <body>
     <header>
       <h1>Panel Administrativo</h1>
-      <button id="logout">Cerrar sesión</button>
+
+      <button id="logout" type="button">Cerrar sesión</button>
     </header>
 
     <section class="controls">
-      <label>
-        Formulario activo
-        <input type="checkbox" id="toggleForm" />
-      </label>
+      <label for="toggleForm"> Formulario activo </label>
 
-      <input id="buscador" placeholder="Buscar..." />
+      <input type="checkbox" id="toggleForm" />
+
+      <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar..."
+        autocomplete="off"
+      />
     </section>
 
     <section class="tabla-container">

@@ -1,20 +1,159 @@
-<h2>Admin Login</h2>
-<input id="email" placeholder="Correo" />
-<input id="pass" type="password" placeholder="Contraseña" />
-<button id="loginBtn">Entrar</button>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
 
-<script type="module">
-  import { login } from "./auth.js";
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  document.getElementById("loginBtn").onclick = async () => {
-    const email = email.value;
-    const pass = document.getElementById("pass").value;
+    <title>Login Admin</title>
 
-    try {
-      await login(email, pass);
-      window.location.href = "admin.html";
-    } catch {
-      alert("Error de login");
-    }
-  };
-</script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: #f4f4f4;
+
+        font-family: Arial, sans-serif;
+      }
+
+      .login-box {
+        width: 100%;
+        max-width: 400px;
+
+        padding: 30px;
+
+        background: white;
+
+        border-radius: 10px;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 25px;
+
+        text-align: center;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      input {
+        width: 100%;
+
+        padding: 12px;
+
+        border: 1px solid #ccc;
+        border-radius: 6px;
+
+        font-size: 14px;
+      }
+
+      input:focus {
+        outline: 2px solid #007bff;
+        border-color: #007bff;
+      }
+
+      button {
+        width: 100%;
+
+        padding: 12px;
+
+        border: none;
+        border-radius: 6px;
+
+        background: #007bff;
+        color: white;
+
+        font-size: 15px;
+
+        cursor: pointer;
+
+        transition: background 0.2s ease;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login-box">
+      <h2>Admin Login</h2>
+
+      <div class="input-group">
+        <input
+          type="email"
+          id="email"
+          placeholder="Correo"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="input-group">
+        <input
+          type="password"
+          id="pass"
+          placeholder="Contraseña"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button id="loginBtn" type="button">Entrar</button>
+    </div>
+
+    <script type="module">
+      import { login } from "./auth.js";
+
+      const emailInput = document.getElementById("email");
+      const passInput = document.getElementById("pass");
+      const loginBtn = document.getElementById("loginBtn");
+
+      async function iniciarSesion() {
+        const email = emailInput.value.trim();
+        const pass = passInput.value.trim();
+
+        if (!email || !pass) {
+          alert("Completa todos los campos");
+          return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Entrando...";
+
+        try {
+          await login(email, pass);
+
+          window.location.href = "admin.html";
+        } catch (err) {
+          console.error(err);
+
+          alert("Correo o contraseña incorrectos");
+        }
+
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Entrar";
+      }
+
+      loginBtn.addEventListener("click", iniciarSesion);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          iniciarSesion();
+        }
+      });
+    </script>
+  </body>
+</html>
