@@ -301,15 +301,6 @@ form.addEventListener("submit", async (e) => {
     if (toggle) toggle.classList.remove("input-error");
   }
 
-  const toggle = acudio?.nextElementSibling;
-
-  if (!acudio || acudio.checked === false) {
-    hayError = true;
-    if (toggle) toggle.classList.add("input-error");
-  } else {
-    if (toggle) toggle.classList.remove("input-error");
-  }
-
   //  BLOQUEAR ENVÍO SI HAY ERROR
   if (hayError) {
     const lista = faltantes.map((campo) => `- ${campo}`).join("\n");
