@@ -429,7 +429,7 @@ button:hover {
 .horario-row {
   display: flex;
   gap: 15px;
-  grid-column: span 2; /* 🔥 CLAVE: ocupa toda la fila del grid */
+  grid-column: span 2; /* CLAVE: ocupa toda la fila del grid */
 }
 
 .horario-row .form-group {
