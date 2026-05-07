@@ -316,7 +316,7 @@ form.addEventListener("submit", async (e) => {
 
     alert(`Te faltan los siguientes campos:\n\n${lista}`);
 
-    // 🔥 SCROLL AL PRIMER ERROR
+    //  SCROLL AL PRIMER ERROR
     const primerError = document.querySelector(".input-error");
     if (primerError) {
       primerError.scrollIntoView({
