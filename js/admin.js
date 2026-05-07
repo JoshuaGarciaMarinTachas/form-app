@@ -17,7 +17,7 @@ import {
 
 const auth = getAuth();
 
-// 🔐 PROTEGER RUTA
+//  PROTEGER RUTA
 onAuthStateChanged(auth, (user) => {
   if (!user) {
     window.location.href = "login.html";
@@ -37,7 +37,7 @@ const thead = document.getElementById("thead");
 
 let dataGlobal = [];
 
-// 🔥 ORDEN DE COLUMNAS
+// ORDEN DE COLUMNAS
 const ordenColumnas = [
   "correo",
   "responsable",
@@ -50,7 +50,7 @@ const ordenColumnas = [
   "hora_fin",
 ];
 
-// 🔥 NOMBRES BONITOS
+//  NOMBRES BONITOS
 const nombresBonitos = {
   correo: "Correo",
   responsable: "Responsable",
@@ -64,7 +64,7 @@ const nombresBonitos = {
 };
 
 // ==========================
-// 📊 CARGAR TABLA
+//  CARGAR TABLA
 // ==========================
 async function cargarSolicitudes() {
   const snap = await getDocs(collection(db, "solicitudes"));
@@ -79,7 +79,7 @@ async function cargarSolicitudes() {
 }
 
 // ==========================
-// 🧠 RENDER TABLA
+//  RENDER TABLA
 // ==========================
 function renderTabla(data) {
   tbody.innerHTML = "";
@@ -102,7 +102,7 @@ function renderTabla(data) {
 
       const valor = row[col];
 
-      // 🔥 FORMATO VISUAL
+      //  FORMATO VISUAL
       if (Array.isArray(valor)) {
         td.textContent = valor.join(", ");
       } else if (typeof valor === "boolean") {
@@ -113,7 +113,7 @@ function renderTabla(data) {
 
       td.contentEditable = true;
 
-      // 🔥 EVITAR GUARDADO INNECESARIO
+      //  EVITAR GUARDADO INNECESARIO
       let valorOriginal = td.textContent;
 
       td.addEventListener("focus", () => {
@@ -121,31 +121,31 @@ function renderTabla(data) {
       });
 
       // ==========================
-      // 💾 GUARDAR CAMBIOS
+      // GUARDAR CAMBIOS
       // ==========================
       td.addEventListener("blur", async () => {
         if (td.textContent === valorOriginal) return;
 
         let nuevoValor = td.textContent.trim();
 
-        // 🔁 ARRAY
+        // ARRAY
         if (nuevoValor.includes(",")) {
           nuevoValor = nuevoValor.split(",").map((v) => v.trim());
         }
 
-        // 🔢 NÚMERO
+        // NÚMERO
         else if (!isNaN(nuevoValor) && nuevoValor !== "") {
           nuevoValor = Number(nuevoValor);
         }
 
-        // 🔘 BOOLEANO
+        // BOOLEANO
         else if (nuevoValor.toLowerCase() === "sí") {
           nuevoValor = true;
         } else if (nuevoValor.toLowerCase() === "no") {
           nuevoValor = false;
         }
 
-        // 🚫 NO GUARDAR VACÍOS
+        // NO GUARDAR VACÍOS
         if (nuevoValor === "" || nuevoValor === null) return;
 
         td.style.backgroundColor = "#fff3cd";
@@ -190,7 +190,7 @@ function renderTabla(data) {
 }
 
 // ==========================
-// 🔍 BUSCADOR
+//  BUSCADOR
 // ==========================
 function initBuscador() {
   const input = document.getElementById("buscador");
@@ -207,7 +207,7 @@ function initBuscador() {
 }
 
 // ==========================
-// ⚙️ CONFIG FORMULARIO
+// CONFIG FORMULARIO
 // ==========================
 function initConfig() {
   const toggle = document.getElementById("toggleForm");
@@ -227,7 +227,7 @@ function initConfig() {
 }
 
 // ==========================
-// 🔐 LOGOUT
+// LOGOUT
 // ==========================
 function initLogout() {
   document.getElementById("logout").onclick = async () => {
