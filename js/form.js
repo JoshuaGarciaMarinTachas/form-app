@@ -219,6 +219,18 @@ form.addEventListener("submit", async (e) => {
     return el && el.offsetParent !== null;
   };
 
+  const nombresCampos = {
+    correo: "Correo",
+    telefono: "Teléfono",
+    responsable: "Responsable",
+    nombre_evento: "Nombre del evento",
+    espacio: "Espacio solicitado",
+    hora_inicio: "Hora de inicio",
+    hora_fin: "Hora de fin",
+    fecha_evento: "Fecha del evento",
+    acudio_dep: "¿Acudió al departamento?",
+  };
+
   formularioData.campos.forEach((campo) => {
     if (campo.tipo === "auto_time") {
       data[campo.id] = new Date().toLocaleTimeString();
@@ -258,17 +270,18 @@ form.addEventListener("submit", async (e) => {
   ];
 
   let hayError = false;
+  let faltantes = [];
 
   //  VALIDAR CAMPOS OBLIGATORIOS
   obligatorios.forEach((id) => {
     const valor = data[id];
     const el = document.getElementById(id);
 
-    //  IGNORAR SI NO EXISTE O NO ESTÁ VISIBLE
     if (!el || !esVisible(el)) return;
 
     if (!valor || valor === "") {
       hayError = true;
+      faltantes.push(nombresCampos[id] || id);
       el.classList.add("input-error");
     } else {
       el.classList.remove("input-error");
@@ -281,6 +294,17 @@ form.addEventListener("submit", async (e) => {
 
   if (!acudio || acudio.checked === false) {
     hayError = true;
+    faltantes.push(nombresCampos["acudio_dep"]);
+
+    if (toggle) toggle.classList.add("input-error");
+  } else {
+    if (toggle) toggle.classList.remove("input-error");
+  }
+
+  const toggle = acudio?.nextElementSibling;
+
+  if (!acudio || acudio.checked === false) {
+    hayError = true;
     if (toggle) toggle.classList.add("input-error");
   } else {
     if (toggle) toggle.classList.remove("input-error");
@@ -288,7 +312,19 @@ form.addEventListener("submit", async (e) => {
 
   //  BLOQUEAR ENVÍO SI HAY ERROR
   if (hayError) {
-    alert("Completa todos los campos obligatorios");
+    const lista = faltantes.map((campo) => `- ${campo}`).join("\n");
+
+    alert(`Te faltan los siguientes campos:\n\n${lista}`);
+
+    // 🔥 SCROLL AL PRIMER ERROR
+    const primerError = document.querySelector(".input-error");
+    if (primerError) {
+      primerError.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+
     return;
   }
 
