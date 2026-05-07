@@ -37,6 +37,32 @@ const thead = document.getElementById("thead");
 
 let dataGlobal = [];
 
+// 🔥 ORDEN DE COLUMNAS
+const ordenColumnas = [
+  "correo",
+  "responsable",
+  "telefono",
+  "nombre_evento",
+  "espacio",
+  "personas",
+  "fecha_evento",
+  "hora_inicio",
+  "hora_fin",
+];
+
+// 🔥 NOMBRES BONITOS
+const nombresBonitos = {
+  correo: "Correo",
+  responsable: "Responsable",
+  telefono: "Teléfono",
+  nombre_evento: "Evento",
+  espacio: "Espacio",
+  personas: "Personas",
+  fecha_evento: "Fecha",
+  hora_inicio: "Inicio",
+  hora_fin: "Fin",
+};
+
 // ==========================
 // 📊 CARGAR TABLA
 // ==========================
@@ -61,11 +87,11 @@ function renderTabla(data) {
 
   if (data.length === 0) return;
 
-  const columnas = Object.keys(data[0]).filter((c) => c !== "id");
+  const columnas = ordenColumnas.filter((c) => c in data[0]);
 
   thead.innerHTML =
     "<tr>" +
-    columnas.map((c) => `<th>${c}</th>`).join("") +
+    columnas.map((c) => `<th>${nombresBonitos[c] || c}</th>`).join("") +
     "<th>Acciones</th></tr>";
 
   data.forEach((row) => {
@@ -73,19 +99,77 @@ function renderTabla(data) {
 
     columnas.forEach((col) => {
       const td = document.createElement("td");
-      td.textContent = row[col] ?? "";
+
+      const valor = row[col];
+
+      // 🔥 FORMATO VISUAL
+      if (Array.isArray(valor)) {
+        td.textContent = valor.join(", ");
+      } else if (typeof valor === "boolean") {
+        td.textContent = valor ? "Sí" : "No";
+      } else {
+        td.textContent = valor ?? "";
+      }
+
       td.contentEditable = true;
 
+      // 🔥 EVITAR GUARDADO INNECESARIO
+      let valorOriginal = td.textContent;
+
+      td.addEventListener("focus", () => {
+        valorOriginal = td.textContent;
+      });
+
+      // ==========================
+      // 💾 GUARDAR CAMBIOS
+      // ==========================
       td.addEventListener("blur", async () => {
-        await updateDoc(doc(db, "solicitudes", row.id), {
-          [col]: td.textContent,
-        });
+        if (td.textContent === valorOriginal) return;
+
+        let nuevoValor = td.textContent.trim();
+
+        // 🔁 ARRAY
+        if (nuevoValor.includes(",")) {
+          nuevoValor = nuevoValor.split(",").map((v) => v.trim());
+        }
+
+        // 🔢 NÚMERO
+        else if (!isNaN(nuevoValor) && nuevoValor !== "") {
+          nuevoValor = Number(nuevoValor);
+        }
+
+        // 🔘 BOOLEANO
+        else if (nuevoValor.toLowerCase() === "sí") {
+          nuevoValor = true;
+        } else if (nuevoValor.toLowerCase() === "no") {
+          nuevoValor = false;
+        }
+
+        // 🚫 NO GUARDAR VACÍOS
+        if (nuevoValor === "" || nuevoValor === null) return;
+
+        td.style.backgroundColor = "#fff3cd";
+
+        try {
+          await updateDoc(doc(db, "solicitudes", row.id), {
+            [col]: nuevoValor,
+          });
+
+          td.style.backgroundColor = "#d4edda";
+        } catch (err) {
+          console.error(err);
+          td.style.backgroundColor = "#f8d7da";
+        }
+
+        setTimeout(() => {
+          td.style.backgroundColor = "";
+        }, 800);
       });
 
       tr.appendChild(td);
     });
 
-    // 🔥 BOTÓN ELIMINAR
+    // 🗑 ELIMINAR
     const acciones = document.createElement("td");
 
     const btnDelete = document.createElement("button");
