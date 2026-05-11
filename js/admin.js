@@ -1,4 +1,4 @@
-import { db, app } from "./firebase.js"; // 🔥 IMPORTANTE
+import { db, app } from "./firebase.js"; // IMPORTANTE
 
 import {
   collection,
@@ -16,7 +16,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// 🔥 usar app
+
 const auth = getAuth(app);
 
 const tbody = document.getElementById("tbody");
@@ -55,7 +55,7 @@ const columnasNoEditables = ["correo"];
 const columnasNumericas = ["personas"];
 
 // ==========================
-// 🔐 PROTEGER RUTA + VALIDAR ADMIN
+//  PROTEGER RUTA + VALIDAR ADMIN
 // ==========================
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
@@ -104,10 +104,10 @@ async function cargarSolicitudes() {
       ...d.data(),
     }));
 
-    console.log("🔥 DATOS CARGADOS:", dataGlobal);
+    console.log(" DATOS CARGADOS:", dataGlobal);
 
     if (dataGlobal.length === 0) {
-      console.warn("⚠️ No hay datos en Firestore");
+      console.warn(" No hay datos en Firestore");
     }
 
     renderTabla(dataGlobal);
@@ -234,7 +234,7 @@ function renderTabla(data) {
 }
 
 // ==========================
-// 🔍 BUSCADOR MEJORADO
+//  BUSCADOR MEJORADO
 // ==========================
 function initBuscador() {
   const input = document.getElementById("buscador");
