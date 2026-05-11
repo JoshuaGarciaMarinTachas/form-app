@@ -6,7 +6,6 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// 🔥 usar app aquí
 const auth = getAuth(app);
 
 export async function login(email, pass) {
