@@ -1,4 +1,4 @@
-import { db } from "./firebase.js";
+import { db, app } from "./firebase.js"; // 🔥 IMPORTANTE
 
 import {
   collection,
@@ -16,7 +16,8 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const auth = getAuth();
+// 🔥 usar app
+const auth = getAuth(app);
 
 const tbody = document.getElementById("tbody");
 const thead = document.getElementById("thead");
@@ -63,7 +64,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   try {
-    // 🔥 validar si es admin en Firestore
     const ref = doc(db, "admins", user.email);
     const snap = await getDoc(ref);
 
@@ -76,8 +76,7 @@ onAuthStateChanged(auth, async (user) => {
 
     init();
   } catch (err) {
-    console.error(err);
-    alert("Error validando permisos");
+    console.error("Error validando admin:", err);
     await signOut(auth);
     window.location.href = "login.html";
   }
@@ -105,9 +104,15 @@ async function cargarSolicitudes() {
       ...d.data(),
     }));
 
+    console.log("🔥 DATOS CARGADOS:", dataGlobal);
+
+    if (dataGlobal.length === 0) {
+      console.warn("⚠️ No hay datos en Firestore");
+    }
+
     renderTabla(dataGlobal);
   } catch (err) {
-    console.error(err);
+    console.error("Error cargando solicitudes:", err);
     alert("Error cargando solicitudes");
   }
 }
@@ -119,7 +124,7 @@ function renderTabla(data) {
   tbody.innerHTML = "";
   thead.innerHTML = "";
 
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     thead.innerHTML = `
       <tr>
         <th>No hay datos</th>
@@ -201,9 +206,7 @@ function renderTabla(data) {
       tr.appendChild(td);
     });
 
-    // ==========================
     // ELIMINAR
-    // ==========================
     const acciones = document.createElement("td");
 
     const btnDelete = document.createElement("button");
@@ -215,7 +218,6 @@ function renderTabla(data) {
 
       try {
         await deleteDoc(doc(db, "solicitudes", row.id));
-
         tr.remove();
         dataGlobal = dataGlobal.filter((d) => d.id !== row.id);
       } catch (err) {
@@ -232,16 +234,27 @@ function renderTabla(data) {
 }
 
 // ==========================
-// BUSCADOR
+// 🔍 BUSCADOR MEJORADO
 // ==========================
 function initBuscador() {
   const input = document.getElementById("buscador");
 
   input.addEventListener("input", () => {
-    const texto = input.value.toLowerCase().trim();
+    const texto = input.value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
 
     const filtrado = dataGlobal.filter((row) =>
-      Object.values(row).some((v) => String(v).toLowerCase().includes(texto)),
+      Object.values(row).some((v) => {
+        if (v === null || v === undefined) return false;
+
+        return String(v)
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .includes(texto);
+      }),
     );
 
     renderTabla(filtrado);
