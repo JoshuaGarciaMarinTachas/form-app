@@ -1,4 +1,4 @@
-import { db, app } from "./firebase.js"; // 🔥 IMPORTANTE
+import { db, app } from "./js/firebase.js"; // 🔥 IMPORTANTE
 
 import {
   collection,
