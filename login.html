@@ -115,7 +115,7 @@
     </div>
 
     <script type="module">
-      import { login } from "./auth.js";
+      import { login } from "./js/auth.js";
 
       const emailInput = document.getElementById("email");
       const passInput = document.getElementById("pass");
@@ -136,7 +136,7 @@
         try {
           await login(email, pass);
 
-          console.log("LOGIN OK"); 
+          console.log("LOGIN OK");
 
           window.location.href = "admin.html";
         } catch (err) {
