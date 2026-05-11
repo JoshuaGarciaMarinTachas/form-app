@@ -50,22 +50,37 @@ const nombresBonitos = {
   hora_fin: "Fin",
 };
 
-// COLUMNAS NO EDITABLES
 const columnasNoEditables = ["correo"];
-
-// COLUMNAS NUMÉRICAS
 const columnasNumericas = ["personas"];
 
 // ==========================
-// PROTEGER RUTA
+// 🔐 PROTEGER RUTA + VALIDAR ADMIN
 // ==========================
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "login.html";
     return;
   }
 
-  init();
+  try {
+    // 🔥 validar si es admin en Firestore
+    const ref = doc(db, "admins", user.email);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      alert("No tienes permisos de administrador");
+      await signOut(auth);
+      window.location.href = "login.html";
+      return;
+    }
+
+    init();
+  } catch (err) {
+    console.error(err);
+    alert("Error validando permisos");
+    await signOut(auth);
+    window.location.href = "login.html";
+  }
 });
 
 // ==========================
@@ -110,7 +125,6 @@ function renderTabla(data) {
         <th>No hay datos</th>
       </tr>
     `;
-
     return;
   }
 
@@ -129,9 +143,6 @@ function renderTabla(data) {
 
       const valor = row[col];
 
-      // ==========================
-      // FORMATO VISUAL
-      // ==========================
       if (Array.isArray(valor)) {
         td.textContent = valor.join(", ");
       } else if (typeof valor === "boolean") {
@@ -140,9 +151,6 @@ function renderTabla(data) {
         td.textContent = valor ?? "";
       }
 
-      // ==========================
-      // EDITABLE
-      // ==========================
       td.contentEditable = !columnasNoEditables.includes(col);
 
       let valorOriginal = td.textContent;
@@ -151,31 +159,22 @@ function renderTabla(data) {
         valorOriginal = td.textContent;
       });
 
-      // ==========================
-      // GUARDAR CAMBIOS
-      // ==========================
       td.addEventListener("blur", async () => {
         if (columnasNoEditables.includes(col)) return;
-
         if (td.textContent === valorOriginal) return;
 
         let nuevoValor = td.textContent.trim();
 
-        // NO GUARDAR VACÍOS
         if (nuevoValor === "") {
           td.textContent = valorOriginal;
           return;
         }
 
-        // BOOLEANOS
         if (nuevoValor.toLowerCase() === "sí") {
           nuevoValor = true;
         } else if (nuevoValor.toLowerCase() === "no") {
           nuevoValor = false;
-        }
-
-        // NÚMEROS
-        else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
+        } else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
           nuevoValor = Number(nuevoValor);
         }
 
@@ -187,15 +186,10 @@ function renderTabla(data) {
           });
 
           td.style.backgroundColor = "#d4edda";
-
-          // ACTUALIZAR EN MEMORIA
           row[col] = nuevoValor;
         } catch (err) {
           console.error(err);
-
           td.style.backgroundColor = "#f8d7da";
-
-          // RESTAURAR VALOR ORIGINAL
           td.textContent = valorOriginal;
         }
 
@@ -213,19 +207,16 @@ function renderTabla(data) {
     const acciones = document.createElement("td");
 
     const btnDelete = document.createElement("button");
-
     btnDelete.textContent = "🗑";
 
     btnDelete.onclick = async () => {
       const confirmar = confirm("¿Eliminar solicitud?");
-
       if (!confirmar) return;
 
       try {
         await deleteDoc(doc(db, "solicitudes", row.id));
 
         tr.remove();
-
         dataGlobal = dataGlobal.filter((d) => d.id !== row.id);
       } catch (err) {
         console.error(err);
@@ -234,7 +225,6 @@ function renderTabla(data) {
     };
 
     acciones.appendChild(btnDelete);
-
     tr.appendChild(acciones);
 
     tbody.appendChild(tr);
@@ -263,7 +253,6 @@ function initBuscador() {
 // ==========================
 function initConfig() {
   const toggle = document.getElementById("toggleForm");
-
   const ref = doc(db, "config", "formulario");
 
   getDoc(ref)
@@ -272,9 +261,7 @@ function initConfig() {
         toggle.checked = snap.data().habilitado;
       }
     })
-    .catch((err) => {
-      console.error(err);
-    });
+    .catch(console.error);
 
   toggle.addEventListener("change", async () => {
     try {
@@ -297,7 +284,6 @@ function initLogout() {
   logoutBtn.onclick = async () => {
     try {
       await signOut(auth);
-
       window.location.href = "login.html";
     } catch (err) {
       console.error(err);
