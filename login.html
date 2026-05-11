@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Login Admin</title>
-    try { await login(email, pass); console.log("LOGIN OK"); // 👈 AGREGA ESTO
-    window.location.href = "admin.html"; } catch (err) { console.error(err);
-    alert("Correo o contraseña incorrectos"); }
+
     <style>
       * {
         box-sizing: border-box;
@@ -137,6 +135,8 @@
 
         try {
           await login(email, pass);
+
+          console.log("LOGIN OK"); // 👈 AQUÍ VA
 
           window.location.href = "admin.html";
         } catch (err) {
