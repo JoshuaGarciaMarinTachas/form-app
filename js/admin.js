@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Admin cargando...");
-  const tbody = document.getElementById("tablaBody");
-  const thead = document.getElementById("thead");
 
-  // Verifica si los elementos existen
+  // ✅ CORREGIDO
+  const tbody = document.getElementById("tbody");
+  const thead = document.querySelector("thead");
+
   if (!tbody || !thead) {
     console.error("No se encontraron los elementos 'tbody' o 'thead'");
     return;
@@ -11,9 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let dataGlobal = [];
 
-  // ==========================
-  // COLUMNAS
-  // ==========================
   const ordenColumnas = [
     "prioridad",
     "correo",
@@ -43,16 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const columnasNoEditables = ["correo"];
   const columnasNumericas = ["personas"];
 
-  // ==========================
-  //  PROTEGER RUTA + VALIDAR ADMIN
-  // ==========================
   onAuthStateChanged(auth, async (user) => {
-    console.log("USER:", user);
     if (!user) {
-      console.error("NO HAY USUARIO LOGUEADO");
-
       alert("NO HAY USUARIO LOGUEADO");
-
       return;
     }
 
@@ -62,8 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!snap.exists()) {
         alert("No tienes permisos de administrador");
-        // await signOut(auth);
-        // window.location.href = "login.html";
         return;
       }
 
@@ -75,9 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // ==========================
-  // INIT
-  // ==========================
   function init() {
     cargarSolicitudes();
     initConfig();
@@ -85,9 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
     initBuscador();
   }
 
-  // ==========================
-  // CARGAR SOLICITUDES
-  // ==========================
   async function cargarSolicitudes() {
     try {
       const snap = await getDocs(collection(db, "solicitudes"));
@@ -100,14 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .sort((a, b) => {
           const fechaA = new Date(`${a.fecha_evento} ${a.hora_inicio}`);
           const fechaB = new Date(`${b.fecha_evento} ${b.hora_inicio}`);
-
           return fechaA - fechaB;
         });
-      console.log(" DATOS CARGADOS:", dataGlobal);
-
-      if (dataGlobal.length === 0) {
-        console.warn(" No hay datos en Firestore");
-      }
 
       renderTabla(dataGlobal);
     } catch (err) {
@@ -116,19 +93,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ==========================
-  // RENDER TABLA
-  // ==========================
   function renderTabla(data) {
     tbody.innerHTML = "";
     thead.innerHTML = "";
 
     if (!data || data.length === 0) {
-      thead.innerHTML = `
-        <tr>
-          <th>No hay datos</th>
-        </tr>
-      `;
+      thead.innerHTML = `<tr><th>No hay datos</th></tr>`;
       return;
     }
 
@@ -147,24 +117,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (col === "prioridad") {
           const prioridad = obtenerPrioridad(row.fecha_evento);
-
-          td.innerHTML = `
-            <span class="prioridad ${prioridad.clase}">
-              ${prioridad.texto}
-            </span>
-          `;
+          td.innerHTML = `<span class="prioridad ${prioridad.clase}">${prioridad.texto}</span>`;
           tr.appendChild(td);
           return;
         }
 
-        const valor = row[col];
+        let valor = row[col];
 
         if (Array.isArray(valor)) {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
         } else {
-          // Si el valor es null o undefined, lo mostramos como una celda vacía
           td.textContent = valor ?? "";
         }
 
@@ -210,24 +174,20 @@ document.addEventListener("DOMContentLoaded", function () {
             td.textContent = valorOriginal;
           }
 
-          setTimeout(() => {
-            td.style.backgroundColor = "";
-          }, 800);
+          setTimeout(() => (td.style.backgroundColor = ""), 800);
         });
 
         tr.appendChild(td);
       });
 
-      // ELIMINAR
       const acciones = document.createElement("td");
-
       const btnDelete = document.createElement("button");
+
       btnDelete.textContent = "Eliminar";
       btnDelete.classList.add("action-btn", "delete-btn");
 
       btnDelete.onclick = async () => {
-        const confirmar = confirm("¿Eliminar solicitud?");
-        if (!confirmar) return;
+        if (!confirm("¿Eliminar solicitud?")) return;
 
         try {
           await deleteDoc(doc(db, "solicitudes", row.id));
@@ -241,14 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       acciones.appendChild(btnDelete);
       tr.appendChild(acciones);
-
       tbody.appendChild(tr);
     });
   }
 
-  // ==========================
-  // BUSCADOR MEJORADO
-  // ==========================
   function initBuscador() {
     const input = document.getElementById("buscador");
 
@@ -259,41 +215,32 @@ document.addEventListener("DOMContentLoaded", function () {
         .replace(/[\u0300-\u036f]/g, "");
 
       const filtrado = dataGlobal.filter((row) =>
-        Object.values(row).some((v) => {
-          if (v === null || v === undefined) return false;
-
-          return String(v)
+        Object.values(row).some((v) =>
+          String(v ?? "")
             .toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
-            .includes(texto);
-        }),
+            .includes(texto),
+        ),
       );
 
       renderTabla(filtrado);
     });
   }
 
-  // ==========================
-  // CONFIG FORMULARIO
-  // ==========================
   function initConfig() {
     const toggle = document.getElementById("toggleForm");
     const ref = doc(db, "config", "formulario");
 
-    getDoc(ref)
-      .then((snap) => {
-        if (snap.exists()) {
-          toggle.checked = snap.data().habilitado;
-        }
-      })
-      .catch(console.error);
+    getDoc(ref).then((snap) => {
+      if (snap.exists()) {
+        toggle.checked = snap.data().habilitado;
+      }
+    });
 
     toggle.addEventListener("change", async () => {
       try {
-        await setDoc(ref, {
-          habilitado: toggle.checked,
-        });
+        await setDoc(ref, { habilitado: toggle.checked });
       } catch (err) {
         console.error(err);
         alert("Error guardando configuración");
@@ -301,9 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ==========================
-  // LOGOUT
-  // ==========================
   function initLogout() {
     const logoutBtn = document.getElementById("logout");
 
