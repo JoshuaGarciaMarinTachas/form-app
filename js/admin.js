@@ -186,11 +186,10 @@ function renderTabla(data) {
         const prioridad = obtenerPrioridad(row.fecha_evento);
 
         td.innerHTML = `
-    <span class="prioridad ${prioridad.clase}">
-      ${prioridad.texto}
-    </span>
-  `;
-
+          <span class="prioridad ${prioridad.clase}">
+            ${prioridad.texto}
+          </span>
+        `;
         tr.appendChild(td);
         return;
       }
@@ -202,6 +201,7 @@ function renderTabla(data) {
       } else if (typeof valor === "boolean") {
         td.textContent = valor ? "Sí" : "No";
       } else {
+        // Si el valor es null o undefined, lo mostramos como una celda vacía
         td.textContent = valor ?? "";
       }
 

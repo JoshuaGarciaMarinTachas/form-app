@@ -1,9 +1,9 @@
 <!doctype html>
+<html lang="es">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Panel Administrativo</title>
-
     <link rel="stylesheet" href="./css/admin.css" />
   </head>
 
@@ -13,17 +13,11 @@
       <aside class="sidebar">
         <div>
           <h2>Admin Panel</h2>
-
           <nav>
-            <button class="menu-btn active">
-              Solicitudes
-            </button>
+            <button class="menu-btn active">Solicitudes</button>
           </nav>
         </div>
-
-        <button id="logout" class="logout-btn">
-          Cerrar sesión
-        </button>
+        <button id="logout" class="logout-btn">Cerrar sesión</button>
       </aside>
 
       <!-- CONTENIDO -->
@@ -31,33 +25,25 @@
         <header class="topbar">
           <div>
             <h1>Solicitudes de Eventos</h1>
-            <p>
-              Gestión y administración de eventos
-            </p>
+            <p>Gestión y administración de eventos</p>
           </div>
         </header>
 
         <section class="controls">
           <div class="status-card">
+            <div class="status-info">
+              <span class="status-label"> Recepción de solicitudes </span>
+              <p class="status-description">
+                Controla si los usuarios pueden enviar nuevas solicitudes de
+                eventos.
+              </p>
+            </div>
 
-        <div class="status-info">
-          <span class="status-label">
-            Recepción de solicitudes
-          </span>
-
-          <p class="status-description">
-            Controla si los usuarios pueden enviar
-            nuevas solicitudes de eventos.
-          </p>
-        </div>
-
-        <label class="switch">
-          <input type="checkbox" id="toggleForm" />
-
-          <span class="slider"></span>
-        </label>
-
-      </div>
+            <label class="switch">
+              <input type="checkbox" id="toggleForm" />
+              <span class="slider"></span>
+            </label>
+          </div>
 
           <input
             type="text"
@@ -69,8 +55,43 @@
 
         <section class="tabla-wrapper">
           <table>
-            <thead id="thead"></thead>
-            <tbody id="tbody"></tbody>
+            <thead>
+              <tr>
+                <th>Correo</th>
+                <th>Responsable del evento</th>
+                <th>Nombre del evento</th>
+                <th>Cargo del responsable</th>
+                <th>Administrativo</th>
+                <th>Unidad de aprendizaje</th>
+                <th>¿Fue sometido a consejo?</th>
+                <th>¿Dura más de un día?</th>
+                <th>Fecha de aprobación</th>
+                <th>Fecha del evento</th>
+                <th>Fecha inicio</th>
+                <th>Fecha fin</th>
+                <th>Hora inicio</th>
+                <th>Hora fin</th>
+                <th>¿Asiste gente externa?</th>
+                <th>¿Asiste gente con discapacidad?</th>
+                <th>Espacio solicitado</th>
+                <th>Número aproximado de personas</th>
+                <th>Montaje</th>
+                <th>Laptop</th>
+                <th>Sonido</th>
+                <th>Proyector</th>
+                <th>Extensiones</th>
+                <th>Sonido móvil</th>
+                <th>Mamparas</th>
+                <th>Personificadores</th>
+                <th>Logística del evento</th>
+                <th>Lista de asistencia</th>
+                <th>Fotografía</th>
+                <th>Maestro de ceremonias</th>
+              </tr>
+            </thead>
+            <tbody id="tablaBody">
+              <!-- Las filas se agregarán aquí dinámicamente -->
+            </tbody>
           </table>
         </section>
       </main>

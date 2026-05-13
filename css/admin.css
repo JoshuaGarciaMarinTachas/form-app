@@ -41,19 +41,13 @@ body {
 
 .menu-btn {
   width: 100%;
-
   padding: 12px;
-
   border: none;
   border-radius: 10px;
-
   background: #1f2937;
   color: white;
-
   text-align: left;
-
   cursor: pointer;
-
   transition: 0.2s;
 }
 
@@ -64,15 +58,11 @@ body {
 
 .logout-btn {
   width: 100%;
-
   padding: 12px;
-
   border: none;
   border-radius: 10px;
-
   background: #dc2626;
   color: white;
-
   cursor: pointer;
 }
 
@@ -87,7 +77,6 @@ body {
 .main-content {
   flex: 1;
   padding: 25px;
-
   overflow-x: auto;
 }
 
@@ -112,11 +101,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   gap: 15px;
-
   flex-wrap: wrap;
-
   margin-bottom: 20px;
 }
 
@@ -128,12 +114,9 @@ body {
 
 #buscador {
   width: 320px;
-
   padding: 12px;
-
   border: 1px solid #ccc;
   border-radius: 10px;
-
   outline: none;
 }
 
@@ -147,11 +130,8 @@ body {
 
 .tabla-wrapper {
   background: white;
-
   border-radius: 16px;
-
   overflow: auto;
-
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
@@ -164,10 +144,8 @@ table {
 th {
   background: #111827;
   color: white;
-
   position: sticky;
   top: 0;
-
   z-index: 2;
 }
 
@@ -221,12 +199,9 @@ td:focus {
 
 .action-btn {
   padding: 8px 12px;
-
   border: none;
   border-radius: 8px;
-
   cursor: pointer;
-
   color: white;
 }
 
@@ -254,6 +229,16 @@ td:focus {
   #buscador {
     width: 100%;
   }
+
+  table {
+    min-width: auto;
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
 }
 
 /* =========================
@@ -264,17 +249,11 @@ td:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 20px;
-
   background: white;
-
   padding: 18px 20px;
-
   border-radius: 16px;
-
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-
   min-width: 320px;
 }
 
@@ -290,11 +269,8 @@ td:focus {
 
 .status-description {
   margin-top: 4px;
-
   font-size: 13px;
-
   color: #666;
-
   line-height: 1.4;
 }
 
@@ -302,10 +278,8 @@ td:focus {
 
 .switch {
   position: relative;
-
   width: 64px;
   height: 34px;
-
   display: inline-block;
 }
 
@@ -317,35 +291,23 @@ td:focus {
 
 .slider {
   position: absolute;
-
   cursor: pointer;
-
   inset: 0;
-
   background-color: #d1d5db;
-
   transition: 0.3s;
-
   border-radius: 999px;
 }
 
 .slider::before {
   content: "";
-
   position: absolute;
-
   height: 26px;
   width: 26px;
-
   left: 4px;
   bottom: 4px;
-
   background: white;
-
   transition: 0.3s;
-
   border-radius: 50%;
-
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -355,4 +317,50 @@ td:focus {
 
 .switch input:checked + .slider::before {
   transform: translateX(30px);
+}
+
+/* =========================
+   Celdas vacías
+========================= */
+
+td:empty {
+  background-color: #f0f0f0; /* Color suave para celdas vacías */
+  color: #aaa; /* Color más suave para texto */
+  font-style: italic; /* Opcional: estilo de texto */
+}
+
+/* =========================
+   Fila de tabla al pasar el ratón
+========================= */
+
+tbody tr:hover {
+  background: #f1f5f9; /* Fondo más suave al pasar el ratón */
+  cursor: pointer; /* Cambia el cursor al pasar por una fila */
+}
+
+/* =========================
+   Foco en celdas editables
+========================= */
+
+td[contenteditable="true"] {
+  background: #f9fafb;
+  border: 2px solid #2563eb; /* Borde azul cuando es editable */
+  cursor: text; /* Muestra un cursor de texto */
+}
+
+td:focus {
+  outline: 2px solid #2563eb;
+  background: #eff6ff; /* Fondo suave cuando la celda está enfocada */
+}
+
+/* =========================
+   Botones de acción
+========================= */
+
+.action-btn:focus {
+  outline: 2px solid #2563eb; /* Añadir borde azul al enfocar el botón */
+}
+
+.delete-btn:focus {
+  outline: 2px solid #b91c1c; /* Borde rojo cuando el botón de eliminar está enfocado */
 }
