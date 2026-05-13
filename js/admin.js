@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const columnas = ordenColumnas.filter((c) => c in data[0]);
+    const columnas = Object.keys(data[0]);
 
     thead.innerHTML =
       "<tr>" +
@@ -147,12 +147,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let valor = row[col];
 
-        if (Array.isArray(valor)) {
+        if (valor === null || valor === undefined) {
+          td.innerHTML = `<span class="empty">—</span>`;
+        } else if (Array.isArray(valor)) {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
+        } else if (typeof valor === "object") {
+          td.textContent = Object.entries(valor)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join(" | ");
         } else {
-          td.textContent = valor ?? "";
+          td.textContent = valor;
         }
 
         td.contentEditable = !columnasNoEditables.includes(col);

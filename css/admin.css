@@ -364,3 +364,8 @@ td:focus {
 .delete-btn:focus {
   outline: 2px solid #b91c1c; /* Borde rojo cuando el botón de eliminar está enfocado */
 }
+
+.empty {
+  color: #999;
+  font-style: italic;
+}
