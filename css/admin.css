@@ -350,7 +350,7 @@ td:focus {
 }
 
 .switch input:checked + .slider {
-  background-color: #2563eb;
+  background-color: #afb715;
 }
 
 .switch input:checked + .slider::before {
