@@ -344,7 +344,7 @@ tbody tr:hover {
 
 td[contenteditable="true"] {
   background: #f9fafb;
-  border: 2px solid #2563eb; /* Borde azul cuando es editable */
+  border: 2px solid #ffffff; /* Borde azul cuando es editable */
   cursor: text; /* Muestra un cursor de texto */
 }
 
