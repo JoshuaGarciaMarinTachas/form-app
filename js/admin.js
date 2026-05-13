@@ -1,25 +1,9 @@
-import { db, auth } from "./firebase.js";
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  setDoc,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-import {
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   console.log("Admin cargando...");
-
-  const tbody = document.getElementById("tbody");
+  const tbody = document.getElementById("tablaBody");
   const thead = document.getElementById("thead");
 
+  // Verifica si los elementos existen
   if (!tbody || !thead) {
     console.error("No se encontraron los elementos 'tbody' o 'thead'");
     return;
@@ -78,11 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!snap.exists()) {
         alert("No tienes permisos de administrador");
-        /*
-        await signOut(auth);
-        window.location.href = "login.html";
+        // await signOut(auth);
+        // window.location.href = "login.html";
         return;
-        */
       }
 
       init();
@@ -132,32 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error cargando solicitudes:", err);
       alert("Error cargando solicitudes");
     }
-  }
-
-  function obtenerPrioridad(fechaEvento) {
-    const hoy = new Date();
-    const evento = new Date(fechaEvento);
-
-    const diferencia = Math.ceil((evento - hoy) / (1000 * 60 * 60 * 24));
-
-    if (diferencia <= 3) {
-      return {
-        texto: "ALTA",
-        clase: "alta",
-      };
-    }
-
-    if (diferencia <= 7) {
-      return {
-        texto: "MEDIA",
-        clase: "media",
-      };
-    }
-
-    return {
-      texto: "BAJA",
-      clase: "baja",
-    };
   }
 
   // ==========================
@@ -291,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================
-  //  BUSCADOR MEJORADO
+  // BUSCADOR MEJORADO
   // ==========================
   function initBuscador() {
     const input = document.getElementById("buscador");
