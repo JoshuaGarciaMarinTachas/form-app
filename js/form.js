@@ -3,6 +3,8 @@ import { db } from "./firebase.js";
 import {
   collection,
   addDoc,
+  doc,
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { formularioData } from "./formConfig.js";
@@ -331,11 +333,32 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
+    // =========================
+    // VALIDAR SI FORMULARIO ESTÁ ACTIVO
+    // =========================
+
+    const configRef = doc(db, "config", "formulario");
+
+    const configSnap = await getDoc(configRef);
+
+    if (configSnap.exists() && !configSnap.data().habilitado) {
+      alert("La recepción de solicitudes está deshabilitada temporalmente");
+
+      return;
+    }
+
+    // =========================
+    // ENVIAR SOLICITUD
+    // =========================
+
     await addDoc(collection(db, "solicitudes"), data);
+
     alert("Solicitud enviada correctamente");
+
     form.reset();
   } catch (err) {
     console.error(err);
+
     alert("Error al enviar");
   }
 });
