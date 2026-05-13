@@ -38,13 +38,26 @@
         </header>
 
         <section class="controls">
-          <div class="control-item">
-            <label for="toggleForm">
-              Formulario activo
-            </label>
+          <div class="status-card">
 
-            <input type="checkbox" id="toggleForm" />
-          </div>
+        <div class="status-info">
+          <span class="status-label">
+            Recepción de solicitudes
+          </span>
+
+          <p class="status-description">
+            Controla si los usuarios pueden enviar
+            nuevas solicitudes de eventos.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input type="checkbox" id="toggleForm" />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
 
           <input
             type="text"
