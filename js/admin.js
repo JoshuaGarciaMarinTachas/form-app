@@ -49,16 +49,35 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   const nombresBonitos = {
-    prioridad: "Prioridad",
-    correo: "Correo",
-    responsable: "Responsable",
-    telefono: "Teléfono",
     nombre_evento: "Evento",
-    espacio: "Espacio",
-    personas: "Personas",
-    fecha_evento: "Fecha",
+    responsable: "Responsable",
+    cargo_responsable: "Cargo",
+    correo: "Correo",
+    telefono: "Teléfono",
+    unidad: "Unidad",
+
+    fecha_evento: "Fecha del evento",
     hora_inicio: "Inicio",
     hora_fin: "Fin",
+    multi_dia: "¿Varios días?",
+    fecha_inicio: "Inicio (día)",
+    fecha_fin: "Fin (día)",
+
+    espacio: "Espacio",
+    personas: "Personas",
+    externos: "¿Externos?",
+    discapacidad: "¿Discapacidad?",
+
+    descripcion: "Descripción",
+    observaciones: "Observaciones",
+
+    materiales: "Materiales",
+    humanos: "Apoyo humano",
+    personificadores: "Personificadores",
+    sonido: "Sonido",
+
+    fecha_aprobacion: "Aprobación",
+    fecha_llenado: "Registro",
   };
 
   const columnasNoEditables = ["correo"];
@@ -125,7 +144,39 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const columnas = Object.keys(data[0]);
+    const columnasOrdenadas = [
+      "nombre_evento",
+      "responsable",
+      "cargo_responsable",
+      "correo",
+      "telefono",
+      "unidad",
+
+      "fecha_evento",
+      "hora_inicio",
+      "hora_fin",
+      "multi_dia",
+      "fecha_inicio",
+      "fecha_fin",
+
+      "espacio",
+      "personas",
+      "externos",
+      "discapacidad",
+
+      "descripcion",
+      "observaciones",
+
+      "materiales",
+      "humanos",
+      "personificadores",
+      "sonido",
+
+      "fecha_aprobacion",
+      "fecha_llenado",
+    ];
+
+    const columnas = columnasOrdenadas.filter((c) => c in data[0]);
 
     thead.innerHTML =
       "<tr>" +
@@ -153,10 +204,32 @@ document.addEventListener("DOMContentLoaded", function () {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
-        } else if (typeof valor === "object") {
-          td.textContent = Object.entries(valor)
-            .map(([k, v]) => `${k}: ${v}`)
-            .join(" | ");
+        } else if (col === "humanos" && Array.isArray(valor)) {
+          td.innerHTML = valor.length
+            ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
+            : `<span class="empty">—</span>`;
+        } else if (col === "materiales" && Array.isArray(valor)) {
+          td.innerHTML = valor.length
+            ? valor
+                .map((v) => `<span class="tag material">${v}</span>`)
+                .join("")
+            : `<span class="empty">—</span>`;
+        } else if (col === "personificadores" && typeof valor === "object") {
+          if (valor.activo) {
+            td.innerHTML = `<span class="tag">Sí (${valor.cantidad})</span>`;
+          } else {
+            td.innerHTML = `<span class="empty">No requerido</span>`;
+          }
+        } else if (col === "sonido" && typeof valor === "object") {
+          if (valor.activo) {
+            td.innerHTML = `
+      <span class="tag">Sí</span>
+      ${valor.bocina ? `<span class="tag">Bocina</span>` : ""}
+      ${valor.microfonos ? `<span class="tag">${valor.microfonos} mic</span>` : ""}
+    `;
+          } else {
+            td.innerHTML = `<span class="empty">No requerido</span>`;
+          }
         } else {
           td.textContent = valor;
         }

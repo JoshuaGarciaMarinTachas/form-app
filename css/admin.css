@@ -369,3 +369,23 @@ td:focus {
   color: #999;
   font-style: italic;
 }
+
+.tag {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #0d47a1;
+  padding: 3px 8px;
+  margin: 2px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.tag.material {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
+}
