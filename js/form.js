@@ -337,13 +337,13 @@ form.addEventListener("submit", async (e) => {
     // VALIDAR SI FORMULARIO ESTÁ ACTIVO
     // =========================
 
+    // VERIFICAR FORMULARIO ACTIVO
     const configRef = doc(db, "config", "formulario");
-
     const configSnap = await getDoc(configRef);
 
-    if (configSnap.exists() && !configSnap.data().habilitado) {
+    // Si no existe o está deshabilitado → bloquear
+    if (!configSnap.exists() || !configSnap.data()?.habilitado) {
       alert("La recepción de solicitudes está deshabilitada temporalmente");
-
       return;
     }
 
