@@ -17,7 +17,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 import { auth } from "./firebase.js";
-
+console.log("Admin cargando...");
 const tbody = document.getElementById("tbody");
 const thead = document.getElementById("thead");
 
@@ -59,8 +59,12 @@ const columnasNumericas = ["personas"];
 //  PROTEGER RUTA + VALIDAR ADMIN
 // ==========================
 onAuthStateChanged(auth, async (user) => {
+  console.log("USER:", user);
   if (!user) {
-    window.location.href = "login.html";
+    console.error("NO HAY USUARIO LOGUEADO");
+
+    alert("NO HAY USUARIO LOGUEADO");
+
     return;
   }
 
@@ -70,9 +74,11 @@ onAuthStateChanged(auth, async (user) => {
 
     if (!snap.exists()) {
       alert("No tienes permisos de administrador");
+      /*
       await signOut(auth);
       window.location.href = "login.html";
       return;
+      */
     }
 
     init();
