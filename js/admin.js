@@ -16,7 +16,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const auth = getAuth(app);
+import { auth } from "./firebase.js";
 
 const tbody = document.getElementById("tbody");
 const thead = document.getElementById("thead");
