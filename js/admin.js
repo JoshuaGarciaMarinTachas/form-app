@@ -1,5 +1,5 @@
 import { db, app } from "./firebase.js"; // IMPORTANTE
-
+import { db, auth } from "./firebase.js";
 import {
   collection,
   getDocs,
@@ -11,7 +11,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import {
-  getAuth,
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";

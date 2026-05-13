@@ -2,8 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 
 import {
   getAuth,
+  browserSessionPersistence,
   setPersistence,
-  browserLocalPersistence,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -21,7 +21,7 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-await setPersistence(auth, browserLocalPersistence);
+setPersistence(auth, browserSessionPersistence);
 
 const db = getFirestore(app);
 
