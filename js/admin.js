@@ -1,3 +1,26 @@
+import { app } from "./firebase.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDoc,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Inicializar
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Admin cargando...");
 
