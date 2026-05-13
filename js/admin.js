@@ -80,7 +80,7 @@ onAuthStateChanged(auth, async (user) => {
 
     init();
   } catch (err) {
-    console.error("Error validando admin:", err);
+    console.error("Error validando admin:", err.message);
     await signOut(auth);
     window.location.href = "login.html";
   }
