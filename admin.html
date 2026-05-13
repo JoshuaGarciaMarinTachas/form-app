@@ -1,9 +1,5 @@
 <!doctype html>
-<html lang="es">
-  <head>
     <meta charset="UTF-8" />
-
-    <!-- RESPONSIVE -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Panel Administrativo</title>
@@ -12,31 +8,60 @@
   </head>
 
   <body>
-    <header>
-      <h1>Panel Administrativo</h1>
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div>
+          <h2>Admin Panel</h2>
 
-      <button id="logout" type="button">Cerrar sesión</button>
-    </header>
+          <nav>
+            <button class="menu-btn active">
+              Solicitudes
+            </button>
+          </nav>
+        </div>
 
-    <section class="controls">
-      <label for="toggleForm"> Formulario activo </label>
+        <button id="logout" class="logout-btn">
+          Cerrar sesión
+        </button>
+      </aside>
 
-      <input type="checkbox" id="toggleForm" />
+      <!-- CONTENIDO -->
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <h1>Solicitudes de Eventos</h1>
+            <p>
+              Gestión y administración de eventos
+            </p>
+          </div>
+        </header>
 
-      <input
-        type="text"
-        id="buscador"
-        placeholder="Buscar..."
-        autocomplete="off"
-      />
-    </section>
+        <section class="controls">
+          <div class="control-item">
+            <label for="toggleForm">
+              Formulario activo
+            </label>
 
-    <section class="tabla-container">
-      <table>
-        <thead id="thead"></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </section>
+            <input type="checkbox" id="toggleForm" />
+          </div>
+
+          <input
+            type="text"
+            id="buscador"
+            placeholder="Buscar evento..."
+            autocomplete="off"
+          />
+        </section>
+
+        <section class="tabla-wrapper">
+          <table>
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
 
     <script type="module" src="./js/admin.js"></script>
   </body>

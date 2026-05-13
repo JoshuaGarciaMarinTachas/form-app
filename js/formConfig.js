@@ -79,7 +79,7 @@ export const formularioData = {
 
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
-    // 🔥 CONTROLADO POR JS
+    // 
     {
       id: "fecha_inicio",
       label: "Fecha inicio",

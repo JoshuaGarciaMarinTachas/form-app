@@ -16,7 +16,6 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-
 const auth = getAuth(app);
 
 const tbody = document.getElementById("tbody");
@@ -28,6 +27,7 @@ let dataGlobal = [];
 // COLUMNAS
 // ==========================
 const ordenColumnas = [
+  "prioridad",
   "correo",
   "responsable",
   "telefono",
@@ -40,6 +40,7 @@ const ordenColumnas = [
 ];
 
 const nombresBonitos = {
+  prioridad: "Prioridad",
   correo: "Correo",
   responsable: "Responsable",
   telefono: "Teléfono",
@@ -99,11 +100,17 @@ async function cargarSolicitudes() {
   try {
     const snap = await getDocs(collection(db, "solicitudes"));
 
-    dataGlobal = snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data(),
-    }));
+    dataGlobal = snap.docs
+      .map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }))
+      .sort((a, b) => {
+        const fechaA = new Date(`${a.fecha_evento} ${a.hora_inicio}`);
+        const fechaB = new Date(`${b.fecha_evento} ${b.hora_inicio}`);
 
+        return fechaA - fechaB;
+      });
     console.log(" DATOS CARGADOS:", dataGlobal);
 
     if (dataGlobal.length === 0) {
@@ -115,6 +122,32 @@ async function cargarSolicitudes() {
     console.error("Error cargando solicitudes:", err);
     alert("Error cargando solicitudes");
   }
+}
+
+function obtenerPrioridad(fechaEvento) {
+  const hoy = new Date();
+  const evento = new Date(fechaEvento);
+
+  const diferencia = Math.ceil((evento - hoy) / (1000 * 60 * 60 * 24));
+
+  if (diferencia <= 3) {
+    return {
+      texto: "ALTA",
+      clase: "alta",
+    };
+  }
+
+  if (diferencia <= 7) {
+    return {
+      texto: "MEDIA",
+      clase: "media",
+    };
+  }
+
+  return {
+    texto: "BAJA",
+    clase: "baja",
+  };
 }
 
 // ==========================
@@ -145,6 +178,19 @@ function renderTabla(data) {
 
     columnas.forEach((col) => {
       const td = document.createElement("td");
+
+      if (col === "prioridad") {
+        const prioridad = obtenerPrioridad(row.fecha_evento);
+
+        td.innerHTML = `
+    <span class="prioridad ${prioridad.clase}">
+      ${prioridad.texto}
+    </span>
+  `;
+
+        tr.appendChild(td);
+        return;
+      }
 
       const valor = row[col];
 
@@ -210,7 +256,8 @@ function renderTabla(data) {
     const acciones = document.createElement("td");
 
     const btnDelete = document.createElement("button");
-    btnDelete.textContent = "🗑";
+    btnDelete.textContent = "Eliminar";
+    btnDelete.classList.add("action-btn", "delete-btn");
 
     btnDelete.onclick = async () => {
       const confirmar = confirm("¿Eliminar solicitud?");
