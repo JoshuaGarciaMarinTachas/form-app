@@ -222,15 +222,15 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (col === "materiales") {
           if (typeof valor === "object") {
             const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true) // solo checkbox marcados
-              .map(([k]) => formatearNombre(k)) // aplica tu "nombre bonito"
-              .filter((v) => v !== "" && v.toLowerCase() !== "on"); // <--- FILTRO DEFINITIVO
+              .filter(([_, v]) => v === true) // solo seleccionamos los elementos "marcados"
+              .map(([k]) => formatearNombre(k)) // aplica "nombre bonito"
+              .filter((v) => v !== "" && v !== "on"); // eliminamos cualquier valor "on" o vacío
 
             td.innerHTML = activos.length
               ? activos
                   .map((v) => `<span class="tag material">${v}</span>`)
-                  .join("")
-              : `<span class="empty">No requerido</span>`;
+                  .join(", ") // unimos los materiales seleccionados por coma
+              : `<span class="empty">No requerido</span>`; // si no hay materiales, mostramos esto
           }
         } else if (col === "personificadores") {
           if (valor?.activo) {
