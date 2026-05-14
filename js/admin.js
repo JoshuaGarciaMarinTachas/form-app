@@ -138,17 +138,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function formatearNombre(key) {
     const nombres = {
       laptop: "Laptop",
-      sonido: "Sonido",
-      microfonos: "Micrófonos",
-      bocina: "Bocina",
       proyector: "Proyector",
       extensiones: "Extensiones",
       sonido_movil: "Sonido móvil",
       mamparas: "Mamparas",
-      personificadores: "Personificadores",
     };
-    // Si la clave no tiene un nombre asignado, devolvemos una cadena vacía
-    return nombres[key] || ""; // Si no tiene nombre, regresa una cadena vacía
+
+    // Si el valor es "on" o "true" pero no está en la lista de materiales, devuelve un valor vacío
+    return nombres[key] || "";
   }
 
   function renderTabla(data) {
@@ -209,7 +206,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let valor = row[col];
 
-        if (valor === null || valor === undefined) {
+        // Si el valor es un "on" (checkbox o true), lo reemplazamos por una cadena vacía
+        if (valor === "on" || valor === true) {
+          td.innerHTML = "";
+        } else if (valor === null || valor === undefined) {
           td.innerHTML = `<span class="empty">—</span>`;
         } else if (Array.isArray(valor)) {
           td.textContent = valor.join(", ");
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (typeof valor === "object") {
             const activos = Object.entries(valor)
               .filter(([_, v]) => v === true)
-              .map(([k]) => formatearNombre(k)); // Modificación aquí
+              .map(([k]) => formatearNombre(k)); // Filtramos por nombre en formatearNombre
 
             td.innerHTML = activos.length
               ? activos
