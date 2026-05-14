@@ -206,10 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let valor = row[col];
 
-        // Si el valor es un "on" (checkbox o true), lo reemplazamos por una cadena vacía
-        if (valor === "on" || valor === true) {
-          td.innerHTML = "";
-        } else if (valor === null || valor === undefined) {
+        if (valor === null || valor === undefined) {
           td.innerHTML = `<span class="empty">—</span>`;
         } else if (Array.isArray(valor)) {
           td.textContent = valor.join(", ");
