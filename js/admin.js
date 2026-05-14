@@ -530,4 +530,65 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  const btnWord = document.getElementById("btnWord");
+
+  if (btnWord) {
+    btnWord.disabled = !dataGlobal.length; // solo habilitado si hay eventos
+
+    btnWord.addEventListener("click", async () => {
+      try {
+        if (!dataGlobal.length) {
+          alert("No hay eventos disponibles para generar Word");
+          return;
+        }
+
+        // Selecciona el evento a generar (puedes cambiar esto para seleccionar uno específico)
+        const evento = dataGlobal[0];
+
+        const datosEvento = {
+          nombre_evento: evento.nombre_evento,
+          fecha_evento: evento.fecha_evento,
+          hora_inicio: evento.hora_inicio,
+          hora_fin: evento.hora_fin,
+          responsable: evento.responsable,
+          cargo_responsable: evento.cargo_responsable,
+          telefono: evento.telefono,
+          correo: evento.correo,
+          unidad: evento.unidad,
+          espacio: evento.espacio,
+          personas: evento.personas,
+          multi_dia: evento.multi_dia ? "Sí" : "No",
+          descripcion: evento.descripcion,
+          observaciones: evento.observaciones,
+          materiales: Array.isArray(evento.materiales)
+            ? evento.materiales.join(", ")
+            : "",
+          humanos: Array.isArray(evento.humanos)
+            ? evento.humanos.join(", ")
+            : "",
+          personificadores: evento.personificadores?.cantidad || "No requerido",
+          sonido: evento.sonido?.activo ? "Sí" : "No",
+        };
+
+        const response = await fetch("Departamento de eventos.docx");
+        const arrayBuffer = await response.arrayBuffer();
+
+        const zip = new PizZip(arrayBuffer);
+        const doc = new window.Docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true,
+        });
+
+        doc.setData(datosEvento);
+        doc.render();
+
+        const out = doc.getZip().generate({ type: "blob" });
+        saveAs(out, `evento_${evento.nombre_evento}.docx`);
+      } catch (err) {
+        console.error("Error generando Word:", err);
+        alert("Ocurrió un error al generar el Word");
+      }
+    });
+  }
 });
