@@ -404,8 +404,45 @@ document.addEventListener("DOMContentLoaded", function () {
         const datosExcel = dataGlobal.map((item) => {
           let fila = {};
 
-          ordenColumnas.forEach((key) => {
-            fila[nombresBonitos[key]] = item[key] ?? "";
+          const columnasExcel = [
+            "nombre_evento",
+            "responsable",
+            "cargo_responsable",
+            "unidad",
+            "correo",
+            "telefono",
+            "fecha_evento",
+            "hora_inicio",
+            "hora_fin",
+            "multi_dia",
+            "fecha_inicio",
+            "fecha_fin",
+            "espacio",
+            "personas",
+            "externos",
+            "discapacidad",
+            "descripcion",
+            "observaciones",
+            "materiales",
+            "humanos",
+            "personificadores",
+            "sonido",
+            "fecha_aprobacion",
+            "fecha_llenado",
+          ];
+
+          columnasExcel.forEach((key) => {
+            let valor = item[key];
+
+            if (typeof valor === "boolean") {
+              valor = valor ? "Sí" : "No";
+            }
+
+            if (typeof valor === "object" && valor !== null) {
+              valor = JSON.stringify(valor);
+            }
+
+            fila[nombresBonitos[key] || key] = valor ?? "";
           });
 
           return fila;
