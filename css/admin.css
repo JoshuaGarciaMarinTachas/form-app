@@ -432,7 +432,7 @@ td:focus {
   align-items: center;
   justify-content: center;
 
-  min-width: 218px; /* ancho consistente */
+  min-width: 220px; /* ancho consistente */
 }
 
 /* hover consistente con admin */
