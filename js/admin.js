@@ -210,6 +210,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let valor = row[col];
 
+        if (valor === "on") {
+          td.style.display = "none"; // Ocultamos la celda
+          return; // Saltamos al siguiente valor sin procesar esta celda
+        }
+
         if (valor === null || valor === undefined) {
           td.innerHTML = `<span class="empty">—</span>`;
         } else if (Array.isArray(valor)) {
