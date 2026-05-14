@@ -391,7 +391,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnDescargar = document.getElementById("btnDescargar");
 
   if (btnDescargar) {
-    // Desactivar al inicio
     btnDescargar.disabled = true;
 
     btnDescargar.addEventListener("click", () => {
@@ -434,12 +433,57 @@ document.addEventListener("DOMContentLoaded", function () {
           columnasExcel.forEach((key) => {
             let valor = item[key];
 
+            // ✅ Booleanos
             if (typeof valor === "boolean") {
               valor = valor ? "Sí" : "No";
             }
 
-            if (typeof valor === "object" && valor !== null) {
-              valor = JSON.stringify(valor);
+            // ✅ MATERIALES (sin "on")
+            if (key === "materiales" && typeof valor === "object") {
+              const nombresMateriales = {
+                laptop: "Laptop",
+                proyector: "Proyector",
+                extensiones: "Extensiones",
+                sonido_movil: "Sonido móvil",
+                mamparas: "Mamparas",
+              };
+
+              const activos = Object.entries(valor)
+                .filter(([_, v]) => v === true)
+                .map(([k]) => nombresMateriales[k])
+                .filter(Boolean);
+
+              valor = activos.length ? activos.join(", ") : "No requerido";
+            }
+
+            // ✅ PERSONIFICADORES
+            else if (key === "personificadores") {
+              if (valor?.activo) {
+                valor = `${valor.cantidad} personificadores`;
+              } else {
+                valor = "No requerido";
+              }
+            }
+
+            // ✅ SONIDO
+            else if (key === "sonido") {
+              if (valor?.activo) {
+                let partes = [];
+
+                if (valor.bocina) partes.push("Bocina");
+                if (valor.microfonos > 0) {
+                  partes.push(`${valor.microfonos} micrófonos`);
+                }
+
+                valor = partes.length ? partes.join(", ") : "Audio básico";
+              } else {
+                valor = "No requerido";
+              }
+            }
+
+            // ✅ OTROS OBJETOS (evitar JSON feo)
+            else if (typeof valor === "object" && valor !== null) {
+              valor = "";
             }
 
             fila[nombresBonitos[key] || key] = valor ?? "";
