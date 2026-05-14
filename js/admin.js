@@ -438,8 +438,13 @@ document.addEventListener("DOMContentLoaded", function () {
               valor = valor ? "Sí" : "No";
             }
 
-            // ✅ MATERIALES (sin "on")
-            if (key === "materiales" && typeof valor === "object") {
+            // ✅ HUMANOS (IMPORTANTE: no borrar arrays)
+            else if (key === "humanos" && Array.isArray(valor)) {
+              valor = valor.join(", ");
+            }
+
+            // ✅ MATERIALES (soporta objeto y array + elimina "on")
+            else if (key === "materiales") {
               const nombresMateriales = {
                 laptop: "Laptop",
                 proyector: "Proyector",
@@ -448,12 +453,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 mamparas: "Mamparas",
               };
 
-              const activos = Object.entries(valor)
-                .filter(([_, v]) => v === true)
-                .map(([k]) => nombresMateriales[k])
-                .filter(Boolean);
+              if (typeof valor === "object" && !Array.isArray(valor)) {
+                const activos = Object.entries(valor)
+                  .filter(([_, v]) => v === true)
+                  .map(([k]) => nombresMateriales[k])
+                  .filter(Boolean);
 
-              valor = activos.length ? activos.join(", ") : "No requerido";
+                valor = activos.length ? activos.join(", ") : "No requerido";
+              } else if (Array.isArray(valor)) {
+                const filtrados = valor.filter((v) => v !== "on");
+                valor = filtrados.length
+                  ? filtrados.join(", ")
+                  : "No requerido";
+              }
             }
 
             // ✅ PERSONIFICADORES
@@ -481,7 +493,12 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
 
-            // ✅ OTROS OBJETOS (evitar JSON feo)
+            // ✅ Otros arrays (por si acaso)
+            else if (Array.isArray(valor)) {
+              valor = valor.join(", ");
+            }
+
+            // ✅ Otros objetos (ignorar)
             else if (typeof valor === "object" && valor !== null) {
               valor = "";
             }
