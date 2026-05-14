@@ -450,3 +450,7 @@ td:focus {
   background: #9ca3af;
   cursor: not-allowed;
 }
+
+#btnDescargar {
+  margin-left: 25px;
+}
