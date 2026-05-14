@@ -260,6 +260,7 @@ export function crearCampo(campo) {
 
       if (campo.id === "montaje") {
         const selectExtra = document.createElement("select");
+        selectExtra.id = "montaje"; // 👈 CLAVE
         selectExtra.style.display = "none";
 
         ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
@@ -280,6 +281,9 @@ export function crearCampo(campo) {
           const actualizar = () => {
             const val = espacio.value;
 
+            // 🧹 LIMPIAR SIEMPRE QUE CAMBIA
+            input.value = "";
+            selectExtra.selectedIndex = 0;
             // 🔹 AUDITORIO
             if (val === "Auditorio") {
               div.style.display = "block";
@@ -321,9 +325,13 @@ export function crearCampo(campo) {
         }, 200);
 
         div.getValores = () => {
-          return selectExtra.style.display === "block"
-            ? selectExtra.value
-            : input.value;
+          if (div.style.display === "none") return "No aplica";
+
+          if (selectExtra.style.display === "block") {
+            return selectExtra.value;
+          }
+
+          return input.value || "No especificado";
         };
 
         // 🔥 ORDEN CORRECTO
@@ -341,8 +349,9 @@ export function crearCampo(campo) {
     // 🔥 HORARIO
     // =========================
     case "time_range": {
-      input = document.createElement("div");
-      input.id = campo.id;
+      input = document.createElement("input");
+      input.type = "text";
+      input.id = "montaje_input"; // 👈 ya no "montaje"
 
       const titulo = document.createElement("div");
       titulo.textContent = campo.label;

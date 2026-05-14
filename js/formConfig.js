@@ -79,7 +79,7 @@ export const formularioData = {
 
     { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
 
-    // 
+    //
     {
       id: "fecha_inicio",
       label: "Fecha inicio",
@@ -131,11 +131,17 @@ export const formularioData = {
     // 🔥 SOLO SI NO ES EXPLANADA
     {
       id: "montaje",
-      label: "Montaje",
-      tipo: "text",
+      label: "Tipo de montaje",
+      tipo: "select",
+      opciones: [
+        "Sala de consejo",
+        "Tipo aula",
+        "Tipo herradura",
+        "Tipo auditorio",
+      ],
       dependsOn: {
         campo: "espacio",
-        valores: ["Auditorio", "Sala de Consejo"],
+        valores: ["Sala de Consejo"],
       },
     },
 
