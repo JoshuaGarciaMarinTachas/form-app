@@ -196,17 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     thead.innerHTML =
       "<tr>" +
-      columnas
-        .map((c) => {
-          let nombre = nombresBonitos[c] || c;
-
-          // 👇 rompe textos largos automáticamente
-          nombre = nombre.replace(/ de /g, "<br>de ");
-          nombre = nombre.replace(/ del /g, "<br>del ");
-
-          return `<th>${nombre}</th>`;
-        })
-        .join("") +
+      columnas.map((c) => `<th>${nombresBonitos[c] || c}</th>`).join("") +
       "<th>Acciones</th></tr>";
 
     data.forEach((row) => {
