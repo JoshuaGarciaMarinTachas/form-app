@@ -143,8 +143,8 @@ document.addEventListener("DOMContentLoaded", function () {
       sonido_movil: "Sonido móvil",
       mamparas: "Mamparas",
     };
-
-    return nombres[key] || key;
+    // Si la clave no tiene un nombre asignado, devolvemos una cadena vacía
+    return nombres[key] || ""; // Si no tiene nombre, regresa una cadena vacía
   }
 
   function renderTabla(data) {
