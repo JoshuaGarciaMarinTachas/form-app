@@ -163,22 +163,27 @@ document.addEventListener("DOMContentLoaded", function () {
       "correo",
       "telefono",
       "unidad",
+
       "fecha_evento",
       "hora_inicio",
       "hora_fin",
       "multi_dia",
       "fecha_inicio",
       "fecha_fin",
+
       "espacio",
       "personas",
       "externos",
       "discapacidad",
+
       "descripcion",
       "observaciones",
+
       "materiales",
       "humanos",
       "personificadores",
       "sonido",
+
       "fecha_aprobacion",
       "fecha_llenado",
     ];
@@ -196,67 +201,114 @@ document.addEventListener("DOMContentLoaded", function () {
       columnas.forEach((col) => {
         const td = document.createElement("td");
 
+        if (col === "prioridad") {
+          const prioridad = obtenerPrioridad(row.fecha_evento);
+          td.innerHTML = `<span class="prioridad ${prioridad.clase}">${prioridad.texto}</span>`;
+          tr.appendChild(td);
+          return;
+        }
+
         let valor = row[col];
 
-        // Validar si el valor es "on", en cuyo caso lo omitimos
-        if (valor === "on") {
-          td.style.display = "none"; // Ocultamos la celda
-        } else {
-          if (valor === null || valor === undefined) {
-            td.innerHTML = `<span class="empty">—</span>`;
-          } else if (Array.isArray(valor)) {
-            td.textContent = valor.join(", ");
-          } else if (typeof valor === "boolean") {
-            td.textContent = valor ? "Sí" : "No";
+        if (valor === null || valor === undefined) {
+          td.innerHTML = `<span class="empty">—</span>`;
+        } else if (Array.isArray(valor)) {
+          td.textContent = valor.join(", ");
+        } else if (typeof valor === "boolean") {
+          td.textContent = valor ? "Sí" : "No";
+        } else if (col === "humanos" && Array.isArray(valor)) {
+          td.innerHTML = valor.length
+            ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
+            : `<span class="empty">—</span>`;
+        } else if (col === "materiales") {
+          if (Array.isArray(valor)) {
+            td.innerHTML = valor.length
+              ? valor
+                  .map((v) => `<span class="tag material">${v}</span>`)
+                  .join("")
+              : `<span class="empty">—</span>`;
+          } else if (typeof valor === "object") {
+            const activos = Object.entries(valor)
+              .filter(([_, v]) => v === true)
+              .map(([k]) => k);
+
+            td.innerHTML = activos.length
+              ? activos
+                  .map(
+                    (v) =>
+                      `<span class="tag material">${formatearNombre(v)}</span>`,
+                  )
+                  .join("")
+              : `<span class="empty">No requerido</span>`;
+          }
+        } else if (col === "personificadores") {
+          if (valor?.activo) {
+            td.innerHTML = `<span class="tag highlight">${valor.cantidad} Personificadores</span>`;
           } else {
-            td.textContent = valor;
+            td.innerHTML = `<span class="empty">No requerido</span>`;
+          }
+        } else if (col === "sonido") {
+          if (valor?.activo) {
+            let items = [];
+
+            if (valor.bocina) items.push("Bocina");
+            if (valor.microfonos > 0)
+              items.push(`${valor.microfonos} micrófonos`);
+
+            td.innerHTML = items.length
+              ? items.map((i) => `<span class="tag sound">${i}</span>`).join("")
+              : `<span class="tag sound">Audio básico</span>`;
+          } else {
+            td.innerHTML = `<span class="empty">No requerido</span>`;
+          }
+        } else {
+          td.textContent = valor;
+        }
+
+        td.contentEditable = !columnasNoEditables.includes(col);
+
+        let valorOriginal = td.textContent;
+
+        td.addEventListener("focus", () => {
+          valorOriginal = td.textContent;
+        });
+
+        td.addEventListener("blur", async () => {
+          if (columnasNoEditables.includes(col)) return;
+          if (td.textContent === valorOriginal) return;
+
+          let nuevoValor = td.textContent.trim();
+
+          if (nuevoValor === "") {
+            td.textContent = valorOriginal;
+            return;
           }
 
-          td.contentEditable = !columnasNoEditables.includes(col);
+          if (nuevoValor.toLowerCase() === "sí") {
+            nuevoValor = true;
+          } else if (nuevoValor.toLowerCase() === "no") {
+            nuevoValor = false;
+          } else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
+            nuevoValor = Number(nuevoValor);
+          }
 
-          let valorOriginal = td.textContent;
+          td.style.backgroundColor = "#fff3cd";
 
-          td.addEventListener("focus", () => {
-            valorOriginal = td.textContent;
-          });
+          try {
+            await updateDoc(doc(db, "solicitudes", row.id), {
+              [col]: nuevoValor,
+            });
 
-          td.addEventListener("blur", async () => {
-            if (columnasNoEditables.includes(col)) return;
-            if (td.textContent === valorOriginal) return;
+            td.style.backgroundColor = "#d4edda";
+            row[col] = nuevoValor;
+          } catch (err) {
+            console.error(err);
+            td.style.backgroundColor = "#f8d7da";
+            td.textContent = valorOriginal;
+          }
 
-            let nuevoValor = td.textContent.trim();
-
-            if (nuevoValor === "") {
-              td.textContent = valorOriginal;
-              return;
-            }
-
-            if (nuevoValor.toLowerCase() === "sí") {
-              nuevoValor = true;
-            } else if (nuevoValor.toLowerCase() === "no") {
-              nuevoValor = false;
-            } else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
-              nuevoValor = Number(nuevoValor);
-            }
-
-            td.style.backgroundColor = "#fff3cd";
-
-            try {
-              await updateDoc(doc(db, "solicitudes", row.id), {
-                [col]: nuevoValor,
-              });
-
-              td.style.backgroundColor = "#d4edda";
-              row[col] = nuevoValor;
-            } catch (err) {
-              console.error(err);
-              td.style.backgroundColor = "#f8d7da";
-              td.textContent = valorOriginal;
-            }
-
-            setTimeout(() => (td.style.backgroundColor = ""), 800);
-          });
-        }
+          setTimeout(() => (td.style.backgroundColor = ""), 800);
+        });
 
         tr.appendChild(td);
       });
