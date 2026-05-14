@@ -216,7 +216,10 @@ document.addEventListener("DOMContentLoaded", function () {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
-        } else if (valor === "on") {
+        } else if (
+          typeof valor === "string" &&
+          valor.trim().toLowerCase() === "on"
+        ) {
           td.style.display = "none"; // Ocultamos la celda
           return; // Saltamos al siguiente valor sin procesar esta celda
         } else if (col === "humanos" && Array.isArray(valor)) {
