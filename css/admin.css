@@ -51,6 +51,19 @@ body {
   transition: all 0.2s ease;
 }
 
+.menu-btn,
+#btnDescargar {
+  font-family: Arial, sans-serif; /* misma fuente */
+  font-size: 14px; /* mismo tamaño */
+  font-weight: 500; /* mismo grosor */
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* izquierda */
+
+  text-align: left;
+}
+
 /* hover mejorado */
 .menu-btn:hover {
   background: #374151; /* más claro */
@@ -430,7 +443,7 @@ td:focus {
 
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   min-width: 220px; /* ancho consistente */
 }
