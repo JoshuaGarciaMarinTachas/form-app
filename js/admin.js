@@ -210,17 +210,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let valor = row[col];
 
-        if (valor === "on") {
-          td.style.display = "none"; // Ocultamos la celda
-          return; // Saltamos al siguiente valor sin procesar esta celda
-        }
-
         if (valor === null || valor === undefined) {
           td.innerHTML = `<span class="empty">—</span>`;
         } else if (Array.isArray(valor)) {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
+        } else if (valor === "on") {
+          td.style.display = "none"; // Ocultamos la celda
+          return; // Saltamos al siguiente valor sin procesar esta celda
         } else if (col === "humanos" && Array.isArray(valor)) {
           td.innerHTML = valor.length
             ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
