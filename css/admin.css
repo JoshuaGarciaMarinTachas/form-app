@@ -496,43 +496,18 @@ td {
   min-width: 140px; /* celdas normales */
 }
 
-/* =========================
- BOTÓN GENERAR WORD (ADMIN)
-========================= */
-#btnWord {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-
-  background: #01be46; /* mismo color base */
-  color: white;
-
-  font-size: 14px;
-  font-weight: 500;
-
-  cursor: pointer;
-  transition: 0.2s;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  min-width: 220px;
-  margin-top: 10px; /* igual que btnDescargar */
+.word-btn {
+  background: #2563eb; /* azul similar al activo de menu */
 }
 
-/* hover */
-#btnWord:hover {
-  background: #15803d;
+.word-btn:hover {
+  background: #1e40af; /* un azul más oscuro al hover */
 }
 
-/* click */
-#btnWord:active {
+.word-btn:active {
   transform: scale(0.97);
 }
 
-/* deshabilitado */
-#btnWord:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
+.word-btn:focus {
+  outline: 2px solid #2563eb;
 }
