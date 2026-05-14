@@ -130,7 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
           return fechaA - fechaB;
         });
 
-      renderTabla(dataGlobal);
+      console.log("Datos cargados:", dataGlobal); // 👈 Agregado para depurar
+
+      try {
+        renderTabla(dataGlobal);
+      } catch (err) {
+        console.error("Error al renderizar la tabla:", err);
+      }
       // Activar botón si hay datos
       const btnDescargar = document.getElementById("btnDescargar");
       if (btnDescargar) {
@@ -153,6 +159,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Si el valor es "on" o "true" pero no está en la lista de materiales, devuelve un valor vacío
     return nombres[key] || "";
+  }
+
+  function obtenerPrioridad(fechaEvento) {
+    // Si fecha es pasada, alta, sino media (ejemplo simple)
+    if (!fechaEvento) return { texto: "Sin fecha", clase: "media" };
+    const hoy = new Date();
+    const fecha = new Date(fechaEvento);
+    if (fecha < hoy) return { texto: "Alta", clase: "alta" };
+    return { texto: "Media", clase: "media" };
   }
 
   function renderTabla(data) {
@@ -192,7 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
       "fecha_llenado",
     ];
 
-    const columnas = columnasOrdenadas.filter((c) => c in data[0]);
+    const columnas = columnasOrdenadas.filter((c) =>
+      data[0]?.hasOwnProperty(c),
+    );
 
     thead.innerHTML =
       "<tr>" +
@@ -200,195 +217,177 @@ document.addEventListener("DOMContentLoaded", function () {
       "<th>Acciones</th></tr>";
 
     data.forEach((row) => {
-      const tr = document.createElement("tr");
+      try {
+        const tr = document.createElement("tr");
 
-      columnas.forEach((col) => {
-        const td = document.createElement("td");
+        columnas.forEach((col) => {
+          const td = document.createElement("td");
+          let valor = row[col];
 
-        if (col === "prioridad") {
-          const prioridad = obtenerPrioridad(row.fecha_evento);
-          td.innerHTML = `<span class="prioridad ${prioridad.clase}">${prioridad.texto}</span>`;
-          tr.appendChild(td);
-          return;
-        }
-
-        let valor = row[col];
-
-        if (valor === null || valor === undefined) {
-          td.innerHTML = `<span class="empty">—</span>`;
-        } else if (Array.isArray(valor)) {
-          td.textContent = valor.join(", ");
-        } else if (typeof valor === "boolean") {
-          td.textContent = valor ? "Sí" : "No";
-        } else if (col === "humanos" && Array.isArray(valor)) {
-          td.innerHTML = valor.length
-            ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
-            : `<span class="empty">—</span>`;
-        } else if (col === "materiales") {
-          if (typeof valor === "object") {
-            const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true) // solo seleccionamos los elementos "marcados"
-              .map(([k]) => formatearNombre(k)) // aplica "nombre bonito"
-              .filter((v) => v !== "" && v !== "on"); // eliminamos cualquier valor "on" o vacío
-
-            td.innerHTML = activos.length
-              ? activos
-                  .map((v) => `<span class="tag material">${v}</span>`)
-                  .join(", ") // unimos los materiales seleccionados por coma
-              : `<span class="empty">No requerido</span>`; // si no hay materiales, mostramos esto
-          }
-        } else if (col === "personificadores") {
-          if (valor?.activo) {
-            td.innerHTML = `<span class="tag highlight">${valor.cantidad} Personificadores</span>`;
+          if (valor === null || valor === undefined) {
+            td.innerHTML = `<span class="empty">—</span>`;
+          } else if (Array.isArray(valor)) {
+            td.textContent = valor.join(", ");
+          } else if (typeof valor === "boolean") {
+            td.textContent = valor ? "Sí" : "No";
+          } else if (col === "humanos" && Array.isArray(valor)) {
+            td.innerHTML = valor.length
+              ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
+              : `<span class="empty">—</span>`;
+          } else if (col === "materiales") {
+            if (typeof valor === "object" && valor !== null) {
+              const activos = Object.entries(valor)
+                .filter(([_, v]) => v === true)
+                .map(([k]) => formatearNombre(k))
+                .filter((v) => v !== "" && v !== "on");
+              td.innerHTML = activos.length
+                ? activos
+                    .map((v) => `<span class="tag material">${v}</span>`)
+                    .join(", ")
+                : `<span class="empty">No requerido</span>`;
+            }
+          } else if (col === "personificadores") {
+            td.innerHTML = valor?.activo
+              ? `<span class="tag highlight">${valor.cantidad} Personificadores</span>`
+              : `<span class="empty">No requerido</span>`;
+          } else if (col === "sonido") {
+            if (valor?.activo) {
+              const items = [];
+              if (valor.bocina) items.push("Bocina");
+              if (valor.microfonos > 0)
+                items.push(`${valor.microfonos} micrófonos`);
+              td.innerHTML = items.length
+                ? items
+                    .map((i) => `<span class="tag sound">${i}</span>`)
+                    .join(", ")
+                : `<span class="tag sound">Audio básico</span>`;
+            } else {
+              td.innerHTML = `<span class="empty">No requerido</span>`;
+            }
           } else {
-            td.innerHTML = `<span class="empty">No requerido</span>`;
-          }
-        } else if (col === "sonido") {
-          if (valor?.activo) {
-            let items = [];
-
-            if (valor.bocina) items.push("Bocina");
-            if (valor.microfonos > 0)
-              items.push(`${valor.microfonos} micrófonos`);
-
-            td.innerHTML = items.length
-              ? items.map((i) => `<span class="tag sound">${i}</span>`).join("")
-              : `<span class="tag sound">Audio básico</span>`;
-          } else {
-            td.innerHTML = `<span class="empty">No requerido</span>`;
-          }
-        } else {
-          td.textContent = valor;
-        }
-
-        td.contentEditable = !columnasNoEditables.includes(col);
-
-        let valorOriginal = td.textContent;
-
-        td.addEventListener("focus", () => {
-          valorOriginal = td.textContent;
-        });
-
-        td.addEventListener("blur", async () => {
-          if (columnasNoEditables.includes(col)) return;
-          if (td.textContent === valorOriginal) return;
-
-          let nuevoValor = td.textContent.trim();
-
-          if (nuevoValor === "") {
-            td.textContent = valorOriginal;
-            return;
+            td.textContent = valor;
           }
 
-          if (nuevoValor.toLowerCase() === "sí") {
-            nuevoValor = true;
-          } else if (nuevoValor.toLowerCase() === "no") {
-            nuevoValor = false;
-          } else if (columnasNumericas.includes(col) && !isNaN(nuevoValor)) {
-            nuevoValor = Number(nuevoValor);
-          }
+          td.contentEditable = !columnasNoEditables.includes(col);
 
-          td.style.backgroundColor = "#fff3cd";
-
-          try {
-            await updateDoc(doc(db, "solicitudes", row.id), {
-              [col]: nuevoValor,
-            });
-
-            td.style.backgroundColor = "#d4edda";
-            row[col] = nuevoValor;
-          } catch (err) {
-            console.error(err);
-            td.style.backgroundColor = "#f8d7da";
-            td.textContent = valorOriginal;
-          }
-
-          setTimeout(() => (td.style.backgroundColor = ""), 800);
-        });
-
-        tr.appendChild(td);
-      });
-
-      // después de crear las celdas para cada columna
-      const acciones = document.createElement("td");
-
-      // Botón Eliminar
-      const btnDelete = document.createElement("button");
-      btnDelete.textContent = "Eliminar";
-      btnDelete.classList.add("action-btn", "delete-btn");
-      btnDelete.onclick = async () => {
-        if (!confirm("¿Eliminar solicitud?")) return;
-        try {
-          await deleteDoc(doc(db, "solicitudes", row.id));
-          tr.remove();
-          dataGlobal = dataGlobal.filter((d) => d.id !== row.id);
-        } catch (err) {
-          console.error(err);
-          alert("Error eliminando solicitud");
-        }
-      };
-      acciones.appendChild(btnDelete);
-
-      const btnWordFila = document.createElement("button");
-      btnWordFila.textContent = "Generar Word";
-
-      // ✅ Aplica las clases CSS
-      btnWordFila.classList.add("action-btn", "word-btn");
-
-      // Evento onclick
-      btnWordFila.onclick = async () => {
-        try {
-          const evento = row; // fila actual
-
-          const datosEvento = {
-            nombre_evento: evento.nombre_evento,
-            fecha_evento: evento.fecha_evento,
-            hora_inicio: evento.hora_inicio,
-            hora_fin: evento.hora_fin,
-            responsable: evento.responsable,
-            cargo_responsable: evento.cargo_responsable,
-            telefono: evento.telefono,
-            correo: evento.correo,
-            unidad: evento.unidad,
-            espacio: evento.espacio,
-            personas: evento.personas,
-            multi_dia: evento.multi_dia ? "Sí" : "No",
-            descripcion: evento.descripcion,
-            observaciones: evento.observaciones,
-            materiales: Array.isArray(evento.materiales)
-              ? evento.materiales.join(", ")
-              : "",
-            humanos: Array.isArray(evento.humanos)
-              ? evento.humanos.join(", ")
-              : "",
-            personificadores:
-              evento.personificadores?.cantidad || "No requerido",
-            sonido: evento.sonido?.activo ? "Sí" : "No",
-          };
-
-          const response = await fetch("Departamento de eventos.docx");
-          const arrayBuffer = await response.arrayBuffer();
-          const zip = new PizZip(arrayBuffer);
-          const doc = new window.Docxtemplater(zip, {
-            paragraphLoop: true,
-            linebreaks: true,
+          let valorOriginal = td.textContent;
+          td.addEventListener("focus", () => {
+            valorOriginal = td.textContent;
           });
 
-          doc.setData(datosEvento);
-          doc.render();
+          td.addEventListener("blur", async () => {
+            if (columnasNoEditables.includes(col)) return;
+            if (td.textContent === valorOriginal) return;
 
-          const out = doc.getZip().generate({ type: "blob" });
-          saveAs(out, `evento_${evento.nombre_evento}.docx`);
-        } catch (err) {
-          console.error("Error generando Word:", err);
-          alert("Ocurrió un error al generar el Word");
-        }
-      };
+            let nuevoValor = td.textContent.trim();
+            if (nuevoValor === "") {
+              td.textContent = valorOriginal;
+              return;
+            }
 
-      acciones.appendChild(btnWordFila);
+            if (nuevoValor.toLowerCase() === "sí") nuevoValor = true;
+            else if (nuevoValor.toLowerCase() === "no") nuevoValor = false;
+            else if (columnasNumericas.includes(col) && !isNaN(nuevoValor))
+              nuevoValor = Number(nuevoValor);
 
-      // Finalmente agregamos la celda de acciones al tr
-      tr.appendChild(acciones);
+            td.style.backgroundColor = "#fff3cd";
+
+            try {
+              await updateDoc(doc(db, "solicitudes", row.id), {
+                [col]: nuevoValor,
+              });
+              td.style.backgroundColor = "#d4edda";
+              row[col] = nuevoValor;
+            } catch (err) {
+              console.error(err);
+              td.style.backgroundColor = "#f8d7da";
+              td.textContent = valorOriginal;
+            }
+
+            setTimeout(() => (td.style.backgroundColor = ""), 800);
+          });
+
+          tr.appendChild(td);
+        });
+
+        // --- Celda de acciones ---
+        const acciones = document.createElement("td");
+
+        // Botón Eliminar
+        const btnDelete = document.createElement("button");
+        btnDelete.textContent = "Eliminar";
+        btnDelete.classList.add("action-btn", "delete-btn");
+        btnDelete.onclick = async () => {
+          if (!confirm("¿Eliminar solicitud?")) return;
+          try {
+            await deleteDoc(doc(db, "solicitudes", row.id));
+            tr.remove();
+            dataGlobal = dataGlobal.filter((d) => d.id !== row.id);
+          } catch (err) {
+            console.error(err);
+            alert("Error eliminando solicitud");
+          }
+        };
+        acciones.appendChild(btnDelete);
+
+        // Botón Generar Word
+        const btnWordFila = document.createElement("button");
+        btnWordFila.textContent = "Generar Word";
+        btnWordFila.classList.add("action-btn", "word-btn"); // CSS en tu archivo
+        btnWordFila.onclick = async () => {
+          try {
+            const evento = row;
+            const datosEvento = {
+              nombre_evento: evento.nombre_evento,
+              fecha_evento: evento.fecha_evento,
+              hora_inicio: evento.hora_inicio,
+              hora_fin: evento.hora_fin,
+              responsable: evento.responsable,
+              cargo_responsable: evento.cargo_responsable,
+              telefono: evento.telefono,
+              correo: evento.correo,
+              unidad: evento.unidad,
+              espacio: evento.espacio,
+              personas: evento.personas,
+              multi_dia: evento.multi_dia ? "Sí" : "No",
+              descripcion: evento.descripcion,
+              observaciones: evento.observaciones,
+              materiales: Array.isArray(evento.materiales)
+                ? evento.materiales.join(", ")
+                : "",
+              humanos: Array.isArray(evento.humanos)
+                ? evento.humanos.join(", ")
+                : "",
+              personificadores:
+                evento.personificadores?.cantidad || "No requerido",
+              sonido: evento.sonido?.activo ? "Sí" : "No",
+            };
+
+            const response = await fetch("Departamento de eventos.docx");
+            const arrayBuffer = await response.arrayBuffer();
+            const zip = new PizZip(arrayBuffer);
+            const doc = new window.Docxtemplater(zip, {
+              paragraphLoop: true,
+              linebreaks: true,
+            });
+            doc.setData(datosEvento);
+            doc.render();
+
+            const out = doc.getZip().generate({ type: "blob" });
+            saveAs(out, `evento_${evento.nombre_evento}.docx`);
+          } catch (err) {
+            console.error("Error generando Word:", err);
+            alert("Ocurrió un error al generar el Word");
+          }
+        };
+
+        acciones.appendChild(btnWordFila);
+        tr.appendChild(acciones);
+
+        tbody.appendChild(tr);
+      } catch (err) {
+        console.error("Error renderizando fila:", row, err);
+      }
     });
   }
   function initBuscador() {
