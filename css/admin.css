@@ -48,10 +48,15 @@ body {
   color: white;
   text-align: left;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
-.menu-btn:hover,
+/* hover mejorado */
+.menu-btn:hover {
+  background: #374151; /* más claro */
+}
+
+/* activo */
 .menu-btn.active {
   background: #2563eb;
 }
@@ -406,22 +411,28 @@ td:focus {
 /* =========================
  BOTÓN DESCARGAR (ADMIN)
 ========================= */
+/* =========================
+ BOTÓN DESCARGAR (MISMO ESTILO MENU)
+========================= */
 #btnDescargar {
-  padding: 10px 14px;
+  padding: 12px; /* igual que .menu-btn */
   border: none;
   border-radius: 10px;
-  cursor: pointer;
 
-  background: #16a34a; /* verde admin */
+  background: #01be46; /* mismo color base */
   color: white;
+
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.2s;
 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 
-  transition: all 0.2s ease;
+  min-width: 140px; /* ancho consistente */
 }
 
 /* hover consistente con admin */
