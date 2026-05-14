@@ -138,10 +138,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function formatearNombre(key) {
     const nombres = {
       laptop: "Laptop",
+      sonido: "Sonido",
+      microfonos: "Micrófonos",
+      bocina: "Bocina",
       proyector: "Proyector",
       extensiones: "Extensiones",
       sonido_movil: "Sonido móvil",
       mamparas: "Mamparas",
+      personificadores: "Personificadores",
     };
     // Si la clave no tiene un nombre asignado, devolvemos una cadena vacía
     return nombres[key] || ""; // Si no tiene nombre, regresa una cadena vacía
