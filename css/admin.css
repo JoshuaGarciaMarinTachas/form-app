@@ -480,7 +480,7 @@ th {
   min-width: 160px; /* más espacio SOLO encabezados */
   padding: 16px 18px;
   font-size: 14px;
-  white-space: normal; /* 👈 permite que el texto baje */
+  white-space: normal;
   line-height: 1.3;
 }
 
