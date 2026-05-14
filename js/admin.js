@@ -442,12 +442,12 @@ document.addEventListener("DOMContentLoaded", function () {
               valor = valor ? "Sí" : "No";
             }
 
-            // ✅ HUMANOS (IMPORTANTE: no borrar arrays)
+            // ✅ HUMANOS (arrays)
             else if (key === "humanos" && Array.isArray(valor)) {
               valor = valor.join(", ");
             }
 
-            // ✅ MATERIALES (soporta objeto y array + elimina "on")
+            // ✅ MATERIALES (objetos o arrays, eliminar "on" y objetos vacíos)
             else if (key === "materiales") {
               const nombresMateriales = {
                 laptop: "Laptop",
@@ -457,18 +457,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 mamparas: "Mamparas",
               };
 
-              if (typeof valor === "object" && !Array.isArray(valor)) {
+              if (
+                typeof valor === "object" &&
+                !Array.isArray(valor) &&
+                valor !== null
+              ) {
                 const activos = Object.entries(valor)
                   .filter(([_, v]) => v === true)
                   .map(([k]) => nombresMateriales[k])
-                  .filter(Boolean);
+                  .filter(Boolean); // elimina undefined, null o "on"
 
                 valor = activos.length ? activos.join(", ") : "No requerido";
               } else if (Array.isArray(valor)) {
-                const filtrados = valor.filter((v) => v !== "on");
+                const filtrados = valor.filter(
+                  (v) => v && v !== "on" && v !== true && v !== false,
+                );
                 valor = filtrados.length
                   ? filtrados.join(", ")
                   : "No requerido";
+              } else {
+                valor = "No requerido";
               }
             }
 
@@ -485,19 +493,16 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (key === "sonido") {
               if (valor?.activo) {
                 let partes = [];
-
                 if (valor.bocina) partes.push("Bocina");
-                if (valor.microfonos > 0) {
+                if (valor.microfonos > 0)
                   partes.push(`${valor.microfonos} micrófonos`);
-                }
-
                 valor = partes.length ? partes.join(", ") : "Audio básico";
               } else {
                 valor = "No requerido";
               }
             }
 
-            // ✅ Otros arrays (por si acaso)
+            // ✅ Otros arrays
             else if (Array.isArray(valor)) {
               valor = valor.join(", ");
             }
@@ -517,8 +522,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
 
-        const fecha = new Date().toISOString().split("T")[0];
-        XLSX.writeFile(workbook, `eventos_${fecha}.xlsx`);
+        // Sobrescribir el mismo archivo siempre
+        XLSX.writeFile(workbook, `eventos.xlsx`);
       } catch (error) {
         console.error("Error al exportar:", error);
         alert("Error al generar el Excel");
