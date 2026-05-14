@@ -227,12 +227,16 @@ document.addEventListener("DOMContentLoaded", function () {
             ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
             : `<span class="empty">—</span>`;
         } else if (col === "materiales") {
-          if (Array.isArray(valor)) {
-            td.innerHTML = valor.length
-              ? valor
+          if (typeof valor === "object") {
+            const activos = Object.entries(valor)
+              .filter(([_, v]) => v === true) // Solo los marcados
+              .map(([k]) => formatearNombre(k)); // Convertimos la clave en nombre bonito
+
+            td.innerHTML = activos.length
+              ? activos
                   .map((v) => `<span class="tag material">${v}</span>`)
                   .join("")
-              : `<span class="empty">—</span>`;
+              : `<span class="empty">No requerido</span>`;
           } else if (typeof valor === "object") {
             const activos = Object.entries(valor)
               .filter(([_, v]) => v === true)
