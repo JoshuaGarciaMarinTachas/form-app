@@ -222,8 +222,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (col === "materiales") {
           if (typeof valor === "object") {
             const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true)
-              .map(([k]) => formatearNombre(k)); // Filtramos por nombre en formatearNombre
+              .filter(([_, v]) => v === true) // solo checkbox marcados
+              .map(([k]) => formatearNombre(k)) // aplica tu "nombre bonito"
+              .filter((v) => v !== "" && v.toLowerCase() !== "on"); // <--- FILTRO DEFINITIVO
 
             td.innerHTML = activos.length
               ? activos
