@@ -1,72 +1,469 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #222;
+}
+
 /* =========================
- BOTÓN DESCARGAR (IGUAL A MENU)
+   LAYOUT
 ========================= */
 
-.menu-btn,
-#btnDescargar {
-  width: 100%; /* 👈 MISMO ANCHO */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  width: 260px;
+  background: #111827;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 25px 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.menu-btn {
+  width: 100%;
   padding: 12px;
   border: none;
   border-radius: 10px;
+  background: #1f2937;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
+.menu-btn,
+#btnDescargar {
+  font-family: Arial, sans-serif; /* misma fuente */
+  font-size: 14px; /* mismo tamaño */
+  font-weight: 500; /* mismo grosor */
 
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 👈 izquierda */
+  justify-content: flex-start; /* izquierda */
 
   text-align: left;
-  cursor: pointer;
 }
 
-/* MENU */
-.menu-btn {
-  background: #1f2937;
-  color: white;
-}
-
+/* hover mejorado */
 .menu-btn:hover {
-  background: #374151;
+  background: #374151; /* más claro */
 }
 
+/* activo */
 .menu-btn.active {
   background: #2563eb;
 }
 
-/* DESCARGAR */
-#btnDescargar {
-  background: #16a34a;
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #dc2626;
   color: white;
-  margin-left: 10px; /* 👈 separación horizontal */
+  cursor: pointer;
 }
 
+.logout-btn:hover {
+  background: #b91c1c;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+  flex: 1;
+  padding: 25px;
+  overflow-x: auto;
+}
+
+.topbar {
+  margin-bottom: 25px;
+}
+
+.topbar h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.topbar p {
+  color: #666;
+}
+
+/* =========================
+   CONTROLES
+========================= */
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#buscador {
+  width: 320px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+}
+
+#buscador:focus {
+  border-color: #2563eb;
+}
+
+/* =========================
+   TABLA
+========================= */
+
+.tabla-wrapper {
+  background: white;
+  border-radius: 16px;
+  overflow: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1200px;
+}
+
+th,
+td {
+  padding: 14px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   EDITABLES
+========================= */
+
+td[contenteditable="true"] {
+  background: #fafafa;
+}
+
+td:focus {
+  outline: 2px solid #2563eb;
+  background: #eff6ff;
+}
+
+/* =========================
+   PRIORIDAD
+========================= */
+
+.prioridad {
+  font-weight: bold;
+}
+
+.prioridad.alta {
+  color: #dc2626;
+}
+
+.prioridad.media {
+  color: #d97706;
+}
+
+.prioridad.baja {
+  color: #16a34a;
+}
+
+/* =========================
+   BOTONES
+========================= */
+
+.action-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.delete-btn {
+  background: #dc2626;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  #buscador {
+    width: 100%;
+  }
+
+  table {
+    min-width: auto;
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
+}
+
+/* =========================
+   SWITCH PROFESIONAL
+========================= */
+
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  min-width: 320px;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.status-description {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* SWITCH */
+
+.switch {
+  position: relative;
+  width: 64px;
+  height: 34px;
+  display: inline-block;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #d1d5db;
+  transition: 0.3s;
+  border-radius: 999px;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.switch input:checked + .slider {
+  background-color: #afb715;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(30px);
+}
+
+/* =========================
+   Celdas vacías
+========================= */
+
+td:empty {
+  background-color: #f0f0f0; /* Color suave para celdas vacías */
+  color: #aaa; /* Color más suave para texto */
+  font-style: italic; /* Opcional: estilo de texto */
+}
+
+/* =========================
+   Fila de tabla al pasar el ratón
+========================= */
+
+tbody tr:hover {
+  background: #f1f5f9; /* Fondo más suave al pasar el ratón */
+  cursor: pointer; /* Cambia el cursor al pasar por una fila */
+}
+
+/* =========================
+   Foco en celdas editables
+========================= */
+
+td[contenteditable="true"] {
+  background: #f9fafb;
+  border: 2px solid #ffffff; /* Borde azul cuando es editable */
+  cursor: text; /* Muestra un cursor de texto */
+}
+
+td:focus {
+  outline: 2px solid #2563eb;
+  background: #eff6ff; /* Fondo suave cuando la celda está enfocada */
+}
+
+/* =========================
+   Botones de acción
+========================= */
+
+.action-btn:focus {
+  outline: 2px solid #2563eb; /* Añadir borde azul al enfocar el botón */
+}
+
+.delete-btn:focus {
+  outline: 2px solid #b91c1c; /* Borde rojo cuando el botón de eliminar está enfocado */
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 2px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Materiales */
+.tag.material {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+/* Materiales */
+.tag.material {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+/* Sonido */
+.tag.sound {
+  background: #f3e5f5;
+  color: #4a148c;
+}
+
+/* Destacado */
+.tag.highlight {
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+
+.empty {
+  color: #999;
+  font-style: italic;
+}
+
+/* =========================
+ BOTÓN DESCARGAR (ADMIN)
+========================= */
+/* =========================
+ BOTÓN DESCARGAR (MISMO ESTILO MENU)
+========================= */
+#btnDescargar {
+  padding: 12px; /* igual que .menu-btn */
+  border: none;
+  border-radius: 10px;
+
+  background: #01be46; /* mismo color base */
+  color: white;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  min-width: 220px; /* ancho consistente */
+}
+
+/* hover consistente con admin */
 #btnDescargar:hover {
   background: #15803d;
 }
 
+/* click */
 #btnDescargar:active {
   transform: scale(0.97);
 }
 
+/* deshabilitado */
 #btnDescargar:disabled {
   background: #9ca3af;
   cursor: not-allowed;
 }
 
-/* =========================
- TABLA PROFESIONAL
-========================= */
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 1400px; /* 👈 MÁS ESPACIO */
-  table-layout: auto;
+#btnDescargar {
+  margin-top: 10px; /* 👈 ahora sí baja */
 }
 
-/* HEADERS */
+table {
+  table-layout: auto; /* o fixed si quieres más control */
+}
+
 th {
   background: #111827;
   color: white;
@@ -74,59 +471,12 @@ th {
   top: 0;
   z-index: 2;
 
-  white-space: nowrap; /* 👈 evita que se rompan */
+  white-space: nowrap; /* 👈 NO cortar palabras */
   font-size: 13px;
-  padding: 16px 12px;
 }
 
-/* CELDAS */
+/* 👇 columnas con ancho mínimo */
 th,
 td {
-  min-width: 160px; /* 👈 MÁS ancho general */
-}
-
-/* COLUMNAS IMPORTANTES (más grandes) */
-th:nth-child(17),
-td:nth-child(17) {
-  min-width: 280px; /* Descripción */
-}
-
-th:nth-child(18),
-td:nth-child(18) {
-  min-width: 280px; /* Observaciones */
-}
-
-/* COLUMNAS CHICAS (más compactas) */
-th:nth-child(7),
-td:nth-child(7),
-th:nth-child(8),
-td:nth-child(8),
-th:nth-child(9),
-td:nth-child(9) {
-  min-width: 120px;
-}
-
-/* HOVER FILAS */
-tbody tr:hover {
-  background: #f1f5f9;
-  cursor: pointer;
-}
-
-/* CELDAS VACÍAS */
-td:empty {
-  background-color: #f0f0f0;
-  color: #aaa;
-  font-style: italic;
-}
-
-/* EDITABLE */
-td[contenteditable="true"] {
-  background: #f9fafb;
-  border: 2px solid #ffffff;
-  cursor: text;
-}
-
-td:focus {
-  outline: 2px solid #2563eb;
-  background: #eff6ff;
+  min-width: 140px;
 }
