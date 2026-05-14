@@ -167,27 +167,22 @@ document.addEventListener("DOMContentLoaded", function () {
       "correo",
       "telefono",
       "unidad",
-
       "fecha_evento",
       "hora_inicio",
       "hora_fin",
       "multi_dia",
       "fecha_inicio",
       "fecha_fin",
-
       "espacio",
       "personas",
       "externos",
       "discapacidad",
-
       "descripcion",
       "observaciones",
-
       "materiales",
       "humanos",
       "personificadores",
       "sonido",
-
       "fecha_aprobacion",
       "fecha_llenado",
     ];
@@ -220,12 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
           td.textContent = valor.join(", ");
         } else if (typeof valor === "boolean") {
           td.textContent = valor ? "Sí" : "No";
-        } else if (
-          typeof valor === "string" &&
-          valor.trim().toLowerCase() === "on"
-        ) {
-          td.style.display = "none"; // Ocultamos la celda
-          return; // Saltamos al siguiente valor sin procesar esta celda
         } else if (col === "humanos" && Array.isArray(valor)) {
           td.innerHTML = valor.length
             ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
@@ -233,25 +222,12 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (col === "materiales") {
           if (typeof valor === "object") {
             const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true) // Solo los marcados
-              .map(([k]) => formatearNombre(k)); // Convertimos la clave en nombre bonito
+              .filter(([_, v]) => v === true)
+              .map(([k]) => formatearNombre(k)); // Modificación aquí
 
             td.innerHTML = activos.length
               ? activos
                   .map((v) => `<span class="tag material">${v}</span>`)
-                  .join("")
-              : `<span class="empty">No requerido</span>`;
-          } else if (typeof valor === "object") {
-            const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true)
-              .map(([k]) => k);
-
-            td.innerHTML = activos.length
-              ? activos
-                  .map(
-                    (v) =>
-                      `<span class="tag material">${formatearNombre(v)}</span>`,
-                  )
                   .join("")
               : `<span class="empty">No requerido</span>`;
           }
