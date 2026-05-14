@@ -365,24 +365,37 @@ td:focus {
   outline: 2px solid #b91c1c; /* Borde rojo cuando el botón de eliminar está enfocado */
 }
 
-.empty {
-  color: #999;
-  font-style: italic;
-}
-
 .tag {
   display: inline-block;
-  background: #e3f2fd;
-  color: #0d47a1;
-  padding: 3px 8px;
+  padding: 4px 10px;
   margin: 2px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 12px;
+  font-weight: 500;
 }
 
+/* Materiales */
 .tag.material {
   background: #e8f5e9;
   color: #1b5e20;
+}
+
+/* Materiales */
+.tag.material {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+/* Sonido */
+.tag.sound {
+  background: #f3e5f5;
+  color: #4a148c;
+}
+
+/* Destacado */
+.tag.highlight {
+  background: #e3f2fd;
+  color: #0d47a1;
 }
 
 .empty {

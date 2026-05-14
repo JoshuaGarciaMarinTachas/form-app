@@ -135,6 +135,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function formatearNombre(key) {
+    const nombres = {
+      laptop: "Laptop",
+      proyector: "Proyector",
+      extensiones: "Extensiones",
+      sonido_movil: "Sonido móvil",
+      mamparas: "Mamparas",
+    };
+
+    return nombres[key] || key;
+  }
+
   function renderTabla(data) {
     tbody.innerHTML = "";
     thead.innerHTML = "";
@@ -208,25 +220,44 @@ document.addEventListener("DOMContentLoaded", function () {
           td.innerHTML = valor.length
             ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
             : `<span class="empty">—</span>`;
-        } else if (col === "materiales" && Array.isArray(valor)) {
-          td.innerHTML = valor.length
-            ? valor
-                .map((v) => `<span class="tag material">${v}</span>`)
-                .join("")
-            : `<span class="empty">—</span>`;
-        } else if (col === "personificadores" && typeof valor === "object") {
-          if (valor.activo) {
-            td.innerHTML = `<span class="tag">Sí (${valor.cantidad})</span>`;
+        } else if (col === "materiales") {
+          if (Array.isArray(valor)) {
+            td.innerHTML = valor.length
+              ? valor
+                  .map((v) => `<span class="tag material">${v}</span>`)
+                  .join("")
+              : `<span class="empty">—</span>`;
+          } else if (typeof valor === "object") {
+            const activos = Object.entries(valor)
+              .filter(([_, v]) => v === true)
+              .map(([k]) => k);
+
+            td.innerHTML = activos.length
+              ? activos
+                  .map(
+                    (v) =>
+                      `<span class="tag material">${formatearNombre(v)}</span>`,
+                  )
+                  .join("")
+              : `<span class="empty">No requerido</span>`;
+          }
+        } else if (col === "personificadores") {
+          if (valor?.activo) {
+            td.innerHTML = `<span class="tag highlight">${valor.cantidad} Personificadores</span>`;
           } else {
             td.innerHTML = `<span class="empty">No requerido</span>`;
           }
-        } else if (col === "sonido" && typeof valor === "object") {
-          if (valor.activo) {
-            td.innerHTML = `
-      <span class="tag">Sí</span>
-      ${valor.bocina ? `<span class="tag">Bocina</span>` : ""}
-      ${valor.microfonos ? `<span class="tag">${valor.microfonos} mic</span>` : ""}
-    `;
+        } else if (col === "sonido") {
+          if (valor?.activo) {
+            let items = [];
+
+            if (valor.bocina) items.push("Bocina");
+            if (valor.microfonos > 0)
+              items.push(`${valor.microfonos} micrófonos`);
+
+            td.innerHTML = items.length
+              ? items.map((i) => `<span class="tag sound">${i}</span>`).join("")
+              : `<span class="tag sound">Audio básico</span>`;
           } else {
             td.innerHTML = `<span class="empty">No requerido</span>`;
           }
