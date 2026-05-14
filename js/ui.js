@@ -284,6 +284,7 @@ export function crearCampo(campo) {
             // 🧹 LIMPIAR SIEMPRE QUE CAMBIA
             input.value = "";
             selectExtra.selectedIndex = 0;
+
             // 🔹 AUDITORIO
             if (val === "Auditorio") {
               div.style.display = "block";
