@@ -467,3 +467,28 @@ td:focus {
 #btnDescargar {
   margin-top: 10px; /* 👈 ahora sí baja */
 }
+
+th {
+  white-space: normal; /* 👈 permite varias líneas */
+  word-break: break-word; /* 👈 corta palabras largas */
+  line-height: 1.2;
+}
+
+th {
+  background: #111827;
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  padding: 12px 10px;
+
+  text-align: left;
+  vertical-align: middle;
+
+  max-width: 140px; /* 👈 evita columnas gigantes */
+}
+
+table {
+  table-layout: auto; /* o fixed si quieres más control */
+}
