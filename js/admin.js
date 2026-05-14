@@ -197,61 +197,24 @@ document.addEventListener("DOMContentLoaded", function () {
       columnas.forEach((col) => {
         const td = document.createElement("td");
 
-        if (col === "prioridad") {
-          const prioridad = obtenerPrioridad(row.fecha_evento);
-          td.innerHTML = `<span class="prioridad ${prioridad.clase}">${prioridad.texto}</span>`;
-          tr.appendChild(td);
-          return;
-        }
-
         let valor = row[col];
 
-        // Si el valor es un "on" (checkbox o true), lo reemplazamos por una cadena vacía
-        if (valor === "on" || valor === true) {
-          td.innerHTML = "";
+        // Procesar "on" o valores booleanos en "materiales"
+        if (col === "materiales" && typeof valor === "object") {
+          const activos = Object.entries(valor)
+            .filter(([_, v]) => v === true) // Filtra solo los valores activos
+            .map(([k]) => formatearNombre(k)) // Usa nombres bonitos
+            .filter((v) => v && v !== "on"); // Elimina cualquier "on" o vacío
+
+          td.innerHTML = activos.length
+            ? activos
+                .map((v) => `<span class="tag material">${v}</span>`)
+                .join(", ")
+            : `<span class="empty">No requerido</span>`; // Si no hay materiales activos, muestra esto
+        } else if (valor === "on" || valor === true) {
+          td.innerHTML = ""; // Elimina "on" o "true"
         } else if (valor === null || valor === undefined) {
           td.innerHTML = `<span class="empty">—</span>`;
-        } else if (Array.isArray(valor)) {
-          td.textContent = valor.join(", ");
-        } else if (typeof valor === "boolean") {
-          td.textContent = valor ? "Sí" : "No";
-        } else if (col === "humanos" && Array.isArray(valor)) {
-          td.innerHTML = valor.length
-            ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
-            : `<span class="empty">—</span>`;
-        } else if (col === "materiales") {
-          if (typeof valor === "object") {
-            const activos = Object.entries(valor)
-              .filter(([_, v]) => v === true) // solo seleccionamos los elementos "marcados"
-              .map(([k]) => formatearNombre(k)) // aplica "nombre bonito"
-              .filter((v) => v !== "" && v !== "on"); // eliminamos cualquier valor "on" o vacío
-
-            td.innerHTML = activos.length
-              ? activos
-                  .map((v) => `<span class="tag material">${v}</span>`)
-                  .join(", ") // unimos los materiales seleccionados por coma
-              : `<span class="empty">No requerido</span>`; // si no hay materiales, mostramos esto
-          }
-        } else if (col === "personificadores") {
-          if (valor?.activo) {
-            td.innerHTML = `<span class="tag highlight">${valor.cantidad} Personificadores</span>`;
-          } else {
-            td.innerHTML = `<span class="empty">No requerido</span>`;
-          }
-        } else if (col === "sonido") {
-          if (valor?.activo) {
-            let items = [];
-
-            if (valor.bocina) items.push("Bocina");
-            if (valor.microfonos > 0)
-              items.push(`${valor.microfonos} micrófonos`);
-
-            td.innerHTML = items.length
-              ? items.map((i) => `<span class="tag sound">${i}</span>`).join("")
-              : `<span class="tag sound">Audio básico</span>`;
-          } else {
-            td.innerHTML = `<span class="empty">No requerido</span>`;
-          }
         } else {
           td.textContent = valor;
         }
