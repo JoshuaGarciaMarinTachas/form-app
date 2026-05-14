@@ -52,32 +52,32 @@ document.addEventListener("DOMContentLoaded", function () {
     nombre_evento: "Evento",
     responsable: "Responsable",
     cargo_responsable: "Cargo",
+    unidad: "Unidad",
     correo: "Correo",
     telefono: "Teléfono",
-    unidad: "Unidad",
 
     fecha_evento: "Fecha del evento",
-    hora_inicio: "Inicio",
-    hora_fin: "Fin",
-    multi_dia: "¿Varios días?",
-    fecha_inicio: "Inicio (día)",
-    fecha_fin: "Fin (día)",
+    hora_inicio: "Hora de inicio",
+    hora_fin: "Hora de Fin",
+    multi_dia: "¿Dura varios días?",
+    fecha_inicio: "Día de inicio",
+    fecha_fin: "Día de fin",
 
     espacio: "Espacio",
-    personas: "Personas",
-    externos: "¿Externos?",
-    discapacidad: "¿Discapacidad?",
+    personas: "Número aproximado de personas",
+    externos: "¿Asiste gente externa?",
+    discapacidad: "¿Asisten personas con discapacidad?",
 
     descripcion: "Descripción",
     observaciones: "Observaciones",
 
     materiales: "Materiales",
-    humanos: "Apoyo humano",
     personificadores: "Personificadores",
     sonido: "Sonido",
+    humanos: "Apoyo humano",
 
-    fecha_aprobacion: "Aprobación",
-    fecha_llenado: "Registro",
+    fecha_aprobacion: "Fecha de aprobación",
+    fecha_llenado: "Fecha de llenado",
   };
 
   const columnasNoEditables = ["correo"];
