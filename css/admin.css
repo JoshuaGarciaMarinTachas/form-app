@@ -403,30 +403,39 @@ td:focus {
   font-style: italic;
 }
 
+/* =========================
+ BOTÓN DESCARGAR (ADMIN)
+========================= */
 #btnDescargar {
-  background: linear-gradient(135deg, #1d6f42, #28a745);
-  color: white;
+  padding: 10px 14px;
   border: none;
-  padding: 12px 18px;
-  font-size: 14px;
   border-radius: 10px;
   cursor: pointer;
+
+  background: #16a34a; /* verde admin */
+  color: white;
+  font-size: 14px;
   font-weight: 600;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* hover consistente con admin */
 #btnDescargar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  background: #15803d;
 }
 
+/* click */
 #btnDescargar:active {
   transform: scale(0.97);
 }
 
+/* deshabilitado */
 #btnDescargar:disabled {
-  background: #ccc;
+  background: #9ca3af;
   cursor: not-allowed;
-  box-shadow: none;
 }
