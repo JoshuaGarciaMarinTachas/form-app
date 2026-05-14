@@ -382,4 +382,33 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
   }
+  const btnDescargar = document.getElementById("btnDescargar");
+
+  btnDescargar.addEventListener("click", () => {
+    if (!dataGlobal.length) {
+      alert("No hay datos para exportar");
+      return;
+    }
+
+    // Convertir datos a formato plano
+    const datosExcel = dataGlobal.map((item) => {
+      let fila = {};
+
+      ordenColumnas.forEach((key) => {
+        fila[nombresBonitos[key]] = item[key] ?? "";
+      });
+
+      return fila;
+    });
+
+    // Crear hoja
+    const worksheet = XLSX.utils.json_to_sheet(datosExcel);
+
+    // Crear libro
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
+
+    // Descargar archivo
+    XLSX.writeFile(workbook, "eventos.xlsx");
+  });
 });
