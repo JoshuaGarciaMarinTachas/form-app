@@ -402,3 +402,31 @@ td:focus {
   color: #999;
   font-style: italic;
 }
+
+#btnDescargar {
+  background: linear-gradient(135deg, #1d6f42, #28a745);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#btnDescargar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+#btnDescargar:active {
+  transform: scale(0.97);
+}
+
+#btnDescargar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}

@@ -129,6 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
       renderTabla(dataGlobal);
+      // Activar botón si hay datos
+      const btnDescargar = document.getElementById("btnDescargar");
+      if (btnDescargar) {
+        btnDescargar.disabled = dataGlobal.length === 0;
+      }
     } catch (err) {
       console.error("Error cargando solicitudes:", err);
       alert("Error cargando solicitudes");
@@ -382,33 +387,40 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
   }
+  // ===== BOTÓN DESCARGAR EXCEL =====
   const btnDescargar = document.getElementById("btnDescargar");
 
-  btnDescargar.addEventListener("click", () => {
-    if (!dataGlobal.length) {
-      alert("No hay datos para exportar");
-      return;
-    }
+  if (btnDescargar) {
+    // Desactivar al inicio
+    btnDescargar.disabled = true;
 
-    // Convertir datos a formato plano
-    const datosExcel = dataGlobal.map((item) => {
-      let fila = {};
+    btnDescargar.addEventListener("click", () => {
+      try {
+        if (!dataGlobal.length) {
+          alert("No hay datos para exportar");
+          return;
+        }
 
-      ordenColumnas.forEach((key) => {
-        fila[nombresBonitos[key]] = item[key] ?? "";
-      });
+        const datosExcel = dataGlobal.map((item) => {
+          let fila = {};
 
-      return fila;
+          ordenColumnas.forEach((key) => {
+            fila[nombresBonitos[key]] = item[key] ?? "";
+          });
+
+          return fila;
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(datosExcel);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
+
+        const fecha = new Date().toISOString().split("T")[0];
+        XLSX.writeFile(workbook, `eventos_${fecha}.xlsx`);
+      } catch (error) {
+        console.error("Error al exportar:", error);
+        alert("Error al generar el Excel");
+      }
     });
-
-    // Crear hoja
-    const worksheet = XLSX.utils.json_to_sheet(datosExcel);
-
-    // Crear libro
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
-
-    // Descargar archivo
-    XLSX.writeFile(workbook, "eventos.xlsx");
-  });
+  }
 });
