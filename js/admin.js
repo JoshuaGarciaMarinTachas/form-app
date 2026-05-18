@@ -367,9 +367,8 @@ document.addEventListener("DOMContentLoaded", function () {
               typeof evento.materiales === "object" &&
               evento.materiales !== null
             ) {
-              materiales = Object.entries(evento.materiales)
-                .filter(([_, v]) => v === true || v === "true" || v === "on")
-                .map(([k]) => nombresMateriales[k])
+              materiales = Object.keys(evento.materiales)
+                .map((k) => nombresMateriales[k])
                 .filter(Boolean);
             }
 
