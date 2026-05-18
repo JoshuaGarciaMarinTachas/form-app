@@ -337,32 +337,119 @@ document.addEventListener("DOMContentLoaded", function () {
         btnWordFila.onclick = async () => {
           try {
             const evento = row;
-            const datosEvento = {
-              nombre_evento: evento.nombre_evento,
-              fecha_evento: evento.fecha_evento,
-              hora_inicio: evento.hora_inicio,
-              hora_fin: evento.hora_fin,
-              responsable: evento.responsable,
-              cargo_responsable: evento.cargo_responsable,
-              telefono: evento.telefono,
-              correo: evento.correo,
-              unidad: evento.unidad,
-              espacio: evento.espacio,
-              personas: evento.personas,
-              multi_dia: evento.multi_dia ? "Sí" : "No",
-              descripcion: evento.descripcion,
-              observaciones: evento.observaciones,
-              materiales: Array.isArray(evento.materiales)
-                ? evento.materiales.join(", ")
-                : "",
-              humanos: Array.isArray(evento.humanos)
-                ? evento.humanos.join(", ")
-                : "",
-              personificadores:
-                evento.personificadores?.cantidad || "No requerido",
-              sonido: evento.sonido?.activo ? "Sí" : "No",
+
+            // ===== FECHA ACTUAL =====
+            const fechaActual = new Date().toLocaleString("es-MX");
+
+            // ===== CATEGORÍA =====
+            const categoria = evento.administrativo
+              ? "Administrativo"
+              : "Estudiante";
+
+            // ===== UNIDAD O CARGO =====
+            const unidadCargo =
+              evento.unidad?.trim() ||
+              evento.cargo_responsable?.trim() ||
+              "No especificado";
+
+            // ===== LIMPIAR MATERIALES =====
+            const nombresMateriales = {
+              laptop: "Laptop",
+              proyector: "Videoproyector",
+              extensiones: "Extensiones",
+              sonido_movil: "Sonido móvil",
+              mamparas: "Mamparas",
             };
 
+            let materiales = [];
+
+            if (
+              typeof evento.materiales === "object" &&
+              evento.materiales !== null
+            ) {
+              materiales = Object.entries(evento.materiales)
+                .filter(([_, v]) => v === true)
+                .map(([k]) => nombresMateriales[k])
+                .filter(Boolean);
+            }
+
+            // ===== HUMANOS =====
+            let humanos = [];
+
+            if (Array.isArray(evento.humanos)) {
+              humanos = evento.humanos.filter((v) => v && v !== "on");
+            }
+
+            // ===== RECURSOS =====
+            const recursos = [...materiales, ...humanos].join(", ");
+
+            // ===== PERSONIFICADORES =====
+            let personificadores = "No requerido";
+
+            if (evento.personificadores?.activo) {
+              personificadores =
+                evento.personificadores.cantidad + " personificadores";
+            }
+
+            // ===== SONIDO =====
+            let sonido = "No requerido";
+
+            if (evento.sonido?.activo) {
+              let partes = [];
+
+              if (evento.sonido.bocina) {
+                partes.push("Bocina");
+              }
+
+              if (evento.sonido.microfonos > 0) {
+                partes.push(`${evento.sonido.microfonos} micrófonos`);
+              }
+
+              sonido = partes.join(", ");
+            }
+
+            // ===== DATOS FINALES =====
+            const datosEvento = {
+              fecha_actual: fechaActual,
+
+              nombre_evento: evento.nombre_evento || "No especificado",
+
+              fecha_aprobacion: evento.fecha_aprobacion || "No especificada",
+
+              fecha_evento: evento.fecha_evento || "No especificada",
+
+              hora_inicio: evento.hora_inicio || "--",
+
+              hora_fin: evento.hora_fin || "--",
+
+              responsable: evento.responsable || "No especificado",
+
+              categoria: categoria,
+
+              telefono: evento.telefono || "No especificado",
+
+              correo: evento.correo || "No especificado",
+
+              unidad_cargo: unidadCargo,
+
+              espacio: evento.espacio || "No especificado",
+
+              personas: evento.personas || "0",
+
+              montaje: evento.montaje || "No requerido",
+
+              descripcion: evento.descripcion || "Sin descripción",
+
+              observaciones: evento.observaciones || "Sin observaciones",
+
+              recursos: recursos || "Ninguno",
+
+              personificadores: personificadores,
+
+              sonido: sonido,
+            };
+
+            // ===== CARGAR TEMPLATE =====
             const response = await fetch("./js/Departamento de eventos.docx");
 
             const arrayBuffer = await response.arrayBuffer();
@@ -374,10 +461,13 @@ document.addEventListener("DOMContentLoaded", function () {
               linebreaks: true,
             });
 
+            // ===== PASAR DATOS =====
             doc.setData(datosEvento);
 
+            // ===== RENDER =====
             doc.render();
 
+            // ===== GENERAR ARCHIVO =====
             const out = doc.getZip().generate({
               type: "blob",
             });
