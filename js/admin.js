@@ -363,13 +363,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let materiales = [];
 
-            if (
+            const traducirMaterial = {
+              laptop: "Laptop",
+              proyector: "Videoproyector",
+              extensiones: "Extensiones",
+              sonido_movil: "Sonido móvil",
+              mamparas: "Mamparas",
+            };
+
+            // ===== SI ES ARRAY =====
+            if (Array.isArray(evento.materiales)) {
+              materiales = evento.materiales
+                .filter((v) => v && v !== "on" && v !== true && v !== false)
+                .map((v) => traducirMaterial[v] || v);
+            }
+
+            // ===== SI ES OBJETO =====
+            else if (
               typeof evento.materiales === "object" &&
               evento.materiales !== null
             ) {
-              materiales = Object.keys(evento.materiales)
-                .map((k) => nombresMateriales[k])
-                .filter(Boolean);
+              materiales = Object.entries(evento.materiales)
+                .filter(([_, v]) => v && v !== "off" && v !== false)
+                .map(([k]) => traducirMaterial[k] || k);
             }
 
             // ===== HUMANOS =====
