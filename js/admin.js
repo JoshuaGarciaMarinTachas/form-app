@@ -363,9 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
               sonido: evento.sonido?.activo ? "Sí" : "No",
             };
 
-            const response = await fetch(
-              "../templates/Departamento de eventos.docx",
-            );
+            const response = await fetch("./js/Departamento de eventos.docx");
             const arrayBuffer = await response.arrayBuffer();
             const zip = new PizZip(arrayBuffer);
             const doc = new window.Docxtemplater(zip, {

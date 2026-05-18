@@ -4,9 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Panel Administrativo</title>
+
     <link rel="stylesheet" href="./css/admin.css" />
+
+    <!-- XLSX -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- PizZip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.5/pizzip.min.js"></script>
+
+    <!-- Docxtemplater -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.37.11/docxtemplater.js"></script>
+
+    <!-- FileSaver -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   </head>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <body>
     <div class="layout">
@@ -14,11 +26,13 @@
       <aside class="sidebar">
         <div>
           <h2>Admin Panel</h2>
+
           <nav>
             <button class="menu-btn active">Solicitudes</button>
             <button id="btnDescargar">Descargar Excel</button>
           </nav>
         </div>
+
         <button id="logout" class="logout-btn">Cerrar sesión</button>
       </aside>
 
@@ -35,6 +49,7 @@
           <div class="status-card">
             <div class="status-info">
               <span class="status-label"> Recepción de solicitudes </span>
+
               <p class="status-description">
                 Controla si los usuarios pueden enviar nuevas solicitudes de
                 eventos.
@@ -91,6 +106,7 @@
                 <th>Maestro de ceremonias</th>
               </tr>
             </thead>
+
             <tbody id="tbody">
               <!-- Las filas se agregarán aquí dinámicamente -->
             </tbody>
@@ -99,6 +115,7 @@
       </main>
     </div>
 
+    <!-- TU JS -->
     <script type="module" src="./js/admin.js"></script>
   </body>
 </html>
