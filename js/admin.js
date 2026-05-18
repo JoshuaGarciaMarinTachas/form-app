@@ -381,32 +381,40 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // ===== RECURSOS =====
-            const recursos = [...materiales, ...humanos].join(", ");
+            // ===== TODOS LOS RECURSOS =====
+            let recursosTotales = [];
 
-            // ===== PERSONIFICADORES =====
-            let personificadores = "No requerido";
+            // ===== MATERIALES =====
+            recursosTotales.push(...materiales);
 
-            if (evento.personificadores?.activo) {
-              personificadores =
-                evento.personificadores.cantidad + " personificadores";
-            }
+            // ===== HUMANOS =====
+            recursosTotales.push(...humanos);
 
             // ===== SONIDO =====
-            let sonido = "No requerido";
-
             if (evento.sonido?.activo) {
-              let partes = [];
-
               if (evento.sonido.bocina) {
-                partes.push("Bocina");
+                recursosTotales.push("Bocina");
               }
 
               if (evento.sonido.microfonos > 0) {
-                partes.push(`${evento.sonido.microfonos} micrófonos`);
+                recursosTotales.push(`${evento.sonido.microfonos} micrófonos`);
               }
-
-              sonido = partes.join(", ");
             }
+
+            // ===== PERSONIFICADORES =====
+            if (
+              evento.personificadores?.activo &&
+              evento.personificadores.cantidad > 0
+            ) {
+              recursosTotales.push(
+                `${evento.personificadores.cantidad} personificadores`,
+              );
+            }
+
+            // ===== LIMPIAR =====
+            recursosTotales = recursosTotales
+              .filter((v) => v && v !== "on" && v !== "No requerido")
+              .join(", ");
 
             // ===== DATOS FINALES =====
             const datosEvento = {
@@ -442,11 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               observaciones: evento.observaciones || "Sin observaciones",
 
-              recursos: recursos || "Ninguno",
-
-              personificadores: personificadores,
-
-              sonido: sonido,
+              recursos_totales: recursosTotales || "Ninguno",
             };
 
             // ===== CARGAR TEMPLATE =====
