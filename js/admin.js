@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch("./js/Departamento de eventos.docx");
             const arrayBuffer = await response.arrayBuffer();
             const zip = new PizZip(arrayBuffer);
-            const doc = new window.Docxtemplater(zip, {
+            const doc = new Docxtemplater(zip, {
               paragraphLoop: true,
               linebreaks: true,
             });
