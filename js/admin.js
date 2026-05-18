@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
               evento.materiales !== null
             ) {
               materiales = Object.entries(evento.materiales)
-                .filter(([_, v]) => v === true)
+                .filter(([_, v]) => v === true || v === "true" || v === "on")
                 .map(([k]) => nombresMateriales[k])
                 .filter(Boolean);
             }
