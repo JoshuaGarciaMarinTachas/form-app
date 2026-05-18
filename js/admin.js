@@ -364,16 +364,24 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             const response = await fetch("./js/Departamento de eventos.docx");
+
             const arrayBuffer = await response.arrayBuffer();
+
             const zip = new PizZip(arrayBuffer);
-            const doc = new Docxtemplater(zip, {
+
+            const doc = new window.docxtemplater(zip, {
               paragraphLoop: true,
               linebreaks: true,
             });
+
             doc.setData(datosEvento);
+
             doc.render();
 
-            const out = doc.getZip().generate({ type: "blob" });
+            const out = doc.getZip().generate({
+              type: "blob",
+            });
+
             saveAs(out, `evento_${evento.nombre_evento}.docx`);
           } catch (err) {
             console.error("Error generando Word:", err);
