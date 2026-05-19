@@ -426,6 +426,11 @@ document.addEventListener("DOMContentLoaded", function () {
               );
             }
 
+            // ===== TIPO DE MONTAJE =====
+            const tipoMontaje = evento.montaje?.trim()
+              ? ` (${evento.montaje})`
+              : "";
+
             // ===== LIMPIAR =====
             recursosTotales = recursosTotales
               .filter((v) => v && v !== "on" && v !== "No requerido")
@@ -455,7 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               unidad_cargo: unidadCargo,
 
-              espacio: evento.espacio || "No especificado",
+              espacio: (evento.espacio || "No especificado") + tipoMontaje,
 
               personas: evento.personas || "0",
 
