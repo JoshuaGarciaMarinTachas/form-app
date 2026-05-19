@@ -460,9 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               unidad_cargo: unidadCargo,
 
-              espacio: evento.espacio || "No especificado",
-
-              tipo_montaje: evento.montaje?.trim() || "",
+              espacio: (evento.espacio || "No especificado") + tipoMontaje,
 
               personas: evento.personas || "0",
 
