@@ -253,6 +253,11 @@ form.addEventListener("submit", async (e) => {
     data[campo.id] = el.value?.trim() || null;
   });
 
+  // ELIMINAR MONTAJE SI NO ES SALA DE CONSEJO
+  if (data.espacio !== "Sala de Consejo") {
+    delete data.montaje;
+  }
+
   //  CAMPOS OBLIGATORIOS
   const obligatorios = [
     "correo",
