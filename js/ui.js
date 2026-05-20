@@ -263,6 +263,11 @@ export function crearCampo(campo) {
         selectExtra.id = "montaje"; //  CLAVE
         selectExtra.style.display = "none";
 
+        const opcionVacia = document.createElement("option");
+        opcionVacia.value = "";
+        opcionVacia.textContent = "Seleccione un montaje";
+        selectExtra.appendChild(opcionVacia);
+
         ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
           const option = document.createElement("option");
           option.value = op;
@@ -326,13 +331,18 @@ export function crearCampo(campo) {
         }, 200);
 
         div.getValores = () => {
-          if (div.style.display === "none") return "No aplica";
-
-          if (selectExtra.style.display === "block") {
-            return selectExtra.value;
+          // Si está oculto no guardar nada
+          if (div.style.display === "none") {
+            return null;
           }
 
-          return input.value || "No especificado";
+          // Sala de Consejo
+          if (selectExtra.style.display === "block") {
+            return selectExtra.value || null;
+          }
+
+          // Auditorio
+          return input.value.trim() || null;
         };
 
         //  ORDEN CORRECTO
