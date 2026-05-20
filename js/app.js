@@ -10,7 +10,7 @@ async function pruebaFirebase() {
     fecha: new Date(),
   });
 
-  console.log("✅ Datos enviados correctamente");
+  console.log(" Datos enviados correctamente");
 }
 
 pruebaFirebase();

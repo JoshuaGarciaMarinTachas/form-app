@@ -4,12 +4,12 @@ export const formularioData = {
   titulo: "Solicitud de Evento",
 
   campos: [
-    // 🔹 AUTO
+    //  AUTO
     { id: "fecha_llenado", tipo: "auto_date" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 1
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 1
+    //  =========================
     { id: "correo", label: "Correo", tipo: "email", required: true },
 
     {
@@ -55,9 +55,9 @@ export const formularioData = {
 
     { id: "telefono", label: "Teléfono", tipo: "tel" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 2
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 2
+    //  =========================
     { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
 
     {
@@ -110,9 +110,9 @@ export const formularioData = {
       required: true,
     },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 3
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 3
+    //  =========================
     { id: "externos", label: "¿Asiste gente externa?", tipo: "switch" },
 
     {
@@ -128,7 +128,7 @@ export const formularioData = {
       opciones: ["Explanada", "Auditorio", "Sala de Consejo"],
     },
 
-    // 🔥 SOLO SI NO ES EXPLANADA
+    //  SOLO SI NO ES EXPLANADA
     {
       id: "montaje",
       label: "Tipo de montaje",
@@ -145,16 +145,16 @@ export const formularioData = {
       },
     },
 
-    // 🔥 SIEMPRE VISIBLE
+    // SIEMPRE VISIBLE
     {
       id: "personas",
       label: "Número aproximado de personas",
       tipo: "number",
     },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 4
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 4
+    //  =========================
     {
       id: "materiales",
       tipo: "multiselect",
@@ -190,14 +190,14 @@ export const formularioData = {
       ],
     },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 5
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 5
+    //  =========================
     { id: "descripcion", label: "Descripción", tipo: "textarea" },
 
-    // 🔹 =========================
-    // 🔹 BLOQUE 6
-    // 🔹 =========================
+    //  =========================
+    //  BLOQUE 6
+    //  =========================
     { id: "observaciones", label: "Observaciones", tipo: "textarea" },
   ],
 };

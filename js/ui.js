@@ -62,7 +62,7 @@ export function crearCampo(campo) {
       toggleLabel.appendChild(spanSi);
       toggleLabel.appendChild(spanNo);
 
-      // 🔥 IMPORTANTE: meter label visual al contenedor
+      //  IMPORTANTE: meter label visual al contenedor
       setTimeout(() => {
         if (div) div.appendChild(toggleLabel);
       }, 0);
@@ -161,7 +161,7 @@ export function crearCampo(campo) {
       input.appendChild(main);
       input.appendChild(sub);
 
-      // 🔥 MOVER "SONIDO" DEBAJO DE "LAPTOP"
+      //  MOVER "SONIDO" DEBAJO DE "LAPTOP"
       setTimeout(() => {
         const materiales = document.getElementById("materiales");
         if (!materiales) return;
@@ -221,7 +221,7 @@ export function crearCampo(campo) {
 
       input.appendChild(row);
 
-      // 🔥 MOVER "PERSONIFICADORES" DEBAJO DE "MAMPARAS"
+      //  MOVER "PERSONIFICADORES" DEBAJO DE "MAMPARAS"
       setTimeout(() => {
         const materiales = document.getElementById("materiales");
         if (!materiales) return;
@@ -251,7 +251,7 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 MONTAJE DINÁMICO FINAL
+    //  MONTAJE DINÁMICO FINAL
     // =========================
     case "text": {
       input = document.createElement("input");
@@ -260,7 +260,7 @@ export function crearCampo(campo) {
 
       if (campo.id === "montaje") {
         const selectExtra = document.createElement("select");
-        selectExtra.id = "montaje"; // 👈 CLAVE
+        selectExtra.id = "montaje"; //  CLAVE
         selectExtra.style.display = "none";
 
         ["Tipo aula", "Tipo herradura", "Tipo auditorio"].forEach((op) => {
@@ -281,11 +281,11 @@ export function crearCampo(campo) {
           const actualizar = () => {
             const val = espacio.value;
 
-            // 🧹 LIMPIAR SIEMPRE QUE CAMBIA
+            //  LIMPIAR SIEMPRE QUE CAMBIA
             input.value = "";
             selectExtra.selectedIndex = 0;
 
-            // 🔹 AUDITORIO
+            //  AUDITORIO
             if (val === "Auditorio") {
               div.style.display = "block";
 
@@ -302,7 +302,7 @@ export function crearCampo(campo) {
               );
             }
 
-            // 🔹 SALA DE CONSEJO
+            //  SALA DE CONSEJO
             else if (val === "Sala de Consejo") {
               div.style.display = "block";
 
@@ -311,11 +311,11 @@ export function crearCampo(campo) {
 
               if (label) label.textContent = "Montaje";
 
-              // 🔥 arriba de personas
+              //  arriba de personas
               personasDiv.parentElement.insertBefore(div, personasDiv);
             }
 
-            // 🔹 EXPLANADA (OCULTAR TODO)
+            //  EXPLANADA (OCULTAR TODO)
             else {
               div.style.display = "none";
             }
@@ -335,7 +335,7 @@ export function crearCampo(campo) {
           return input.value || "No especificado";
         };
 
-        // 🔥 ORDEN CORRECTO
+        //  ORDEN CORRECTO
         if (label) div.appendChild(label);
         div.appendChild(selectExtra);
         div.appendChild(input);
@@ -347,12 +347,12 @@ export function crearCampo(campo) {
     }
 
     // =========================
-    // 🔥 HORARIO
+    //  HORARIO
     // =========================
     case "time_range": {
       input = document.createElement("input");
       input.type = "text";
-      input.id = "montaje_input"; // 👈 ya no "montaje"
+      input.id = "montaje_input"; //  ya no "montaje"
 
       const titulo = document.createElement("div");
       titulo.textContent = campo.label;
@@ -400,13 +400,13 @@ export function crearCampo(campo) {
   }
 
   // =========================
-  // 🔥 ENSAMBLAR (FUERA DEL SWITCH)
+  //  ENSAMBLAR (FUERA DEL SWITCH)
   // =========================
   if (label) div.appendChild(label);
   div.appendChild(input);
 
   // =========================
-  // 🔥 DEPENDENCIAS
+  //  DEPENDENCIAS
   // =========================
   if (campo.dependsOn) {
     setTimeout(() => {
@@ -443,7 +443,7 @@ export function crearCampo(campo) {
   }
 
   // =========================
-  // 🔥 VALIDACIÓN EXTRA (TIPO USUARIO)
+  //  VALIDACIÓN EXTRA (TIPO USUARIO)
   // =========================
   if (campo.id === "cargo_admin" || campo.id === "unidad") {
     setTimeout(() => {
