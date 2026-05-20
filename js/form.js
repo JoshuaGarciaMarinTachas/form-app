@@ -306,8 +306,20 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  //  VALIDAR HORARIO LÓGICO
+  // VALIDAR HORARIOS
   if (data.hora_inicio && data.hora_fin) {
+    // Rango permitido
+    if (
+      data.hora_inicio < "07:00" ||
+      data.hora_inicio > "17:00" ||
+      data.hora_fin < "07:00" ||
+      data.hora_fin > "17:00"
+    ) {
+      alert("El horario permitido es de 07:00 a 17:00 horas");
+      return;
+    }
+
+    // Hora fin mayor que hora inicio
     if (data.hora_fin <= data.hora_inicio) {
       alert("La hora de fin debe ser mayor a la de inicio");
       return;
