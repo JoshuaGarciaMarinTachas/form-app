@@ -24,7 +24,7 @@ const db = getFirestore(app);
 document.addEventListener("DOMContentLoaded", function () {
   console.log("Admin cargando...");
 
-  // ✅ CORREGIDO
+  // CORREGIDO
   const tbody = document.getElementById("tbody");
   const thead = document.querySelector("thead");
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return fechaA - fechaB;
         });
 
-      console.log("Datos cargados:", dataGlobal); // 👈 Agregado para depurar
+      console.log("Datos cargados:", dataGlobal); // Agregado para depurar
 
       try {
         renderTabla(dataGlobal);
@@ -615,17 +615,17 @@ document.addEventListener("DOMContentLoaded", function () {
           columnasExcel.forEach((key) => {
             let valor = item[key];
 
-            // ✅ Booleanos
+            // Booleanos
             if (typeof valor === "boolean") {
               valor = valor ? "Sí" : "No";
             }
 
-            // ✅ HUMANOS (arrays)
+            // HUMANOS (arrays)
             else if (key === "humanos" && Array.isArray(valor)) {
               valor = valor.join(", ");
             }
 
-            // ✅ MATERIALES (objetos o arrays, eliminar "on" y objetos vacíos)
+            // MATERIALES (objetos o arrays, eliminar "on" y objetos vacíos)
             else if (key === "materiales") {
               const nombresMateriales = {
                 laptop: "Laptop",
@@ -658,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
 
-            // ✅ PERSONIFICADORES
+            // PERSONIFICADORES
             else if (key === "personificadores") {
               if (valor?.activo) {
                 valor = `${valor.cantidad} personificadores`;
@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
 
-            // ✅ SONIDO
+            // SONIDO
             else if (key === "sonido") {
               if (valor?.activo) {
                 let partes = [];
@@ -680,12 +680,12 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             }
 
-            // ✅ Otros arrays
+            // Otros arrays
             else if (Array.isArray(valor)) {
               valor = valor.join(", ");
             }
 
-            // ✅ Otros objetos (ignorar)
+            // Otros objetos (ignorar)
             else if (typeof valor === "object" && valor !== null) {
               valor = "";
             }
