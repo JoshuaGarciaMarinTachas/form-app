@@ -125,7 +125,7 @@ export const formularioData = {
       id: "espacio",
       label: "Espacio solicitado",
       tipo: "select",
-      opciones: ["Explanada", "Auditorio", "Sala de Consejo"],
+      opciones: ["Explanada", "Auditorio", "Sala de Consejo", "Velaria"],
     },
 
     //  SOLO SI NO ES EXPLANADA
