@@ -401,11 +401,16 @@ export function crearCampo(campo) {
       break;
     }
 
-    // 🔹 DEFAULT
     default: {
       input = document.createElement("input");
       input.type = campo.tipo;
       input.id = campo.id;
+
+      // Limitar horarios de 07:00 a 17:00
+      if (campo.tipo === "time") {
+        input.min = "07:00";
+        input.max = "17:00";
+      }
     }
   }
 
