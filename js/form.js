@@ -275,8 +275,12 @@ setTimeout(() => {
     const activo = multiDia.checked;
 
     if (activo) {
-      fechaInicio.disabled = false;
-      fechaInicio.style.backgroundColor = "";
+      fechaInicio.parentElement.style.display = "none";
+
+      const fechaFin = document.getElementById("fecha_fin");
+      if (fechaFin) {
+        fechaFin.parentElement.style.display = "none";
+      }
 
       diasContainer.style.display = "flex";
       btnAgregarDia.style.display = "block";
@@ -287,8 +291,12 @@ setTimeout(() => {
         crearDia();
       }
     } else {
-      fechaInicio.disabled = true;
-      fechaInicio.style.backgroundColor = "#eee";
+      fechaInicio.parentElement.style.display = "flex";
+
+      const fechaFin = document.getElementById("fecha_fin");
+      if (fechaFin) {
+        fechaFin.parentElement.style.display = "none";
+      }
 
       diasContainer.style.display = "none";
       btnAgregarDia.style.display = "none";
