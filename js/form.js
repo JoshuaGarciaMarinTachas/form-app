@@ -159,6 +159,19 @@ bloques[1].appendChild(btnAgregarDia);
 
 let contadorDias = 0;
 
+function renumerarDias() {
+  const dias = document.querySelectorAll(".dia-card");
+
+  dias.forEach((dia, index) => {
+    const titulo = dia.querySelector("h4");
+    if (titulo) {
+      titulo.textContent = `Día ${index + 1}`;
+    }
+  });
+
+  contadorDias = dias.length;
+}
+
 function crearDia() {
   contadorDias++;
 
@@ -204,12 +217,14 @@ function crearDia() {
 
     btnEliminar.addEventListener("click", () => {
       card.remove();
+      renumerarDias();
     });
 
     card.appendChild(btnEliminar);
   }
 
   diasContainer.appendChild(card);
+  renumerarDias();
 }
 
 btnAgregarDia.addEventListener("click", crearDia);
