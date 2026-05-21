@@ -140,6 +140,80 @@ formularioData.campos.forEach((campo) => {
 
 bloques[1].appendChild(horarioRow);
 
+// =========================
+// EVENTOS MULTIDÍA
+// =========================
+
+const diasContainer = document.createElement("div");
+diasContainer.classList.add("dias-container");
+diasContainer.style.display = "none";
+
+const btnAgregarDia = document.createElement("button");
+btnAgregarDia.type = "button";
+btnAgregarDia.textContent = "+ Agregar día";
+btnAgregarDia.classList.add("btn-agregar-dia");
+btnAgregarDia.style.display = "none";
+
+bloques[1].appendChild(diasContainer);
+bloques[1].appendChild(btnAgregarDia);
+
+let contadorDias = 0;
+
+function crearDia() {
+  contadorDias++;
+
+  const card = document.createElement("div");
+  card.classList.add("dia-card");
+
+  card.innerHTML = `
+    <h4>Día ${contadorDias}</h4>
+
+    <div class="dia-grid">
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" class="dia-fecha">
+      </div>
+
+      <div class="form-group">
+        <label>Hora inicio</label>
+        <input
+          type="time"
+          class="dia-inicio"
+          min="07:00"
+          max="17:00"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Hora fin</label>
+        <input
+          type="time"
+          class="dia-fin"
+          min="07:00"
+          max="17:00"
+        >
+      </div>
+    </div>
+  `;
+
+  if (contadorDias > 1) {
+    const btnEliminar = document.createElement("button");
+    btnEliminar.type = "button";
+    btnEliminar.textContent = "Eliminar día";
+    btnEliminar.classList.add("btn-eliminar-dia");
+
+    btnEliminar.addEventListener("click", () => {
+      card.remove();
+    });
+
+    card.appendChild(btnEliminar);
+  }
+
+  diasContainer.appendChild(card);
+}
+
+btnAgregarDia.addEventListener("click", crearDia);
+
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
@@ -188,9 +262,24 @@ setTimeout(() => {
     if (activo) {
       fechaInicio.disabled = false;
       fechaInicio.style.backgroundColor = "";
+
+      diasContainer.style.display = "flex";
+      btnAgregarDia.style.display = "block";
+
+      horarioRow.style.display = "none";
+
+      if (!diasContainer.children.length) {
+        crearDia();
+      }
     } else {
       fechaInicio.disabled = true;
       fechaInicio.style.backgroundColor = "#eee";
+
+      diasContainer.style.display = "none";
+      btnAgregarDia.style.display = "none";
+
+      horarioRow.style.display = "flex";
+
       syncFecha();
     }
   };
@@ -367,6 +456,18 @@ form.addEventListener("submit", async (e) => {
     // =========================
     // ENVIAR SOLICITUD
     // =========================
+
+    if (data.multi_dia) {
+      data.dias = [];
+
+      document.querySelectorAll(".dia-card").forEach((dia) => {
+        data.dias.push({
+          fecha: dia.querySelector(".dia-fecha")?.value || "",
+          hora_inicio: dia.querySelector(".dia-inicio")?.value || "",
+          hora_fin: dia.querySelector(".dia-fin")?.value || "",
+        });
+      });
+    }
 
     await addDoc(collection(db, "solicitudes"), data);
 
