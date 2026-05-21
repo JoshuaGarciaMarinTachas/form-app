@@ -265,6 +265,9 @@ setTimeout(() => {
   const fechaFin = document.getElementById("fecha_fin");
 
   // Ocultar siempre estos campos
+  if (fechaInicio) {
+    fechaInicio.parentElement.style.display = "none";
+  }
 
   if (fechaFin) {
     fechaFin.parentElement.style.display = "none";
