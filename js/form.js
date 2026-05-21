@@ -262,6 +262,14 @@ setTimeout(() => {
 
   if (!fechaEvento || !fechaInicio || !multiDia) return;
 
+  const fechaFin = document.getElementById("fecha_fin");
+
+  // Ocultar siempre estos campos
+
+  if (fechaFin) {
+    fechaFin.parentElement.style.display = "none";
+  }
+
   fechaInicio.disabled = true;
   fechaInicio.style.backgroundColor = "#eee";
 
@@ -273,6 +281,20 @@ setTimeout(() => {
 
   const toggleMultiDia = () => {
     const activo = multiDia.checked;
+    const fechaEvento = document.getElementById("fecha_evento");
+    const fechaFin = document.getElementById("fecha_fin");
+
+    fechaEvento.parentElement.style.display = "none";
+
+    if (fechaInicio) {
+      fechaInicio.parentElement.style.display = "none";
+    }
+
+    if (fechaFin) {
+      fechaFin.parentElement.style.display = "none";
+    }
+
+    horarioRow.style.display = "none";
 
     if (activo) {
       fechaInicio.parentElement.style.display = "none";
@@ -292,7 +314,9 @@ setTimeout(() => {
       }
     } else {
       fechaInicio.parentElement.style.display = "flex";
+      fechaEvento.parentElement.style.display = "flex";
 
+      horarioRow.style.display = "flex";
       const fechaFin = document.getElementById("fecha_fin");
       if (fechaFin) {
         fechaFin.parentElement.style.display = "none";
