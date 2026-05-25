@@ -332,7 +332,9 @@ setTimeout(() => {
   };
 
   fechaEvento.addEventListener("change", syncFecha);
-  multiDia.addEventListener("change", toggleMultiDia);
+  multiDia.addEventListener("change", () => {
+    setTimeout(toggleMultiDia, 0);
+  });
 
   syncFecha();
   toggleMultiDia();
