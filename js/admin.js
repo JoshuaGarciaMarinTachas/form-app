@@ -240,11 +240,15 @@ document.addEventListener("DOMContentLoaded", function () {
               ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
               : `<span class="empty">—</span>`;
           } else if (col === "materiales") {
-            if (typeof valor === "object" && valor !== null) {
+            if (
+              typeof valor === "object" &&
+              valor !== null &&
+              !Array.isArray(valor)
+            ) {
               const activos = Object.entries(valor)
-                .filter(([_, v]) => v === true)
+                .filter(([_, v]) => v && v !== "on" && v !== false)
                 .map(([k]) => formatearNombre(k))
-                .filter((v) => v !== "" && v !== "on");
+                .filter((v) => v);
               td.innerHTML = activos.length
                 ? activos
                     .map((v) => `<span class="tag material">${v}</span>`)
