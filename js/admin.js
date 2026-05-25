@@ -356,10 +356,11 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         acciones.appendChild(btnDelete);
 
-        // Botón Generar Word
+        // Botón Generar Word actualizado
         const btnWordFila = document.createElement("button");
         btnWordFila.textContent = "Generar Word";
         btnWordFila.classList.add("action-btn", "word-btn");
+
         btnWordFila.onclick = async () => {
           try {
             const evento = row;
@@ -378,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function () {
               evento.cargo_responsable?.trim() ||
               "No especificado";
 
-            // ===== MATERIAL =====
+            // ===== LIMPIAR MATERIALES =====
             const traducirMaterial = {
               laptop: "Laptop",
               proyector: "Videoproyector",
@@ -408,20 +409,22 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // ===== SONIDO =====
+            let sonidoStr = "No requerido";
             if (evento.sonido?.activo) {
-              if (evento.sonido.bocina) humanos.push("Bocina");
+              const parts = [];
+              if (evento.sonido.bocina) parts.push("Bocina");
               if (evento.sonido.microfonos > 0)
-                humanos.push(`${evento.sonido.microfonos} micrófonos`);
+                parts.push(`${evento.sonido.microfonos} micrófonos`);
+              sonidoStr = parts.length ? parts.join(", ") : "Audio básico";
             }
 
             // ===== PERSONIFICADORES =====
+            let personificadoresStr = "No requerido";
             if (
               evento.personificadores?.activo &&
               evento.personificadores.cantidad > 0
             ) {
-              humanos.push(
-                `${evento.personificadores.cantidad} personificadores`,
-              );
+              personificadoresStr = `${evento.personificadores.cantidad} personificadores`;
             }
 
             // ===== TIPO DE MONTAJE =====
@@ -429,34 +432,28 @@ document.addEventListener("DOMContentLoaded", function () {
               ? ` (${evento.montaje})`
               : "";
 
-            // ===== FECHAS Y HORARIOS =====
-            let fechas = [];
-            let horarios = [];
-            if (Array.isArray(evento.fechas_evento)) {
-              fechas = evento.fechas_evento.filter((f) => f);
-            } else if (typeof evento.fechas_evento === "string") {
-              fechas = evento.fechas_evento
-                .split("\n")
-                .filter((f) => f.trim() !== "");
-            }
+            // ===== FECHAS Y HORARIOS LIMPIOS =====
+            const fechas = Array.isArray(evento.fechas_evento)
+              ? evento.fechas_evento
+              : [evento.fechas_evento || ""];
+            const horarios = Array.isArray(evento.horarios_evento)
+              ? evento.horarios_evento
+              : [
+                  evento.hora_inicio && evento.hora_fin
+                    ? `${evento.hora_inicio}-${evento.hora_fin}`
+                    : "--",
+                ];
 
-            if (Array.isArray(evento.horarios_evento)) {
-              horarios = evento.horarios_evento.filter((h) => h);
-            } else if (typeof evento.horarios_evento === "string") {
-              horarios = evento.horarios_evento
-                .split("\n")
-                .filter((h) => h.trim() !== "");
-            }
-
-            // Combinar fechas y horarios sin "Día 1, Día 2"
             const fechaHorario = fechas
               .map((f, i) => {
                 const h = horarios[i] || "--";
-                return `${f} - ${h}`; // Solo fecha y horario
+                // Quitar "Día X" si existiera
+                const fClean = String(f).replace(/\s*-\s*Día\s*\d+/i, "");
+                return `${fClean} ${h}`;
               })
               .join("\n");
 
-            // ===== DATOS FINALES =====
+            // ===== DATOS PARA WORD =====
             const datosEvento = {
               fecha_actual: fechaActual,
               nombre_evento: evento.nombre_evento || "No especificado",
@@ -473,25 +470,24 @@ document.addEventListener("DOMContentLoaded", function () {
               descripcion: evento.descripcion || "Sin descripción",
               observaciones: evento.observaciones || "Sin observaciones",
               recursos_totales:
-                [...materiales, ...humanos].join(", ") || "Ninguno",
+                [...materiales, ...humanos, sonidoStr, personificadoresStr]
+                  .filter((v) => v)
+                  .join(", ") || "Ninguno",
             };
 
             // ===== CARGAR TEMPLATE =====
             const response = await fetch("./js/Departamento de eventos.docx");
             const arrayBuffer = await response.arrayBuffer();
             const zip = new PizZip(arrayBuffer);
+
             const doc = new window.docxtemplater(zip, {
               paragraphLoop: true,
               linebreaks: true,
             });
 
-            // ===== PASAR DATOS =====
             doc.setData(datosEvento);
-
-            // ===== RENDER =====
             doc.render();
 
-            // ===== GENERAR ARCHIVO =====
             const out = doc.getZip().generate({ type: "blob" });
             saveAs(out, `evento_${evento.nombre_evento}.docx`);
           } catch (err) {
