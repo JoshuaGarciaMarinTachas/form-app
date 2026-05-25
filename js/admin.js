@@ -172,6 +172,10 @@ document.addEventListener("DOMContentLoaded", function () {
     return { texto: "Media", clase: "media" };
   }
 
+  function limpiarValores(arr) {
+    return arr.filter((v) => v && v !== "on" && v !== true && v !== false);
+  }
+
   function renderTabla(data) {
     tbody.innerHTML = "";
     thead.innerHTML = "";
@@ -251,6 +255,9 @@ document.addEventListener("DOMContentLoaded", function () {
             td.innerHTML = valor?.activo
               ? `<span class="tag highlight">${valor.cantidad} Personificadores</span>`
               : `<span class="empty">No requerido</span>`;
+          } else if (Array.isArray(valor)) {
+            const limpio = limpiarValores(valor);
+            td.textContent = limpio.length ? limpio.join(", ") : "—";
           } else if (col === "sonido") {
             if (valor?.activo) {
               const items = [];
