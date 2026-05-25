@@ -608,8 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const datosExcel = dataGlobal.map((item) => {
-          let fila = {};
-
+          const fila = {};
           const columnasExcel = [
             "nombre_evento",
             "responsable",
@@ -619,6 +618,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "telefono",
             "fechas_evento",
             "horarios_evento",
+            "hora_inicio",
             "hora_fin",
             "multi_dia",
             "fecha_inicio",
@@ -645,72 +645,55 @@ document.addEventListener("DOMContentLoaded", function () {
             if (typeof valor === "boolean") {
               valor = valor ? "Sí" : "No";
             }
-
-            // HUMANOS (arrays)
-            else if (key === "humanos" && Array.isArray(valor)) {
-              valor = valor.join(", ");
+            // Arrays (humanos u otros) → limpiar "on", true, false
+            else if (Array.isArray(valor)) {
+              const limpio = limpiarValores(valor);
+              valor = limpio.length ? limpio.join(", ") : "";
             }
-
-            // MATERIALES (objetos o arrays, eliminar "on" y objetos vacíos)
-            else if (key === "materiales") {
-              const nombresMateriales = {
-                laptop: "Laptop",
-                proyector: "Proyector",
-                extensiones: "Extensiones",
-                sonido_movil: "Sonido móvil",
-                mamparas: "Mamparas",
-              };
-
-              if (
-                typeof valor === "object" &&
-                !Array.isArray(valor) &&
-                valor !== null
-              ) {
-                const activos = Object.entries(valor)
-                  .filter(([_, v]) => v === true)
-                  .map(([k]) => nombresMateriales[k])
-                  .filter(Boolean); // elimina undefined, null o "on"
-
-                valor = activos.length ? activos.join(", ") : "No requerido";
-              } else if (Array.isArray(valor)) {
-                const limpio = limpiarValores(valor);
-                td.textContent = limpio.length ? limpio.join(", ") : "—";
-              } else {
-                valor = "No requerido";
-              }
+            // Materiales (objeto)
+            else if (
+              key === "materiales" &&
+              valor &&
+              typeof valor === "object" &&
+              !Array.isArray(valor)
+            ) {
+              const activos = Object.entries(valor)
+                .filter(([_, v]) => v && v !== "on" && v !== false)
+                .map(([k]) => formatearNombre(k))
+                .filter(Boolean);
+              valor = activos.length ? activos.join(", ") : "";
             }
-
-            // PERSONIFICADORES
+            // Personificadores
             else if (key === "personificadores") {
               if (valor?.activo) {
                 valor = `${valor.cantidad} personificadores`;
               } else {
-                valor = "No requerido";
+                valor = "";
               }
             }
-
-            // SONIDO
+            // Sonido
             else if (key === "sonido") {
               if (valor?.activo) {
-                let partes = [];
-                if (valor.bocina) partes.push("Bocina");
+                const items = [];
+                if (valor.bocina) items.push("Bocina");
                 if (valor.microfonos > 0)
-                  partes.push(`${valor.microfonos} micrófonos`);
-                valor = partes.length ? partes.join(", ") : "Audio básico";
+                  items.push(`${valor.microfonos} micrófonos`);
+                valor = items.length ? items.join(", ") : "Audio básico";
               } else {
-                valor = "No requerido";
+                valor = "";
               }
             }
-
-            // Otros arrays
-            else if (Array.isArray(valor)) {
-              const limpio = limpiarValores(valor);
-              td.textContent = limpio.length ? limpio.join(", ") : "—";
-            }
-
-            // Otros objetos (ignorar)
+            // Otros objetos
             else if (typeof valor === "object" && valor !== null) {
               valor = "";
+            }
+
+            // Fechas y horarios → si vienen separados por salto de línea, unir con coma
+            if (
+              typeof valor === "string" &&
+              (key === "fechas_evento" || key === "horarios_evento")
+            ) {
+              valor = valor.replace(/\n/g, ", ");
             }
 
             fila[nombresBonitos[key] || key] = valor ?? "";
@@ -722,9 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const worksheet = XLSX.utils.json_to_sheet(datosExcel);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
-
-        // Sobrescribir el mismo archivo siempre
-        XLSX.writeFile(workbook, `eventos.xlsx`);
+        XLSX.writeFile(workbook, "eventos.xlsx");
       } catch (error) {
         console.error("Error al exportar:", error);
         alert("Error al generar el Excel");
