@@ -581,7 +581,8 @@ form.addEventListener("submit", async (e) => {
     delete data.fecha_fin;
     delete data.hora_inicio;
     delete data.hora_fin;
-
+    
+    console.log(data);
     await addDoc(collection(db, "solicitudes"), data);
 
     alert("Solicitud enviada correctamente");
