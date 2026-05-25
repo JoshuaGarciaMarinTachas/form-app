@@ -255,9 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
             td.innerHTML = valor?.activo
               ? `<span class="tag highlight">${valor.cantidad} Personificadores</span>`
               : `<span class="empty">No requerido</span>`;
-          } else if (Array.isArray(valor)) {
-            const limpio = limpiarValores(valor);
-            td.textContent = limpio.length ? limpio.join(", ") : "—";
           } else if (col === "sonido") {
             if (valor?.activo) {
               const items = [];
@@ -691,7 +688,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Otros arrays
             else if (Array.isArray(valor)) {
-              valor = valor.join(", ");
+              const limpio = limpiarValores(valor);
+              td.textContent = limpio.length ? limpio.join(", ") : "—";
             }
 
             // Otros objetos (ignorar)
