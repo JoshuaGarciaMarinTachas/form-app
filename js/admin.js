@@ -262,6 +262,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     .map((i) => `<span class="tag sound">${i}</span>`)
                     .join(", ")
                 : `<span class="tag sound">Audio básico</span>`;
+            } else if (col === "horarios_evento" || col === "fechas_evento") {
+              td.innerHTML = valor.replace(/\n/g, "<br>");
             } else {
               td.innerHTML = `<span class="empty">No requerido</span>`;
             }
