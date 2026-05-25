@@ -227,39 +227,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
         columnas.forEach((col) => {
           const td = document.createElement("td");
+          td.style.textAlign = "center"; // centrado opcional
+
           let valor = row[col];
 
-          if (valor === null || valor === undefined) {
-            td.innerHTML = `<span class="empty">—</span>`;
-          } else if (Array.isArray(valor)) {
-            td.textContent = valor.join(", ");
-          } else if (typeof valor === "boolean") {
+          // Limpia arrays de "on", true, false
+          if (Array.isArray(valor)) {
+            const limpio = limpiarValores(valor);
+            td.textContent = limpio.length ? limpio.join(", ") : "—";
+          }
+          // Booleanos
+          else if (typeof valor === "boolean") {
             td.textContent = valor ? "Sí" : "No";
-          } else if (col === "humanos" && Array.isArray(valor)) {
-            td.innerHTML = valor.length
-              ? valor.map((v) => `<span class="tag">${v}</span>`).join("")
+          }
+          // Humanos (tags)
+          else if (col === "humanos" && Array.isArray(valor)) {
+            const limpio = limpiarValores(valor);
+            td.innerHTML = limpio.length
+              ? limpio.map((v) => `<span class="tag">${v}</span>`).join("")
               : `<span class="empty">—</span>`;
-          } else if (col === "materiales") {
-            if (
-              typeof valor === "object" &&
-              valor !== null &&
-              !Array.isArray(valor)
-            ) {
+          }
+          // Materiales
+          else if (col === "materiales") {
+            if (valor && typeof valor === "object" && !Array.isArray(valor)) {
               const activos = Object.entries(valor)
                 .filter(([_, v]) => v && v !== "on" && v !== false)
                 .map(([k]) => formatearNombre(k))
-                .filter((v) => v);
+                .filter(Boolean);
               td.innerHTML = activos.length
                 ? activos
                     .map((v) => `<span class="tag material">${v}</span>`)
                     .join(", ")
                 : `<span class="empty">No requerido</span>`;
             }
-          } else if (col === "personificadores") {
+          }
+          // Personificadores
+          else if (col === "personificadores") {
             td.innerHTML = valor?.activo
               ? `<span class="tag highlight">${valor.cantidad} Personificadores</span>`
               : `<span class="empty">No requerido</span>`;
-          } else if (col === "sonido") {
+          }
+          // Sonido
+          else if (col === "sonido") {
             if (valor?.activo) {
               const items = [];
               if (valor.bocina) items.push("Bocina");
@@ -270,21 +279,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     .map((i) => `<span class="tag sound">${i}</span>`)
                     .join(", ")
                 : `<span class="tag sound">Audio básico</span>`;
-            } else if (col === "horarios_evento" || col === "fechas_evento") {
-              td.innerHTML = `<div class="horarios-cell">${valor.replace(/\n/g, "<br>")}</div>`;
             } else {
               td.innerHTML = `<span class="empty">No requerido</span>`;
             }
-          } else {
-            td.textContent = valor;
+          }
+          // Horarios o fechas
+          else if (col === "horarios_evento" || col === "fechas_evento") {
+            td.innerHTML = `<div class="horarios-cell">${valor?.replace(/\n/g, "<br>") || "—"}</div>`;
+          }
+          // Otros objetos
+          else if (typeof valor === "object" && valor !== null) {
+            td.textContent = "";
+          }
+          // Texto normal
+          else {
+            td.textContent = valor ?? "—";
           }
 
           td.contentEditable = !columnasNoEditables.includes(col);
 
           let valorOriginal = td.textContent;
-          td.addEventListener("focus", () => {
-            valorOriginal = td.textContent;
-          });
+          td.addEventListener("focus", () => (valorOriginal = td.textContent));
 
           td.addEventListener("blur", async () => {
             if (columnasNoEditables.includes(col)) return;
