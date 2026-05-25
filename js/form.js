@@ -336,7 +336,7 @@ setTimeout(() => {
   multiDia.addEventListener("change", () => {
     setTimeout(toggleMultiDia, 0);
   });
-
+  console.log("MULTIDIA:", multiDia.checked);
   syncFecha();
   toggleMultiDia();
 }, 200);
