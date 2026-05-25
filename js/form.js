@@ -569,6 +569,22 @@ form.addEventListener("submit", async (e) => {
       horariosArr.push(`${data.hora_inicio} - ${data.hora_fin}`);
     }
 
+    // 🔹 GUARDAR cargo_admin SOLO SI ES VISIBLE
+    const cargoAdminEl = document.getElementById("cargo_admin");
+    if (cargoAdminEl && cargoAdminEl.offsetParent !== null) {
+      data.cargo_admin = cargoAdminEl.value?.trim() || null;
+    } else {
+      data.cargo_admin = null;
+    }
+
+    // 🔹 GUARDAR unidad SI ES VISIBLE
+    const unidadEl = document.getElementById("unidad");
+    if (unidadEl && unidadEl.offsetParent !== null) {
+      data.unidad = unidadEl.value?.trim() || null;
+    } else {
+      data.unidad = null;
+    }
+
     // 🔥 GUARDAR EN FIREBASE
     data.fechas_evento = fechasArr.join("\n");
     data.horarios_evento = horariosArr.join("\n");

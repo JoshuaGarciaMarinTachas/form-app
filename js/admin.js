@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     nombre_evento: "Evento",
     responsable: "Responsable",
     cargo_responsable: "Cargo",
+    cargo_admin: "Cargo administrativo", // <--- agregar aquí
     unidad: "Unidad",
     correo: "Correo",
     telefono: "Teléfono",
@@ -189,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "nombre_evento",
       "responsable",
       "cargo_responsable",
+      "cargo_admin",
       "unidad",
       "correo",
       "telefono",
