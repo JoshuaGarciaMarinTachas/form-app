@@ -269,14 +269,12 @@ setTimeout(() => {
   if (fechaInicio) {
     fechaInicio.parentElement.style.display = "none";
     fechaInicio.disabled = true;
+    fechaInicio.style.backgroundColor = "#eee";
   }
 
   if (fechaFin) {
     fechaFin.parentElement.style.display = "none";
   }
-
-  fechaInicio.disabled = true;
-  fechaInicio.style.backgroundColor = "#eee";
 
   const syncFecha = () => {
     if (fechaEvento.value) {
