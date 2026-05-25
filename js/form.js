@@ -529,31 +529,44 @@ form.addEventListener("submit", async (e) => {
     if (data.multi_dia) {
       let error = false;
 
-      document.querySelectorAll(".dia-card").forEach((dia, index) => {
+      const dias = document.querySelectorAll(".dia-card");
+
+      // 🔴 Validar que exista al menos un día
+      if (dias.length === 0) {
+        alert("Debes agregar al menos un día");
+        return;
+      }
+
+      dias.forEach((dia, index) => {
         const fecha = dia.querySelector(".dia-fecha")?.value;
         const inicio = dia.querySelector(".dia-inicio")?.value;
         const fin = dia.querySelector(".dia-fin")?.value;
 
+        // 🔴 Validar campos vacíos
         if (!fecha || !inicio || !fin) {
           error = true;
           return;
         }
 
+        // 🔴 Validar orden de horas
         if (fin <= inicio) {
           alert("La hora fin debe ser mayor a la de inicio en cada día");
           error = true;
           return;
         }
 
+        // ✅ Solo aquí se agregan (UNA sola vez)
         fechasArr.push(formatearFecha(fecha));
         horariosArr.push(`Día ${index + 1} ${inicio} - ${fin}`);
       });
 
+      // 🔴 Si hubo error, no continuar
       if (error) {
         alert("Completa correctamente todos los días");
         return;
       }
     } else {
+      // ✅ Caso normal (1 día)
       fechasArr.push(formatearFecha(data.fecha_evento));
       horariosArr.push(`Día 1 ${data.hora_inicio} - ${data.hora_fin}`);
     }
