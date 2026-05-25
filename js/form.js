@@ -507,17 +507,67 @@ form.addEventListener("submit", async (e) => {
     // ENVIAR SOLICITUD
     // =========================
 
-    if (data.multi_dia) {
-      data.dias = [];
+    // =========================
+    // FORMATO NUEVO FECHAS + HORARIOS
+    // =========================
 
-      document.querySelectorAll(".dia-card").forEach((dia) => {
-        data.dias.push({
-          fecha: dia.querySelector(".dia-fecha")?.value || "",
-          hora_inicio: dia.querySelector(".dia-inicio")?.value || "",
-          hora_fin: dia.querySelector(".dia-fin")?.value || "",
-        });
+    const formatearFecha = (fechaStr) => {
+      if (!fechaStr) return "";
+
+      const f = new Date(fechaStr);
+
+      const dia = String(f.getDate()).padStart(2, "0");
+      const mes = String(f.getMonth() + 1).padStart(2, "0");
+      const anio = f.getFullYear();
+
+      return `${dia}/${mes}/${anio}`;
+    };
+
+    let fechasArr = [];
+    let horariosArr = [];
+
+    if (data.multi_dia) {
+      let error = false;
+
+      document.querySelectorAll(".dia-card").forEach((dia, index) => {
+        const fecha = dia.querySelector(".dia-fecha")?.value;
+        const inicio = dia.querySelector(".dia-inicio")?.value;
+        const fin = dia.querySelector(".dia-fin")?.value;
+
+        if (!fecha || !inicio || !fin) {
+          error = true;
+          return;
+        }
+
+        if (fin <= inicio) {
+          alert("La hora fin debe ser mayor a la de inicio en cada día");
+          error = true;
+          return;
+        }
+
+        fechasArr.push(formatearFecha(fecha));
+        horariosArr.push(`Día ${index + 1} ${inicio} - ${fin}`);
       });
+
+      if (error) {
+        alert("Completa correctamente todos los días");
+        return;
+      }
+    } else {
+      fechasArr.push(formatearFecha(data.fecha_evento));
+      horariosArr.push(`Día 1 ${data.hora_inicio} - ${data.hora_fin}`);
     }
+
+    // 🔥 GUARDAR EN FIREBASE
+    data.fechas_evento = fechasArr.join("\n");
+    data.horarios_evento = horariosArr.join("\n");
+
+    // 🧹 LIMPIAR CAMPOS VIEJOS
+    delete data.fecha_evento;
+    delete data.fecha_inicio;
+    delete data.fecha_fin;
+    delete data.hora_inicio;
+    delete data.hora_fin;
 
     await addDoc(collection(db, "solicitudes"), data);
 
