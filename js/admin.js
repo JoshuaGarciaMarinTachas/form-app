@@ -378,16 +378,10 @@ document.addEventListener("DOMContentLoaded", function () {
               evento.cargo_responsable?.trim() ||
               "No especificado";
 
-            // ===== LIMPIAR MATERIALES =====
-            const nombresMateriales = {
-              laptop: "Laptop",
-              proyector: "Videoproyector",
-              extensiones: "Extensiones",
-              sonido_movil: "Sonido móvil",
-              mamparas: "Mamparas",
-            };
-
-            let materiales = [];
+            // ===== MATERIAL Y RECURSOS =====
+            const materiales = [];
+            const humanos = [];
+            let recursosTotales = [];
 
             const traducirMaterial = {
               laptop: "Laptop",
@@ -397,52 +391,37 @@ document.addEventListener("DOMContentLoaded", function () {
               mamparas: "Mamparas",
             };
 
-            // ===== SI ES ARRAY =====
+            // Materiales
             if (Array.isArray(evento.materiales)) {
-              materiales = evento.materiales
-                .filter((v) => v && v !== "on" && v !== true && v !== false)
-                .map((v) => traducirMaterial[v] || v);
-            }
-
-            // ===== SI ES OBJETO =====
-            else if (
+              materiales.push(
+                ...evento.materiales
+                  .filter((v) => v && v !== "on" && v !== true && v !== false)
+                  .map((v) => traducirMaterial[v] || v),
+              );
+            } else if (
               typeof evento.materiales === "object" &&
               evento.materiales !== null
             ) {
-              materiales = Object.entries(evento.materiales)
-                .filter(([_, v]) => v && v !== "off" && v !== false)
-                .map(([k]) => traducirMaterial[k] || k);
+              materiales.push(
+                ...Object.entries(evento.materiales)
+                  .filter(([_, v]) => v && v !== "off" && v !== false)
+                  .map(([k]) => traducirMaterial[k] || k),
+              );
             }
 
-            // ===== HUMANOS =====
-            let humanos = [];
-
+            // Humanos
             if (Array.isArray(evento.humanos)) {
-              humanos = evento.humanos.filter((v) => v && v !== "on");
+              humanos.push(...evento.humanos.filter((v) => v && v !== "on"));
             }
 
-            // ===== RECURSOS =====
-            // ===== TODOS LOS RECURSOS =====
-            let recursosTotales = [];
-
-            // ===== MATERIALES =====
-            recursosTotales.push(...materiales);
-
-            // ===== HUMANOS =====
-            recursosTotales.push(...humanos);
-
-            // ===== SONIDO =====
+            // Sonido
             if (evento.sonido?.activo) {
-              if (evento.sonido.bocina) {
-                recursosTotales.push("Bocina");
-              }
-
-              if (evento.sonido.microfonos > 0) {
+              if (evento.sonido.bocina) recursosTotales.push("Bocina");
+              if (evento.sonido.microfonos > 0)
                 recursosTotales.push(`${evento.sonido.microfonos} micrófonos`);
-              }
             }
 
-            // ===== PERSONIFICADORES =====
+            // Personificadores
             if (
               evento.personificadores?.activo &&
               evento.personificadores.cantidad > 0
@@ -452,58 +431,43 @@ document.addEventListener("DOMContentLoaded", function () {
               );
             }
 
-            // ===== TIPO DE MONTAJE =====
-            const tipoMontaje = evento.montaje?.trim()
-              ? ` (${evento.montaje})`
-              : "";
+            recursosTotales.push(...materiales, ...humanos);
 
-            // ===== LIMPIAR =====
-            recursosTotales = recursosTotales
-              .filter((v) => v && v !== "on" && v !== "No requerido")
-              .join(", ");
+            // ===== FECHAS Y HORARIOS MÚLTIPLES =====
+            // Se asume que tu evento tiene arrays: evento.fechas_evento y evento.horarios_evento
+            const fechas = Array.isArray(evento.fechas_evento)
+              ? evento.fechas_evento.join("\n")
+              : evento.fechas_evento || "No especificada";
+
+            const horarios = Array.isArray(evento.horarios_evento)
+              ? evento.horarios_evento.join("\n")
+              : `${evento.hora_inicio || "--"}-${evento.hora_fin || "--"}`;
 
             // ===== DATOS FINALES =====
             const datosEvento = {
               fecha_actual: fechaActual,
-
               nombre_evento: evento.nombre_evento || "No especificado",
-
               fecha_aprobacion: evento.fecha_aprobacion || "No especificada",
-
-              fecha_evento: evento.fecha_evento || "No especificada",
-
-              hora_inicio: evento.hora_inicio || "--",
-
-              hora_fin: evento.hora_fin || "--",
-
+              fecha_evento: fechas,
+              horario_evento: horarios,
               responsable: evento.responsable || "No especificado",
-
               categoria: categoria,
-
               telefono: evento.telefono || "No especificado",
-
               correo: evento.correo || "No especificado",
-
               unidad_cargo: unidadCargo,
-
-              espacio: (evento.espacio || "No especificado") + tipoMontaje,
-
+              espacio:
+                (evento.espacio || "No especificado") +
+                (evento.montaje?.trim() ? ` (${evento.montaje})` : ""),
               personas: evento.personas || "0",
-
               montaje: evento.montaje || "No requerido",
-
               descripcion: evento.descripcion || "Sin descripción",
-
               observaciones: evento.observaciones || "Sin observaciones",
-
-              recursos_totales: recursosTotales || "Ninguno",
+              recursos_totales: recursosTotales.join(", ") || "Ninguno",
             };
 
             // ===== CARGAR TEMPLATE =====
             const response = await fetch("./js/Departamento de eventos.docx");
-
             const arrayBuffer = await response.arrayBuffer();
-
             const zip = new PizZip(arrayBuffer);
 
             const doc = new window.docxtemplater(zip, {
@@ -511,17 +475,10 @@ document.addEventListener("DOMContentLoaded", function () {
               linebreaks: true,
             });
 
-            // ===== PASAR DATOS =====
             doc.setData(datosEvento);
-
-            // ===== RENDER =====
             doc.render();
 
-            // ===== GENERAR ARCHIVO =====
-            const out = doc.getZip().generate({
-              type: "blob",
-            });
-
+            const out = doc.getZip().generate({ type: "blob" });
             saveAs(out, `evento_${evento.nombre_evento}.docx`);
           } catch (err) {
             console.error("Error generando Word:", err);
