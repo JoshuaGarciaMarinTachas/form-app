@@ -448,11 +448,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 .filter((h) => h.trim() !== "");
             }
 
-            // Combinar fechas y horarios
+            // Combinar fechas y horarios sin "Día 1, Día 2"
             const fechaHorario = fechas
               .map((f, i) => {
                 const h = horarios[i] || "--";
-                return `${f} - ${h}`;
+                return `${f} - ${h}`; // Solo fecha y horario
               })
               .join("\n");
 
