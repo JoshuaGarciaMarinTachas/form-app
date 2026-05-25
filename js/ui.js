@@ -342,13 +342,13 @@ export function crearCampo(campo) {
             return null;
           }
 
-          // Sala de Consejo
+          // 🔥 SOLO GUARDAR SI ES SALA DE CONSEJO
           if (selectExtra.style.display === "block") {
             return selectExtra.value || null;
           }
 
-          // Auditorio
-          return input.value.trim() || null;
+          // ❌ Cualquier otro caso NO guarda
+          return null;
         };
 
         //  ORDEN CORRECTO
