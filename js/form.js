@@ -55,6 +55,8 @@ const switchesContainer = document.createElement("div");
 switchesContainer.classList.add("switches-row");
 const switchesContainerLogistica = document.createElement("div");
 switchesContainerLogistica.classList.add("switches-row");
+const horarioRow = document.createElement("div");
+horarioRow.classList.add("horario-row");
 
 // CREAR CAMPOS
 formularioData.campos.forEach((campo) => {
@@ -77,9 +79,25 @@ formularioData.campos.forEach((campo) => {
   }
 
   // BLOQUE 2
-  else if (["consejo", "fecha_aprobacion", "multi_dia"].includes(campo.id)) {
+  else if (
+    [
+      "consejo",
+      "fecha_aprobacion",
+      "fecha_evento",
+      "multi_dia",
+      "fecha_inicio",
+      "fecha_fin",
+      "hora_inicio",
+      "hora_fin",
+    ].includes(campo.id)
+  ) {
+    // HORARIO EN FILA (PRIMERO)
+    if (campo.id === "hora_inicio" || campo.id === "hora_fin") {
+      horarioRow.appendChild(el);
+    }
+
     // SWITCHES
-    if (campo.id === "consejo" || campo.id === "multi_dia") {
+    else if (campo.id === "consejo" || campo.id === "multi_dia") {
       switchesContainer.appendChild(el);
     }
 
@@ -119,6 +137,8 @@ formularioData.campos.forEach((campo) => {
     bloques[5].appendChild(el);
   }
 });
+
+bloques[1].appendChild(horarioRow);
 
 // =========================
 // EVENTOS MULTIDÍA
@@ -209,36 +229,6 @@ function crearDia() {
 
 btnAgregarDia.addEventListener("click", crearDia);
 
-crearDia();
-
-setTimeout(() => {
-  const multiDia = document.getElementById("multi_dia");
-
-  if (!multiDia) return;
-
-  const actualizarDias = () => {
-    if (multiDia.checked) {
-      btnAgregarDia.style.display = "block";
-    } else {
-      btnAgregarDia.style.display = "none";
-
-      const dias = document.querySelectorAll(".dia-card");
-
-      dias.forEach((dia, index) => {
-        if (index > 0) {
-          dia.remove();
-        }
-      });
-
-      renumerarDias();
-    }
-  };
-
-  multiDia.addEventListener("change", actualizarDias);
-
-  actualizarDias();
-}, 200);
-
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
@@ -262,6 +252,95 @@ btn.textContent = "Enviar";
 btn.type = "submit";
 form.appendChild(btn);
 
+// =========================
+// FECHAS
+// =========================
+setTimeout(() => {
+  const fechaEvento = document.getElementById("fecha_evento");
+  const fechaInicio = document.getElementById("fecha_inicio");
+  const multiDia = document.getElementById("multi_dia");
+
+  if (!fechaEvento || !fechaInicio || !multiDia) return;
+
+  const fechaFin = document.getElementById("fecha_fin");
+
+  // Ocultar siempre estos campos
+  if (fechaInicio) {
+    fechaInicio.parentElement.style.display = "none";
+  }
+
+  if (fechaFin) {
+    fechaFin.parentElement.style.display = "none";
+  }
+
+  fechaInicio.disabled = true;
+  fechaInicio.style.backgroundColor = "#eee";
+
+  const syncFecha = () => {
+    if (fechaEvento.value) {
+      fechaInicio.value = fechaEvento.value;
+    }
+  };
+
+  const toggleMultiDia = () => {
+    const activo = multiDia.checked;
+    const fechaEvento = document.getElementById("fecha_evento");
+    const fechaFin = document.getElementById("fecha_fin");
+
+    fechaEvento.parentElement.style.display = "none";
+
+    if (fechaInicio) {
+      fechaInicio.parentElement.style.display = "none";
+    }
+
+    if (fechaFin) {
+      fechaFin.parentElement.style.display = "none";
+    }
+
+    horarioRow.style.display = "none";
+
+    if (activo) {
+      fechaInicio.parentElement.style.display = "none";
+
+      const fechaFin = document.getElementById("fecha_fin");
+      if (fechaFin) {
+        fechaFin.parentElement.style.display = "none";
+      }
+
+      diasContainer.style.display = "flex";
+      btnAgregarDia.style.display = "block";
+
+      horarioRow.style.display = "none";
+
+      if (!diasContainer.children.length) {
+        crearDia();
+      }
+    } else {
+      fechaInicio.parentElement.style.display = "flex";
+      fechaEvento.parentElement.style.display = "flex";
+
+      horarioRow.style.display = "flex";
+      const fechaFin = document.getElementById("fecha_fin");
+      if (fechaFin) {
+        fechaFin.parentElement.style.display = "none";
+      }
+
+      diasContainer.style.display = "none";
+      btnAgregarDia.style.display = "none";
+
+      horarioRow.style.display = "flex";
+
+      syncFecha();
+    }
+  };
+
+  fechaEvento.addEventListener("change", syncFecha);
+  multiDia.addEventListener("change", toggleMultiDia);
+
+  syncFecha();
+  toggleMultiDia();
+}, 200);
+
 //  =========================
 //  SUBMIT
 //  =========================
@@ -281,6 +360,9 @@ form.addEventListener("submit", async (e) => {
     responsable: "Responsable",
     nombre_evento: "Nombre del evento",
     espacio: "Espacio solicitado",
+    hora_inicio: "Hora de inicio",
+    hora_fin: "Hora de fin",
+    fecha_evento: "Fecha del evento",
   };
 
   formularioData.campos.forEach((campo) => {
@@ -316,7 +398,15 @@ form.addEventListener("submit", async (e) => {
   }
 
   //  CAMPOS OBLIGATORIOS
-  const obligatorios = ["correo", "telefono", "nombre_evento", "espacio"];
+  const obligatorios = [
+    "correo",
+    "telefono",
+    "nombre_evento",
+    "espacio",
+    "hora_inicio",
+    "hora_fin",
+    "fecha_evento",
+  ];
 
   let hayError = false;
   let faltantes = [];
@@ -353,6 +443,26 @@ form.addEventListener("submit", async (e) => {
     }
 
     return;
+  }
+
+  // VALIDAR HORARIOS
+  if (data.hora_inicio && data.hora_fin) {
+    // Rango permitido
+    if (
+      data.hora_inicio < "07:00" ||
+      data.hora_inicio > "17:00" ||
+      data.hora_fin < "07:00" ||
+      data.hora_fin > "17:00"
+    ) {
+      alert("El horario permitido es de 07:00 a 17:00 horas");
+      return;
+    }
+
+    // Hora fin mayor que hora inicio
+    if (data.hora_fin <= data.hora_inicio) {
+      alert("La hora de fin debe ser mayor a la de inicio");
+      return;
+    }
   }
 
   // VALIDACIONES
@@ -406,37 +516,6 @@ form.addEventListener("submit", async (e) => {
           hora_inicio: dia.querySelector(".dia-inicio")?.value || "",
           hora_fin: dia.querySelector(".dia-fin")?.value || "",
         });
-      });
-    }
-
-    data.dias = [];
-
-    const tarjetas = document.querySelectorAll(".dia-card");
-
-    for (const dia of tarjetas) {
-      const fecha = dia.querySelector(".dia-fecha")?.value;
-      const inicio = dia.querySelector(".dia-inicio")?.value;
-      const fin = dia.querySelector(".dia-fin")?.value;
-
-      if (!fecha || !inicio || !fin) {
-        alert("Completa fecha y horarios de todos los días");
-        return;
-      }
-
-      if (inicio < "07:00" || fin > "17:00") {
-        alert("El horario permitido es de 07:00 a 17:00");
-        return;
-      }
-
-      if (fin <= inicio) {
-        alert("La hora de fin debe ser mayor a la de inicio");
-        return;
-      }
-
-      data.dias.push({
-        fecha,
-        hora_inicio: inicio,
-        hora_fin: fin,
       });
     }
 
