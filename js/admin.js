@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Botón Generar Word
         const btnWordFila = document.createElement("button");
         btnWordFila.textContent = "Generar Word";
-        btnWordFila.classList.add("action-btn", "word-btn"); // CSS en tu archivo
+        btnWordFila.classList.add("action-btn", "word-btn");
         btnWordFila.onclick = async () => {
           try {
             const evento = row;
@@ -378,11 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
               evento.cargo_responsable?.trim() ||
               "No especificado";
 
-            // ===== MATERIAL Y RECURSOS =====
-            const materiales = [];
-            const humanos = [];
-            let recursosTotales = [];
-
+            // ===== MATERIAL =====
             const traducirMaterial = {
               laptop: "Laptop",
               proyector: "Videoproyector",
@@ -391,93 +387,111 @@ document.addEventListener("DOMContentLoaded", function () {
               mamparas: "Mamparas",
             };
 
-            // Materiales
+            let materiales = [];
             if (Array.isArray(evento.materiales)) {
-              materiales.push(
-                ...evento.materiales
-                  .filter((v) => v && v !== "on" && v !== true && v !== false)
-                  .map((v) => traducirMaterial[v] || v),
-              );
+              materiales = evento.materiales
+                .filter((v) => v && v !== "on" && v !== true && v !== false)
+                .map((v) => traducirMaterial[v] || v);
             } else if (
               typeof evento.materiales === "object" &&
               evento.materiales !== null
             ) {
-              materiales.push(
-                ...Object.entries(evento.materiales)
-                  .filter(([_, v]) => v && v !== "off" && v !== false)
-                  .map(([k]) => traducirMaterial[k] || k),
-              );
+              materiales = Object.entries(evento.materiales)
+                .filter(([_, v]) => v && v !== "off" && v !== false)
+                .map(([k]) => traducirMaterial[k] || k);
             }
 
-            // Humanos
+            // ===== HUMANOS =====
+            let humanos = [];
             if (Array.isArray(evento.humanos)) {
-              humanos.push(...evento.humanos.filter((v) => v && v !== "on"));
+              humanos = evento.humanos.filter((v) => v && v !== "on");
             }
 
-            // Sonido
+            // ===== SONIDO =====
             if (evento.sonido?.activo) {
-              if (evento.sonido.bocina) recursosTotales.push("Bocina");
+              if (evento.sonido.bocina) humanos.push("Bocina");
               if (evento.sonido.microfonos > 0)
-                recursosTotales.push(`${evento.sonido.microfonos} micrófonos`);
+                humanos.push(`${evento.sonido.microfonos} micrófonos`);
             }
 
-            // Personificadores
+            // ===== PERSONIFICADORES =====
             if (
               evento.personificadores?.activo &&
               evento.personificadores.cantidad > 0
             ) {
-              recursosTotales.push(
+              humanos.push(
                 `${evento.personificadores.cantidad} personificadores`,
               );
             }
 
-            recursosTotales.push(...materiales, ...humanos);
+            // ===== TIPO DE MONTAJE =====
+            const tipoMontaje = evento.montaje?.trim()
+              ? ` (${evento.montaje})`
+              : "";
 
-            // ===== FECHAS Y HORARIOS MÚLTIPLES =====
-            // Se asume que tu evento tiene arrays: evento.fechas_evento y evento.horarios_evento
-            const fechas = Array.isArray(evento.fechas_evento)
-              ? evento.fechas_evento.join("\n")
-              : evento.fechas_evento || "No especificada";
+            // ===== FECHAS Y HORARIOS =====
+            let fechas = [];
+            let horarios = [];
+            if (Array.isArray(evento.fechas_evento)) {
+              fechas = evento.fechas_evento.filter((f) => f);
+            } else if (typeof evento.fechas_evento === "string") {
+              fechas = evento.fechas_evento
+                .split("\n")
+                .filter((f) => f.trim() !== "");
+            }
 
-            const horarios = Array.isArray(evento.horarios_evento)
-              ? evento.horarios_evento.join("\n")
-              : `${evento.hora_inicio || "--"}-${evento.hora_fin || "--"}`;
+            if (Array.isArray(evento.horarios_evento)) {
+              horarios = evento.horarios_evento.filter((h) => h);
+            } else if (typeof evento.horarios_evento === "string") {
+              horarios = evento.horarios_evento
+                .split("\n")
+                .filter((h) => h.trim() !== "");
+            }
+
+            // Combinar fechas y horarios
+            const fechaHorario = fechas
+              .map((f, i) => {
+                const h = horarios[i] || "--";
+                return `${f} - ${h}`;
+              })
+              .join("\n");
 
             // ===== DATOS FINALES =====
             const datosEvento = {
               fecha_actual: fechaActual,
               nombre_evento: evento.nombre_evento || "No especificado",
               fecha_aprobacion: evento.fecha_aprobacion || "No especificada",
-              fecha_evento: fechas,
-              horario_evento: horarios,
+              fecha_evento: fechaHorario || "No especificada",
               responsable: evento.responsable || "No especificado",
               categoria: categoria,
               telefono: evento.telefono || "No especificado",
               correo: evento.correo || "No especificado",
               unidad_cargo: unidadCargo,
-              espacio:
-                (evento.espacio || "No especificado") +
-                (evento.montaje?.trim() ? ` (${evento.montaje})` : ""),
+              espacio: (evento.espacio || "No especificado") + tipoMontaje,
               personas: evento.personas || "0",
               montaje: evento.montaje || "No requerido",
               descripcion: evento.descripcion || "Sin descripción",
               observaciones: evento.observaciones || "Sin observaciones",
-              recursos_totales: recursosTotales.join(", ") || "Ninguno",
+              recursos_totales:
+                [...materiales, ...humanos].join(", ") || "Ninguno",
             };
 
             // ===== CARGAR TEMPLATE =====
             const response = await fetch("./js/Departamento de eventos.docx");
             const arrayBuffer = await response.arrayBuffer();
             const zip = new PizZip(arrayBuffer);
-
             const doc = new window.docxtemplater(zip, {
               paragraphLoop: true,
               linebreaks: true,
             });
 
+            // ===== PASAR DATOS =====
             doc.setData(datosEvento);
+
+            // ===== RENDER =====
             doc.render();
 
+            // ===== GENERAR ARCHIVO =====
             const out = doc.getZip().generate({ type: "blob" });
             saveAs(out, `evento_${evento.nombre_evento}.docx`);
           } catch (err) {
