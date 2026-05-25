@@ -1,7 +1,12 @@
 // js/ui.js
 
 export function crearCampo(campo) {
-  if (campo.tipo === "auto_time" || campo.tipo === "auto_date") return null;
+  if (
+    campo.tipo === "auto_time" ||
+    campo.tipo === "auto_date" ||
+    campo.id === "fecha_inicio" // 👈 lo eliminas completamente
+  )
+    return null;
 
   const div = document.createElement("div");
   div.classList.add("form-group");

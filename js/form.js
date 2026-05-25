@@ -267,6 +267,7 @@ setTimeout(() => {
   // Ocultar siempre estos campos
   if (fechaInicio) {
     fechaInicio.parentElement.style.display = "none";
+    fechaInicio.disabled = true;
   }
 
   if (fechaFin) {
@@ -316,7 +317,6 @@ setTimeout(() => {
         crearDia();
       }
     } else {
-      fechaInicio.parentElement.style.display = "flex";
       fechaEvento.parentElement.style.display = "flex";
 
       horarioRow.style.display = "flex";
@@ -581,7 +581,7 @@ form.addEventListener("submit", async (e) => {
     delete data.fecha_fin;
     delete data.hora_inicio;
     delete data.hora_fin;
-    
+
     console.log(data);
     await addDoc(collection(db, "solicitudes"), data);
 
