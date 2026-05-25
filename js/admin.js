@@ -650,12 +650,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 valor = activos.length ? activos.join(", ") : "No requerido";
               } else if (Array.isArray(valor)) {
-                const filtrados = valor.filter(
+                const limpio = valor.filter(
                   (v) => v && v !== "on" && v !== true && v !== false,
                 );
-                valor = filtrados.length
-                  ? filtrados.join(", ")
-                  : "No requerido";
+
+                td.textContent = limpio.length ? limpio.join(", ") : "—";
               } else {
                 valor = "No requerido";
               }
