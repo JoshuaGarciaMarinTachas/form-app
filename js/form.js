@@ -554,8 +554,8 @@ form.addEventListener("submit", async (e) => {
         }
 
         // ✅ Solo aquí se agregan (UNA sola vez)
-        fechasArr.push(formatearFecha(fecha));
-        horariosArr.push(`Día ${index + 1} ${inicio} - ${fin}`);
+        fechasArr.push(formatearFecha(fecha)); // ["27/05/2026", "28/05/2026"]
+        horariosArr.push(`${inicio} - ${fin}`); // ["16:00 - 17:00", "13:00 - 15:00"]
       });
 
       // 🔴 Si hubo error, no continuar
