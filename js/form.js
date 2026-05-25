@@ -138,8 +138,6 @@ formularioData.campos.forEach((campo) => {
   }
 });
 
-bloques[1].appendChild(horarioRow);
-
 // =========================
 // EVENTOS MULTIDÍA
 // =========================
@@ -231,6 +229,9 @@ btnAgregarDia.addEventListener("click", crearDia);
 
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
+
+// 👉 AHORA sí agrega horario
+bloques[1].appendChild(horarioRow);
 
 // INSERTAR SWITCHES LOGÍSTICA (AQUÍ SÍ VA)
 bloques[2].insertBefore(
