@@ -260,7 +260,7 @@ setTimeout(() => {
   const fechaInicio = document.getElementById("fecha_inicio");
   const multiDia = document.getElementById("multi_dia");
 
-  if (!fechaEvento || !fechaInicio || !multiDia) return;
+  if (!fechaEvento || !multiDia) return;
 
   const fechaFin = document.getElementById("fecha_fin");
 
