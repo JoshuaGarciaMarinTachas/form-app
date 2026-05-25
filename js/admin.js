@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .join(", ")
                 : `<span class="tag sound">Audio básico</span>`;
             } else if (col === "horarios_evento" || col === "fechas_evento") {
-              td.innerHTML = valor.replace(/\n/g, "<br>");
+              td.innerHTML = `<div class="horarios-cell">${valor.replace(/\n/g, "<br>")}</div>`;
             } else {
               td.innerHTML = `<span class="empty">No requerido</span>`;
             }

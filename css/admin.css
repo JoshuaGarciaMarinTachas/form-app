@@ -175,6 +175,17 @@ tbody tr:hover {
   background: #f9fafb;
 }
 
+td {
+  vertical-align: top;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+}
+
+td {
+  padding: 10px;
+}
+
 /* =========================
    EDITABLES
 ========================= */
@@ -510,4 +521,12 @@ td {
 
 .word-btn:focus {
   outline: 2px solid #2563eb;
+}
+
+.horarios-cell {
+  line-height: 1.6;
+}
+
+.horarios-cell br {
+  margin-bottom: 6px;
 }
