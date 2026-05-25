@@ -566,7 +566,7 @@ form.addEventListener("submit", async (e) => {
     } else {
       // ✅ Caso normal (1 día)
       fechasArr.push(formatearFecha(data.fecha_evento));
-      horariosArr.push(`Día 1 ${data.hora_inicio} - ${data.hora_fin}`);
+      horariosArr.push(`${data.hora_inicio} - ${data.hora_fin}`);
     }
 
     // 🔥 GUARDAR EN FIREBASE
