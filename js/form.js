@@ -285,50 +285,47 @@ setTimeout(() => {
 
   const toggleMultiDia = () => {
     const activo = multiDia.checked;
+
     const fechaEvento = document.getElementById("fecha_evento");
     const fechaFin = document.getElementById("fecha_fin");
 
-    fechaEvento.parentElement.style.display = "none";
-
-    if (fechaInicio) {
-      fechaInicio.parentElement.style.display = "none";
-    }
-
-    if (fechaFin) {
-      fechaFin.parentElement.style.display = "none";
-    }
-
-    horarioRow.style.display = "none";
-
+    // 🔹 SI ES MULTI DÍA
     if (activo) {
-      fechaInicio.parentElement.style.display = "none";
-
-      const fechaFin = document.getElementById("fecha_fin");
-      if (fechaFin) {
-        fechaFin.parentElement.style.display = "none";
-      }
-
-      diasContainer.style.display = "flex";
-      btnAgregarDia.style.display = "block";
+      // Ocultar campos simples
+      if (fechaEvento) fechaEvento.parentElement.style.display = "none";
+      if (fechaInicio) fechaInicio.parentElement.style.display = "none";
+      if (fechaFin) fechaFin.parentElement.style.display = "none";
 
       horarioRow.style.display = "none";
 
-      if (!diasContainer.children.length) {
+      // Mostrar contenedor de días
+      diasContainer.style.display = "flex";
+      btnAgregarDia.style.display = "block";
+
+      // Crear día 1 si no hay ninguno
+      if (diasContainer.children.length === 0) {
         crearDia();
       }
-    } else {
-      fechaEvento.parentElement.style.display = "flex";
+    }
+
+    // 🔹 SI NO ES MULTI DÍA
+    else {
+      // Mostrar campos normales
+      if (fechaEvento) fechaEvento.parentElement.style.display = "flex";
+
+      // 👇 ESTE SIEMPRE OCULTO (porque ya no lo usas)
+      if (fechaInicio) fechaInicio.parentElement.style.display = "none";
+      if (fechaFin) fechaFin.parentElement.style.display = "none";
 
       horarioRow.style.display = "flex";
-      const fechaFin = document.getElementById("fecha_fin");
-      if (fechaFin) {
-        fechaFin.parentElement.style.display = "none";
-      }
 
+      // Ocultar multi día
       diasContainer.style.display = "none";
       btnAgregarDia.style.display = "none";
 
-      horarioRow.style.display = "flex";
+      // Limpiar días (opcional pero recomendado)
+      diasContainer.innerHTML = "";
+      contadorDias = 0;
 
       syncFecha();
     }
