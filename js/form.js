@@ -353,7 +353,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   const nombresCampos = {
-    correo: "Correo",
+    correo: "Correo (Correo institucional)",
     telefono: "Teléfono",
     responsable: "Responsable",
     nombre_evento: "Nombre del evento",
