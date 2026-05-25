@@ -618,7 +618,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "telefono",
             "fechas_evento",
             "horarios_evento",
+            "hora_inicio",
+            "hora_fin",
             "multi_dia",
+            "fecha_inicio",
+            "fecha_fin",
             "espacio",
             "montaje",
             "personas",
@@ -638,10 +642,14 @@ document.addEventListener("DOMContentLoaded", function () {
             let valor = item[key];
 
             // Booleanos
-            if (typeof valor === "boolean") valor = valor ? "Sí" : "No";
-            // Arrays → limpiar "on", true, false
-            else if (Array.isArray(valor))
-              valor = limpiarValores(valor).join(", ");
+            if (typeof valor === "boolean") {
+              valor = valor ? "Sí" : "No";
+            }
+            // Arrays (humanos u otros) → limpiar "on", true, false
+            else if (Array.isArray(valor)) {
+              const limpio = limpiarValores(valor);
+              valor = limpio.length ? limpio.join(", ") : "";
+            }
             // Materiales (objeto)
             else if (
               key === "materiales" &&
@@ -653,12 +661,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .filter(([_, v]) => v && v !== "on" && v !== false)
                 .map(([k]) => formatearNombre(k))
                 .filter(Boolean);
-              valor = activos.join(", ");
+              valor = activos.length ? activos.join(", ") : "";
             }
-
             // Personificadores
-            else if (key === "personificadores")
-              valor = valor?.activo ? `${valor.cantidad} personificadores` : "";
+            else if (key === "personificadores") {
+              if (valor?.activo) {
+                valor = `${valor.cantidad} personificadores`;
+              } else {
+                valor = "";
+              }
+            }
             // Sonido
             else if (key === "sonido") {
               if (valor?.activo) {
@@ -666,19 +678,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (valor.bocina) items.push("Bocina");
                 if (valor.microfonos > 0)
                   items.push(`${valor.microfonos} micrófonos`);
-                valor = items.join(", ");
-              } else valor = "";
+                valor = items.length ? items.join(", ") : "Audio básico";
+              } else {
+                valor = "";
+              }
+            }
+            // Otros objetos
+            else if (typeof valor === "object" && valor !== null) {
+              valor = "";
             }
 
-            // Otros objetos
-            else if (typeof valor === "object" && valor !== null) valor = "";
-
-            // Para fechas y horarios → saltos de línea para Excel
+            // Fechas y horarios → si vienen separados por salto de línea, unir con coma
             if (
               typeof valor === "string" &&
               (key === "fechas_evento" || key === "horarios_evento")
             ) {
-              valor = valor.replace(/\n/g, "\r\n"); // Excel reconoce \r\n como salto de línea
+              valor = valor.replace(/\n/g, ", ");
             }
 
             fila[nombresBonitos[key] || key] = valor ?? "";
@@ -688,12 +703,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const worksheet = XLSX.utils.json_to_sheet(datosExcel);
-
-        // Ajustar celdas de fechas y horarios para que se vean completas
-        const wscols = Object.keys(datosExcel[0]).map((col) => ({ wch: 20 })); // ancho default
-        worksheet["!cols"] = wscols;
-        worksheet["!rows"] = datosExcel.map(() => ({ hpt: 20 })); // altura por fila (aprox)
-
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
         XLSX.writeFile(workbook, "eventos.xlsx");
