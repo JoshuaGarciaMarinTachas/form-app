@@ -58,7 +58,11 @@ export const formularioData = {
     //  =========================
     //  BLOQUE 2
     //  =========================
-    { id: "consejo", label: "¿Fue sometido a consejo?", tipo: "switch" },
+    {
+      id: "consejo",
+      label: "¿Fue sometido a consejo?",
+      tipo: "switch",
+    },
 
     {
       id: "fecha_aprobacion",
@@ -71,43 +75,9 @@ export const formularioData = {
     },
 
     {
-      id: "fecha_evento",
-      label: "Fecha del evento",
-      tipo: "date",
-      required: true,
-    },
-
-    { id: "multi_dia", label: "¿Dura más de un día?", tipo: "switch" },
-
-    //
-    {
-      id: "fecha_inicio",
-      label: "Fecha inicio",
-      tipo: "date",
-    },
-
-    {
-      id: "fecha_fin",
-      label: "Fecha fin",
-      tipo: "date",
-      dependsOn: {
-        campo: "multi_dia",
-        valor: true,
-      },
-    },
-
-    {
-      id: "hora_inicio",
-      label: "Hora inicio",
-      tipo: "time",
-      required: true,
-    },
-
-    {
-      id: "hora_fin",
-      label: "Hora fin",
-      tipo: "time",
-      required: true,
+      id: "multi_dia",
+      label: "¿Dura más de un día?",
+      tipo: "switch",
     },
 
     //  =========================
