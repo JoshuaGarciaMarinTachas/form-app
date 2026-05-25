@@ -555,7 +555,7 @@ form.addEventListener("submit", async (e) => {
 
         // ✅ Solo aquí se agregan (UNA sola vez)
         fechasArr.push(formatearFecha(fecha)); // ["27/05/2026", "28/05/2026"]
-        horariosArr.push(`${inicio} - ${fin}`); // ["16:00 - 17:00", "13:00 - 15:00"]
+        horariosArr.push(`${inicio}h - ${fin}h`); // ["16:00h - 17:00h", "13:00h - 15:00h"]
       });
 
       // 🔴 Si hubo error, no continuar
@@ -566,7 +566,7 @@ form.addEventListener("submit", async (e) => {
     } else {
       // ✅ Caso normal (1 día)
       fechasArr.push(formatearFecha(data.fecha_evento));
-      horariosArr.push(`${data.hora_inicio} - ${data.hora_fin}`);
+      horariosArr.push(`${data.hora_inicio}h - ${data.hora_fin}h`);
     }
 
     // 🔹 GUARDAR cargo_admin SOLO SI ES VISIBLE
