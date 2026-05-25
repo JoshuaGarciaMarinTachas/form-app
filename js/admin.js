@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     correo: "Correo",
     telefono: "Teléfono",
 
+    fechas_evento: "Fechas del evento",
+    horarios_evento: "Horarios",
     fecha_evento: "Fecha del evento",
     hora_inicio: "Hora de inicio",
     hora_fin: "Hora de Fin",
@@ -125,9 +127,9 @@ document.addEventListener("DOMContentLoaded", function () {
           ...d.data(),
         }))
         .sort((a, b) => {
-          const fechaA = new Date(`${a.fecha_evento} ${a.hora_inicio}`);
-          const fechaB = new Date(`${b.fecha_evento} ${b.hora_inicio}`);
-          return fechaA - fechaB;
+          const fechaA = a.fechas_evento?.split("\n")[0] || "";
+          const fechaB = b.fechas_evento?.split("\n")[0] || "";
+          return fechaA.localeCompare(fechaB);
         });
 
       console.log("Datos cargados:", dataGlobal); // Agregado para depurar
@@ -186,12 +188,11 @@ document.addEventListener("DOMContentLoaded", function () {
       "unidad",
       "correo",
       "telefono",
-      "fecha_evento",
-      "hora_inicio",
-      "hora_fin",
+
+      "fechas_evento", // 👈 NUEVO
+      "horarios_evento", // 👈 NUEVO
+
       "multi_dia",
-      "fecha_inicio",
-      "fecha_fin",
       "espacio",
       "montaje",
       "personas",
@@ -591,8 +592,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "unidad",
             "correo",
             "telefono",
-            "fecha_evento",
-            "hora_inicio",
+            "fechas_evento",
+            "horarios_evento",
             "hora_fin",
             "multi_dia",
             "fecha_inicio",
