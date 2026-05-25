@@ -10,7 +10,12 @@ export const formularioData = {
     //  =========================
     //  BLOQUE 1
     //  =========================
-    { id: "correo", label: "Correo", tipo: "email", required: true },
+    {
+      id: "correo",
+      label: "Correo (Correo institucional)",
+      tipo: "email",
+      required: true,
+    },
 
     {
       id: "responsable",
