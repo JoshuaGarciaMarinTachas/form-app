@@ -4,7 +4,8 @@ export function crearCampo(campo) {
   if (
     campo.tipo === "auto_time" ||
     campo.tipo === "auto_date" ||
-    campo.id === "fecha_inicio" // 👈 lo eliminas completamente
+    campo.id === "fecha_inicio" ||
+    campo.id === "fecha_fin" // 🔥 AGREGAR
   )
     return null;
 

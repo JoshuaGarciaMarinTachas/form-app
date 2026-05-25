@@ -87,16 +87,6 @@ export const formularioData = {
     },
 
     {
-      id: "fecha_fin",
-      label: "Fecha fin",
-      tipo: "date",
-      dependsOn: {
-        campo: "multi_dia",
-        valor: true,
-      },
-    },
-
-    {
       id: "hora_inicio",
       label: "Hora inicio",
       tipo: "time",
