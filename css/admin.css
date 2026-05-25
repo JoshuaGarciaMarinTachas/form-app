@@ -530,3 +530,10 @@ td {
 .horarios-cell br {
   margin-bottom: 6px;
 }
+
+/* Archivo CSS de tu admin */
+table th,
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
