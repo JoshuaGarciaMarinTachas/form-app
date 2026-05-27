@@ -14,6 +14,7 @@ import {
   updateDoc,
   deleteDoc,
   getDoc,
+  serverTimestamp,
   setDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -128,9 +129,10 @@ document.addEventListener("DOMContentLoaded", function () {
           ...d.data(),
         }))
         .sort((a, b) => {
-          const fechaA = a.fechas_evento?.split("\n")[0] || "";
-          const fechaB = b.fechas_evento?.split("\n")[0] || "";
-          return fechaA.localeCompare(fechaB);
+          const tiempoA = a.creado?.seconds || 0;
+          const tiempoB = b.creado?.seconds || 0;
+
+          return tiempoB - tiempoA;
         });
 
       console.log("Datos cargados:", dataGlobal); // Agregado para depurar

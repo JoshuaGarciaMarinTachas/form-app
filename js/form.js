@@ -5,6 +5,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { formularioData } from "./formConfig.js";
@@ -593,6 +594,7 @@ form.addEventListener("submit", async (e) => {
     delete data.hora_fin;
 
     console.log(data);
+    data.creado = serverTimestamp();
     await addDoc(collection(db, "solicitudes"), data);
 
     alert("Solicitud enviada correctamente");
