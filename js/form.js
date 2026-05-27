@@ -512,11 +512,7 @@ form.addEventListener("submit", async (e) => {
     const formatearFecha = (fechaStr) => {
       if (!fechaStr) return "";
 
-      const f = new Date(fechaStr);
-
-      const dia = String(f.getDate()).padStart(2, "0");
-      const mes = String(f.getMonth() + 1).padStart(2, "0");
-      const anio = f.getFullYear();
+      const [anio, mes, dia] = fechaStr.split("-");
 
       return `${dia}/${mes}/${anio}`;
     };
