@@ -471,7 +471,7 @@ td:focus {
 }
 
 #btnDescargar {
-  margin-top: 10px; /* 👈 ahora sí baja */
+  margin-top: 10px; /* ahora sí baja */
 }
 
 table {
@@ -489,7 +489,7 @@ th {
   font-size: 13px;
 }
 
-/* 👇 columnas con ancho mínimo */
+/*  columnas con ancho mínimo */
 th {
   min-width: 160px; /* más espacio SOLO encabezados */
   padding: 16px 18px;
