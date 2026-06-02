@@ -53,20 +53,20 @@ body {
 
 .menu-btn,
 #btnDescargar {
-  font-family: Arial, sans-serif; /* misma fuente */
-  font-size: 14px; /* mismo tamaño */
-  font-weight: 500; /* mismo grosor */
+  font-family: Arial, sans-serif; 
+  font-size: 14px; 
+  font-weight: 500; 
 
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* izquierda */
+  justify-content: flex-start; 
 
   text-align: left;
 }
 
 /* hover mejorado */
 .menu-btn:hover {
-  background: #374151; /* más claro */
+  background: #374151; 
 }
 
 /* activo */
@@ -157,7 +157,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   min-width: 1200px;
-  table-layout: auto; /* importante */
+  table-layout: auto; 
 }
 
 th,
@@ -350,9 +350,9 @@ td:focus {
 ========================= */
 
 td:empty {
-  background-color: #f0f0f0; /* Color suave para celdas vacías */
-  color: #aaa; /* Color más suave para texto */
-  font-style: italic; /* Opcional: estilo de texto */
+  background-color: #f0f0f0; 
+  color: #aaa; 
+  font-style: italic;
 }
 
 /* =========================
@@ -360,8 +360,8 @@ td:empty {
 ========================= */
 
 tbody tr:hover {
-  background: #f1f5f9; /* Fondo más suave al pasar el ratón */
-  cursor: pointer; /* Cambia el cursor al pasar por una fila */
+  background: #f1f5f9; 
+  cursor: pointer; 
 }
 
 /* =========================
@@ -370,13 +370,13 @@ tbody tr:hover {
 
 td[contenteditable="true"] {
   background: #f9fafb;
-  border: 2px solid #ffffff; /* Borde azul cuando es editable */
-  cursor: text; /* Muestra un cursor de texto */
+  border: 2px solid #ffffff; 
+  cursor: text; 
 }
 
 td:focus {
   outline: 2px solid #2563eb;
-  background: #eff6ff; /* Fondo suave cuando la celda está enfocada */
+  background: #eff6ff; 
 }
 
 /* =========================
@@ -384,11 +384,11 @@ td:focus {
 ========================= */
 
 .action-btn:focus {
-  outline: 2px solid #2563eb; /* Añadir borde azul al enfocar el botón */
+  outline: 2px solid #2563eb; 
 }
 
 .delete-btn:focus {
-  outline: 2px solid #b91c1c; /* Borde rojo cuando el botón de eliminar está enfocado */
+  outline: 2px solid #b91c1c; 
 }
 
 .tag {
@@ -434,11 +434,11 @@ td:focus {
 ========================= */
 
 #btnDescargar {
-  padding: 12px; /* igual que .menu-btn */
+  padding: 12px; 
   border: none;
   border-radius: 10px;
 
-  background: #01be46; /* mismo color base */
+  background: #01be46; 
   color: white;
 
   font-size: 14px;
@@ -451,7 +451,7 @@ td:focus {
   align-items: center;
   justify-content: flex-start;
 
-  min-width: 220px; /* ancho consistente */
+  min-width: 220px;
 }
 
 /* hover consistente con admin */
@@ -471,11 +471,11 @@ td:focus {
 }
 
 #btnDescargar {
-  margin-top: 10px; /* ahora sí baja */
+  margin-top: 10px; 
 }
 
 table {
-  table-layout: auto; /* o fixed si quieres más control */
+  table-layout: auto; 
 }
 
 th {
@@ -489,9 +489,9 @@ th {
   font-size: 13px;
 }
 
-/*  columnas con ancho mínimo */
+
 th {
-  min-width: 160px; /* más espacio SOLO encabezados */
+  min-width: 160px; 
   padding: 16px 18px;
   font-size: 14px;
   white-space: normal;
@@ -500,7 +500,7 @@ th {
 
 th {
   vertical-align: middle;
-  text-align: center; /* opcional, se ve más limpio */
+  text-align: center; 
 }
 
 td {
@@ -508,11 +508,11 @@ td {
 }
 
 .word-btn {
-  background: #2563eb; /* azul similar al activo de menu */
+  background: #2563eb; 
 }
 
 .word-btn:hover {
-  background: #1e40af; /* un azul más oscuro al hover */
+  background: #1e40af; 
 }
 
 .word-btn:active {
