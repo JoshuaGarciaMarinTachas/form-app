@@ -21,9 +21,9 @@ body {
 /*  TÍTULO */
 #titulo {
   margin-bottom: 25px;
-  font-size: 32px; /* más grande */
+  font-size: 32px; 
   font-weight: bold;
-  text-align: center; /* centrado */
+  text-align: center; 
 }
 
 /*  FORM */
@@ -355,7 +355,7 @@ button:hover {
   display: flex;
   width: 110px;
   height: 42px;
-  background: #d95252; /*  NO (suave) */
+  background: #d95252; 
   border-radius: 25px;
   cursor: pointer;
   overflow: hidden;
@@ -389,7 +389,7 @@ button:hover {
   position: absolute;
   width: 50%;
   height: 100%;
-  background: #efefef; /*  blanco sólido */
+  background: #efefef; 
   border-radius: 25px;
   left: 0;
   transition: transform 0.35s ease;
@@ -397,7 +397,7 @@ button:hover {
 
 /* ESTADO SI */
 .toggle-input:checked + .toggle-btn {
-  background: #a5d6a7; /* verde suave */
+  background: #a5d6a7; 
 }
 
 .toggle-input:checked + .toggle-btn::after {
@@ -406,7 +406,7 @@ button:hover {
 
 /*  FILA DE SWITCHES */
 .switches-row {
-  grid-column: 1 / -1; /* ocupa toda la fila */
+  grid-column: 1 / -1; 
   display: flex;
   gap: 40px;
   align-items: center;
@@ -429,12 +429,12 @@ button:hover {
 .horario-row {
   display: flex;
   gap: 15px;
-  grid-column: span 2; /* CLAVE: ocupa toda la fila del grid */
+  grid-column: span 2; 
 }
 
 .horario-row .form-group {
   flex: 1;
-  margin: 0; /* evita saltos raros */
+  margin: 0; 
 }
 
 /* =========================

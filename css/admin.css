@@ -504,7 +504,7 @@ th {
 }
 
 td {
-  min-width: 140px; /* celdas normales */
+  min-width: 140px; 
 }
 
 .word-btn {
