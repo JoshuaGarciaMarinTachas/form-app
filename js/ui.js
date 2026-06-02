@@ -5,7 +5,7 @@ export function crearCampo(campo) {
     campo.tipo === "auto_time" ||
     campo.tipo === "auto_date" ||
     campo.id === "fecha_inicio" ||
-    campo.id === "fecha_fin" //  AGREGAR
+    campo.id === "fecha_fin"
   )
     return null;
 
