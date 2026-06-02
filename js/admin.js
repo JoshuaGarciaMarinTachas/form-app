@@ -197,8 +197,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "correo",
       "telefono",
 
-      "fechas_evento", // 👈 NUEVO
-      "horarios_evento", // 👈 NUEVO
+      "fechas_evento", //  NUEVO
+      "horarios_evento", //  NUEVO
 
       "multi_dia",
       "espacio",

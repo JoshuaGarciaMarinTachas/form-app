@@ -231,7 +231,7 @@ btnAgregarDia.addEventListener("click", crearDia);
 // INSERTAR SWITCHES ARRIBA DEL BLOQUE 2
 bloques[1].insertBefore(switchesContainer, bloques[1].children[1] || null);
 
-// 👉 AHORA sí agrega horario
+//  AHORA sí agrega horario
 bloques[1].appendChild(horarioRow);
 
 // INSERTAR SWITCHES LOGÍSTICA (AQUÍ SÍ VA)
@@ -308,12 +308,12 @@ setTimeout(() => {
       }
     }
 
-    // 🔹 SI NO ES MULTI DÍA
+    //  SI NO ES MULTI DÍA
     else {
       // Mostrar campos normales
       if (fechaEvento) fechaEvento.parentElement.style.display = "flex";
 
-      // 👇 ESTE SIEMPRE OCULTO (porque ya no lo usas)
+      //  ESTE SIEMPRE OCULTO (porque ya no lo usas)
       if (fechaInicio) fechaInicio.parentElement.style.display = "none";
       if (fechaFin) fechaFin.parentElement.style.display = "none";
 
@@ -526,7 +526,7 @@ form.addEventListener("submit", async (e) => {
 
       const dias = document.querySelectorAll(".dia-card");
 
-      // 🔴 Validar que exista al menos un día
+      //  Validar que exista al menos un día
       if (dias.length === 0) {
         alert("Debes agregar al menos un día");
         return;
@@ -537,36 +537,36 @@ form.addEventListener("submit", async (e) => {
         const inicio = dia.querySelector(".dia-inicio")?.value;
         const fin = dia.querySelector(".dia-fin")?.value;
 
-        // 🔴 Validar campos vacíos
+        //  Validar campos vacíos
         if (!fecha || !inicio || !fin) {
           error = true;
           return;
         }
 
-        // 🔴 Validar orden de horas
+        //  Validar orden de horas
         if (fin <= inicio) {
           alert("La hora fin debe ser mayor a la de inicio en cada día");
           error = true;
           return;
         }
 
-        // ✅ Solo aquí se agregan (UNA sola vez)
+        //  Solo aquí se agregan (UNA sola vez)
         fechasArr.push(formatearFecha(fecha)); // ["27/05/2026", "28/05/2026"]
         horariosArr.push(`${inicio}h - ${fin}h`); // ["16:00h - 17:00h", "13:00h - 15:00h"]
       });
 
-      // 🔴 Si hubo error, no continuar
+      //  Si hubo error, no continuar
       if (error) {
         alert("Completa correctamente todos los días");
         return;
       }
     } else {
-      // ✅ Caso normal (1 día)
+      //  Caso normal (1 día)
       fechasArr.push(formatearFecha(data.fecha_evento));
       horariosArr.push(`${data.hora_inicio}h - ${data.hora_fin}h`);
     }
 
-    // 🔹 GUARDAR cargo_admin SOLO SI ES VISIBLE
+    //  GUARDAR cargo_admin SOLO SI ES VISIBLE
     const cargoAdminEl = document.getElementById("cargo_admin");
     if (cargoAdminEl && cargoAdminEl.offsetParent !== null) {
       data.cargo_admin = cargoAdminEl.value?.trim() || null;
@@ -574,7 +574,7 @@ form.addEventListener("submit", async (e) => {
       data.cargo_admin = null;
     }
 
-    // 🔹 GUARDAR unidad SI ES VISIBLE
+    //  GUARDAR unidad SI ES VISIBLE
     const unidadEl = document.getElementById("unidad");
     if (unidadEl && unidadEl.offsetParent !== null) {
       data.unidad = unidadEl.value?.trim() || null;
@@ -582,11 +582,11 @@ form.addEventListener("submit", async (e) => {
       data.unidad = null;
     }
 
-    // 🔥 GUARDAR EN FIREBASE
+    //  GUARDAR EN FIREBASE
     data.fechas_evento = fechasArr.join("\n");
     data.horarios_evento = horariosArr.join("\n");
 
-    // 🧹 LIMPIAR CAMPOS VIEJOS
+    //  LIMPIAR CAMPOS VIEJOS
     delete data.fecha_evento;
     delete data.fecha_inicio;
     delete data.fecha_fin;
