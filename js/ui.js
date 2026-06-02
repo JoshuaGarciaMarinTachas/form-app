@@ -5,7 +5,7 @@ export function crearCampo(campo) {
     campo.tipo === "auto_time" ||
     campo.tipo === "auto_date" ||
     campo.id === "fecha_inicio" ||
-    campo.id === "fecha_fin" // 🔥 AGREGAR
+    campo.id === "fecha_fin" //  AGREGAR
   )
     return null;
 
@@ -342,12 +342,12 @@ export function crearCampo(campo) {
             return null;
           }
 
-          // 🔥 SOLO GUARDAR SI ES SALA DE CONSEJO
+          //  SOLO GUARDAR SI ES SALA DE CONSEJO
           if (selectExtra.style.display === "block") {
             return selectExtra.value || null;
           }
 
-          // ❌ Cualquier otro caso NO guarda
+          //  Cualquier otro caso NO guarda
           return null;
         };
 
