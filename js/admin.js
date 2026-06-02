@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     nombre_evento: "Evento",
     responsable: "Responsable",
     cargo_responsable: "Cargo",
-    cargo_admin: "Cargo administrativo", // <--- agregar aquí
+    cargo_admin: "Cargo administrativo", 
     unidad: "Unidad",
     correo: "Correo",
     telefono: "Teléfono",
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return tiempoB - tiempoA;
         });
 
-      console.log("Datos cargados:", dataGlobal); // Agregado para depurar
+      console.log("Datos cargados:", dataGlobal); 
 
       try {
         renderTabla(dataGlobal);
@@ -197,8 +197,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "correo",
       "telefono",
 
-      "fechas_evento", //  NUEVO
-      "horarios_evento", //  NUEVO
+      "fechas_evento", 
+      "horarios_evento", 
 
       "multi_dia",
       "espacio",
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         columnas.forEach((col) => {
           const td = document.createElement("td");
-          td.style.textAlign = "center"; // centrado opcional
+          td.style.textAlign = "center"; 
 
           let valor = row[col];
 
@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const fechaHorario = fechas
               .map((f, i) => {
                 const h = horarios[i] || "--";
-                return `${f} - ${h}`; // Solo fecha y horario
+                return `${f} - ${h}`; 
               })
               .join("\n");
 
