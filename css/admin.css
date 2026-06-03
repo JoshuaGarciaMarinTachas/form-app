@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #dfc6c6;
+  background: #b8d6f5;
   color: #222;
 }
 
@@ -53,20 +53,20 @@ body {
 
 .menu-btn,
 #btnDescargar {
-  font-family: Arial, sans-serif; 
-  font-size: 14px; 
-  font-weight: 500; 
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
 
   display: flex;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
 
   text-align: left;
 }
 
 /* hover mejorado */
 .menu-btn:hover {
-  background: #374151; 
+  background: #374151;
 }
 
 /* activo */
@@ -157,7 +157,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   min-width: 1200px;
-  table-layout: auto; 
+  table-layout: auto;
 }
 
 th,
@@ -350,8 +350,8 @@ td:focus {
 ========================= */
 
 td:empty {
-  background-color: #f0f0f0; 
-  color: #aaa; 
+  background-color: #f0f0f0;
+  color: #aaa;
   font-style: italic;
 }
 
@@ -360,8 +360,8 @@ td:empty {
 ========================= */
 
 tbody tr:hover {
-  background: #f1f5f9; 
-  cursor: pointer; 
+  background: #f1f5f9;
+  cursor: pointer;
 }
 
 /* =========================
@@ -370,13 +370,13 @@ tbody tr:hover {
 
 td[contenteditable="true"] {
   background: #f9fafb;
-  border: 2px solid #ffffff; 
-  cursor: text; 
+  border: 2px solid #ffffff;
+  cursor: text;
 }
 
 td:focus {
   outline: 2px solid #2563eb;
-  background: #eff6ff; 
+  background: #eff6ff;
 }
 
 /* =========================
@@ -384,11 +384,11 @@ td:focus {
 ========================= */
 
 .action-btn:focus {
-  outline: 2px solid #2563eb; 
+  outline: 2px solid #2563eb;
 }
 
 .delete-btn:focus {
-  outline: 2px solid #b91c1c; 
+  outline: 2px solid #b91c1c;
 }
 
 .tag {
@@ -434,11 +434,11 @@ td:focus {
 ========================= */
 
 #btnDescargar {
-  padding: 12px; 
+  padding: 12px;
   border: none;
   border-radius: 10px;
 
-  background: #01be46; 
+  background: #01be46;
   color: white;
 
   font-size: 14px;
@@ -471,11 +471,11 @@ td:focus {
 }
 
 #btnDescargar {
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 
 table {
-  table-layout: auto; 
+  table-layout: auto;
 }
 
 th {
@@ -489,9 +489,8 @@ th {
   font-size: 13px;
 }
 
-
 th {
-  min-width: 160px; 
+  min-width: 160px;
   padding: 16px 18px;
   font-size: 14px;
   white-space: normal;
@@ -500,19 +499,19 @@ th {
 
 th {
   vertical-align: middle;
-  text-align: center; 
+  text-align: center;
 }
 
 td {
-  min-width: 140px; 
+  min-width: 140px;
 }
 
 .word-btn {
-  background: #2563eb; 
+  background: #2563eb;
 }
 
 .word-btn:hover {
-  background: #1e40af; 
+  background: #1e40af;
 }
 
 .word-btn:active {
