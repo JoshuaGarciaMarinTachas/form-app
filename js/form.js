@@ -578,7 +578,7 @@ form.addEventListener("submit", async (e) => {
       fechasArr.push(formatearFecha(data.fecha_evento));
       horariosArr.push(`${data.hora_inicio}h - ${data.hora_fin}h`);
     }
-
+skjdnksdsd
     //  GUARDAR cargo_admin SOLO SI ES VISIBLE
     const cargoAdminEl = document.getElementById("cargo_admin");
     if (cargoAdminEl && cargoAdminEl.offsetParent !== null) {
