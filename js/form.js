@@ -487,14 +487,13 @@ form.addEventListener("submit", async (e) => {
     return;
   }
   // VALIDAR SONIDO
-  const seleccionoSonidoMovil = data.materiales?.includes("Sonido móvil");
-
-  const tieneMicrofono = data.sonido?.microfono;
-  const tieneBocina = data.sonido?.bocina;
-
-  if (seleccionoSonidoMovil && !tieneMicrofono && !tieneBocina) {
+  if (
+    data.sonido?.activo &&
+    !data.sonido.bocina &&
+    data.sonido.microfonos === 0
+  ) {
     alert(
-      "Seleccionaste Sonido móvil. Debes indicar si requieres bocina, micrófono o ambos.",
+      "Seleccionaste sonido. Debes seleccionar una bocina, al menos un micrófono o ambos.",
     );
     return;
   }
