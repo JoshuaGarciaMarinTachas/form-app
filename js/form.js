@@ -486,7 +486,18 @@ form.addEventListener("submit", async (e) => {
     alert("Máximo 50 personas en Sala de Consejo");
     return;
   }
-  console.log(data.sonido);
+  // VALIDAR SONIDO
+  const seleccionoSonidoMovil = data.materiales?.includes("Sonido móvil");
+
+  const tieneMicrofono = data.sonido?.microfono;
+  const tieneBocina = data.sonido?.bocina;
+
+  if (seleccionoSonidoMovil && !tieneMicrofono && !tieneBocina) {
+    alert(
+      "Seleccionaste Sonido móvil. Debes indicar si requieres bocina, micrófono o ambos.",
+    );
+    return;
+  }
   try {
     // =========================
     // VALIDAR SI FORMULARIO ESTÁ ACTIVO
