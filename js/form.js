@@ -498,6 +498,9 @@ form.addEventListener("submit", async (e) => {
     );
     return;
   }
+
+  console.log(data.sonido);
+
   try {
     // =========================
     // VALIDAR SI FORMULARIO ESTÁ ACTIVO
