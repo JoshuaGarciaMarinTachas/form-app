@@ -486,7 +486,7 @@ form.addEventListener("submit", async (e) => {
     alert("Máximo 50 personas en Sala de Consejo");
     return;
   }
-
+  console.log(data.sonido);
   try {
     // =========================
     // VALIDAR SI FORMULARIO ESTÁ ACTIVO
