@@ -150,13 +150,14 @@ body {
   background: white;
   border-radius: 16px;
   overflow: auto;
+  max-height: 75vh;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 table {
-  width: 100%;
+  width: max-content;
   border-collapse: collapse;
-  min-width: 1200px;
+  min-width: 2200px;
   table-layout: auto;
 }
 
