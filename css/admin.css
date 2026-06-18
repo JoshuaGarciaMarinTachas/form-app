@@ -95,7 +95,7 @@ body {
 .main-content {
   flex: 1;
   padding: 25px;
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 .topbar {
@@ -149,7 +149,11 @@ body {
 .tabla-wrapper {
   background: white;
   border-radius: 16px;
+
+  height: calc(100vh - 260px);
+
   overflow: auto;
+
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
