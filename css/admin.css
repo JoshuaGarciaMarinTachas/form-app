@@ -536,3 +536,28 @@ table td {
   text-align: center;
   vertical-align: middle;
 }
+
+/* =========================
+   SCROLL HORIZONTAL SUPERIOR
+========================= */
+
+.scroll-superior {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  background: white;
+
+  border-radius: 16px 16px 0 0;
+
+  margin-bottom: 4px;
+
+  height: 18px;
+}
+
+.scroll-superior-inner {
+  height: 1px;
+}
+
+.scroll-superior::-webkit-scrollbar {
+  height: 12px;
+}

@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const tbody = document.getElementById("tbody");
   const thead = document.querySelector("thead");
 
+  const scrollSuperior = document.querySelector(".scroll-superior");
+  const scrollSuperiorInner = document.querySelector(".scroll-superior-inner");
+
   if (!tbody || !thead) {
     console.error("No se encontraron los elementos 'tbody' o 'thead'");
     return;
@@ -54,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     nombre_evento: "Evento",
     responsable: "Responsable",
     cargo_responsable: "Cargo",
-    cargo_admin: "Cargo administrativo", 
+    cargo_admin: "Cargo administrativo",
     unidad: "Unidad",
     correo: "Correo",
     telefono: "Teléfono",
@@ -135,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return tiempoB - tiempoA;
         });
 
-      console.log("Datos cargados:", dataGlobal); 
+      console.log("Datos cargados:", dataGlobal);
 
       try {
         renderTabla(dataGlobal);
@@ -197,8 +200,8 @@ document.addEventListener("DOMContentLoaded", function () {
       "correo",
       "telefono",
 
-      "fechas_evento", 
-      "horarios_evento", 
+      "fechas_evento",
+      "horarios_evento",
 
       "multi_dia",
       "espacio",
@@ -231,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         columnas.forEach((col) => {
           const td = document.createElement("td");
-          td.style.textAlign = "center"; 
+          td.style.textAlign = "center";
 
           let valor = row[col];
 
@@ -456,7 +459,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const fechaHorario = fechas
               .map((f, i) => {
                 const h = horarios[i] || "--";
-                return `${f} - ${h}`; 
+                return `${f} - ${h}`;
               })
               .join("\n");
 
@@ -512,6 +515,23 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error renderizando fila:", row, err);
       }
     });
+
+    setTimeout(() => {
+      const tablaWrapper = document.querySelector(".tabla-wrapper");
+      const tabla = document.getElementById("tablaSolicitudes");
+
+      if (!tablaWrapper || !tabla) return;
+
+      scrollSuperiorInner.style.width = tabla.scrollWidth + "px";
+
+      scrollSuperior.addEventListener("scroll", () => {
+        tablaWrapper.scrollLeft = scrollSuperior.scrollLeft;
+      });
+
+      tablaWrapper.addEventListener("scroll", () => {
+        scrollSuperior.scrollLeft = tablaWrapper.scrollLeft;
+      });
+    }, 100);
   }
   function initBuscador() {
     const input = document.getElementById("buscador");
