@@ -542,20 +542,22 @@ table td {
 ========================= */
 
 .scroll-superior {
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
 
-  background: white;
+  background: #fff;
 
-  border-radius: 16px 16px 0 0;
+  margin-bottom: 8px;
 
-  margin-bottom: 4px;
+  height: 20px;
 
-  height: 18px;
+  border: 1px solid #ddd;
 }
 
 .scroll-superior-inner {
   height: 1px;
+  min-width: 3000px;
 }
 
 .scroll-superior::-webkit-scrollbar {
