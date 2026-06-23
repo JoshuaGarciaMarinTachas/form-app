@@ -392,7 +392,7 @@ form.addEventListener("submit", async (e) => {
   });
 
   // ELIMINAR MONTAJE SI NO ES SALA DE CONSEJO
-  if (data.espacio !== "Sala de Consejo") {
+  if (data.espacio !== "Sala edificio B") {
     delete data.montaje;
   }
 
@@ -482,7 +482,7 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  if (data.espacio === "Sala de Consejo" && data.personas > 50) {
+  if (data.espacio === "Sala edificio B" && data.personas > 50) {
     alert("Máximo 50 personas en Sala de Consejo");
     return;
   }

@@ -120,7 +120,7 @@ export const formularioData = {
       id: "espacio",
       label: "Espacio solicitado",
       tipo: "select",
-      opciones: ["Explanada", "Auditorio", "Sala de Consejo", "Velaria"],
+      opciones: ["Explanada", "Auditorio", "Sala Edificio B", "Velaria"],
     },
 
     //  SOLO SI NO ES EXPLANADA
@@ -128,15 +128,10 @@ export const formularioData = {
       id: "montaje",
       label: "Tipo de montaje",
       tipo: "select",
-      opciones: [
-        "Sala de consejo",
-        "Tipo aula",
-        "Tipo herradura",
-        "Tipo auditorio",
-      ],
+      opciones: ["Sala de consejo", "Tipo aula", "Tipo auditorio"],
       dependsOn: {
         campo: "espacio",
-        valores: ["Sala de Consejo"],
+        valores: ["Sala edificio B"],
       },
     },
 
