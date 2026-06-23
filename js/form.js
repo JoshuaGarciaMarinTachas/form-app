@@ -483,7 +483,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   if (data.espacio === "Sala edificio B" && data.personas > 50) {
-    alert("Máximo 50 personas en Sala de Consejo");
+    alert("Máximo 50 personas en Sala edificio B");
     return;
   }
   // VALIDAR SONIDO
