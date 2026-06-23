@@ -131,7 +131,7 @@ export const formularioData = {
       opciones: ["Sala de consejo", "Tipo aula", "Tipo auditorio"],
       dependsOn: {
         campo: "espacio",
-        valores: ["Sala edificio B"],
+        valores: ["Sala Edificio B"],
       },
     },
 
