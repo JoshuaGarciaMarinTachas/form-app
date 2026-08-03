@@ -8,18 +8,6 @@ body {
   padding: 20px;
 
   background-color: #b8d6f5;
-
-  background-image: url("./img/patron.png");
-  background-repeat: repeat;
-
-  /* tamaño del patrón */
-  background-size: 650px;
-
-  /* centra el mosaico */
-  background-position: center;
-
-  /* permanece fijo al hacer scroll */
-  background-attachment: fixed;
 }
 
 /*  CONTENEDOR */
