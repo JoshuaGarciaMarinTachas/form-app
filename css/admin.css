@@ -36,7 +36,14 @@ body {
 }
 
 .sidebar h2 {
-  margin-bottom: 30px;
+  font-family: "Alex Brush", cursive;
+  font-size: 46px;
+  font-weight: normal;
+  color: #ffffff;
+  text-align: center;
+  margin: 5px 0 35px;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,.45);
 }
 
 .menu-btn {
