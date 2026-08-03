@@ -541,3 +541,19 @@ table td {
   vertical-align: middle;
 }
 
+.topbar h1 {
+  font-family: "Great Vibes", cursive;
+  font-size: 46px;
+  font-weight: normal;
+  color: #000000;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.topbar p {
+  font-size: 16px;
+  color: #000000;
+  margin-top: 6px;
+  font-style: italic;
+}
