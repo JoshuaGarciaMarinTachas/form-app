@@ -694,6 +694,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return fila;
         });
 
+        console.log(datosExcel[0]);
         const worksheet = XLSX.utils.json_to_sheet(datosExcel);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Eventos");
