@@ -608,6 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "nombre_evento",
             "responsable",
             "cargo_responsable",
+            "cargo_admin", 
             "unidad",
             "correo",
             "telefono",
