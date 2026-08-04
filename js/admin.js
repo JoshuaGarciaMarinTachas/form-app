@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
     espacio: "Espacio",
     montaje: "Montaje",
     personas: "Número aproximado de personas",
+    curules: "Curules Presidium",
     externos: "¿Asiste gente externa?",
     discapacidad: "¿Asisten personas con discapacidad?",
 
@@ -207,6 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "espacio",
       "montaje",
       "personas",
+      "curules",
       "externos",
       "discapacidad",
       "descripcion",
@@ -263,11 +265,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 .filter(Boolean);
               td.innerHTML = activos.length
                 ? activos
-                    .map((v) => `<span class="tag material">${v}</span>`)
-                    .join(", ")
+                  .map((v) => `<span class="tag material">${v}</span>`)
+                  .join(", ")
                 : `<span class="empty">No requerido</span>`;
             }
           }
+
+          // Curules Presidium
+          else if (col === "curules") {
+
+            td.innerHTML = valor?.requerido
+              ? `<span class="tag highlight">${valor.cantidad} curules</span>`
+              : `<span class="empty">No requerido</span>`;
+
+          }
+
           // Personificadores
           else if (col === "personificadores") {
             td.innerHTML = valor?.activo
@@ -283,8 +295,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 items.push(`${valor.microfonos} micrófonos`);
               td.innerHTML = items.length
                 ? items
-                    .map((i) => `<span class="tag sound">${i}</span>`)
-                    .join(", ")
+                  .map((i) => `<span class="tag sound">${i}</span>`)
+                  .join(", ")
                 : `<span class="tag sound">Audio básico</span>`;
             } else {
               td.innerHTML = `<span class="empty">No requerido</span>`;
@@ -608,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "nombre_evento",
             "responsable",
             "cargo_responsable",
-            "cargo_admin", 
+            "cargo_admin",
             "unidad",
             "correo",
             "telefono",
@@ -618,6 +630,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "espacio",
             "montaje",
             "personas",
+            "curules",
             "externos",
             "discapacidad",
             "descripcion",
@@ -654,6 +667,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .map(([k]) => formatearNombre(k))
                 .filter(Boolean);
               valor = activos.length ? activos.join(", ") : "";
+            }
+            // Curules Presidium
+            else if (key === "curules") {
+
+              if (valor?.requerido) {
+                valor = `${valor.cantidad} curules`;
+              } else {
+                valor = "No requerido";
+              }
+
             }
             // Personificadores
             else if (key === "personificadores") {
