@@ -151,6 +151,25 @@ export const formularioData = {
       label: "Número aproximado de personas",
       tipo: "number",
     },
+    {
+      id: "curules_presidium",
+      label: "¿Se requieren curules para presidium?",
+      tipo: "switch",
+      dependsOn: {
+        campo: "espacio",
+        valores: ["Auditorio", "Sala Edificio B"],
+      },
+    },
+
+    {
+      id: "cantidad_curules",
+      label: "Cantidad de curules",
+      tipo: "number",
+      dependsOn: {
+        campo: "curules_presidium",
+        valor: true,
+      },
+    },
 
     //  =========================
     //  BLOQUE 4

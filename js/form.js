@@ -115,8 +115,9 @@ formularioData.campos.forEach((campo) => {
       "discapacidad",
       "espacio",
       "montaje",
-      "curules",
-      "personas"
+      "personas",
+      "curules_presidium",
+      "cantidad_curules",
     ].includes(
       campo.id,
     )
