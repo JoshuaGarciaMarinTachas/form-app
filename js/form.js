@@ -110,7 +110,14 @@ formularioData.campos.forEach((campo) => {
 
   // BLOQUE 3
   else if (
-    ["externos", "discapacidad", "espacio", "montaje", "personas"].includes(
+    [
+      "externos",
+      "discapacidad",
+      "espacio",
+      "montaje",
+      "curules",
+      "personas"
+    ].includes(
       campo.id,
     )
   ) {

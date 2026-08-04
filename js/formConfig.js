@@ -135,6 +135,16 @@ export const formularioData = {
       },
     },
 
+    {
+      id: "curules",
+      label: "Curules de presídium",
+      tipo: "curules_custom",
+      dependsOn: {
+        campo: "espacio",
+        valores: ["Auditorio", "Sala Edificio B"],
+      },
+    },
+
     // SIEMPRE VISIBLE
     {
       id: "personas",

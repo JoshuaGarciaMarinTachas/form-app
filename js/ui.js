@@ -255,7 +255,50 @@ export function crearCampo(campo) {
 
       break;
     }
+    case "curules_custom": {
+      input = document.createElement("div");
+      input.id = campo.id;
 
+      const chk = document.createElement("input");
+      chk.type = "checkbox";
+      chk.id = campo.id + "_switch";
+      chk.classList.add("toggle-input");
+
+      const toggle = document.createElement("label");
+      toggle.classList.add("toggle-btn");
+      toggle.setAttribute("for", chk.id);
+
+      const si = document.createElement("span");
+      si.textContent = "Sí";
+
+      const no = document.createElement("span");
+      no.textContent = "No";
+
+      toggle.appendChild(si);
+      toggle.appendChild(no);
+
+      const cantidad = document.createElement("input");
+      cantidad.type = "number";
+      cantidad.min = 1;
+      cantidad.placeholder = "Cantidad de curules";
+      cantidad.style.display = "none";
+      cantidad.style.marginTop = "10px";
+
+      chk.addEventListener("change", () => {
+        cantidad.style.display = chk.checked ? "block" : "none";
+      });
+
+      input.appendChild(chk);
+      input.appendChild(toggle);
+      input.appendChild(cantidad);
+
+      input.getValores = () => ({
+        activo: chk.checked,
+        cantidad: chk.checked ? parseInt(cantidad.value) || 0 : 0,
+      });
+
+      break;
+    }
     // =========================
     //  MONTAJE DINÁMICO FINAL
     // =========================
