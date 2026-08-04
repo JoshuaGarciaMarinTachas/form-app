@@ -140,6 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
       console.log("Datos cargados:", dataGlobal);
+      console.log("Primer documento:", dataGlobal[0]);
+      console.log("Curules:", dataGlobal[0]?.curules);
 
       try {
         renderTabla(dataGlobal);
