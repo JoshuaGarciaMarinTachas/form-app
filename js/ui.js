@@ -455,10 +455,17 @@ export function crearCampo(campo) {
       input.type = campo.tipo;
       input.id = campo.id;
 
-      // Limitar horarios de 07:00 a 17:00
+      // Horarios
       if (campo.tipo === "time") {
         input.min = "07:00";
         input.max = "17:00";
+      }
+
+      // Curules
+      if (campo.id === "cantidad_curules") {
+        input.min = 1;
+        input.max = 7;
+        input.step = 1;
       }
     }
   }

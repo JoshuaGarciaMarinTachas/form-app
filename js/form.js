@@ -404,6 +404,16 @@ form.addEventListener("submit", async (e) => {
     delete data.montaje;
   }
 
+  // CURULES
+  if (!["Auditorio", "Sala Edificio B"].includes(data.espacio)) {
+    delete data.curules_presidium;
+    delete data.cantidad_curules;
+  }
+
+  if (!data.curules_presidium) {
+    delete data.cantidad_curules;
+  }
+
   //  CAMPOS OBLIGATORIOS
   const obligatorios = [
     "correo",
@@ -504,6 +514,22 @@ form.addEventListener("submit", async (e) => {
       "Seleccionaste sonido. Debes seleccionar una bocina, al menos un micrófono o ambos.",
     );
     return;
+  }
+
+  if (data.curules_presidium) {
+
+    const cantidad = Number(data.cantidad_curules);
+
+    if (!cantidad || cantidad < 1) {
+      alert("Debes indicar la cantidad de curules requeridas.");
+      return;
+    }
+
+    if (cantidad > 7) {
+      alert("No se pueden solicitar más de 7 curules para presidium.");
+      return;
+    }
+
   }
 
   console.log(data.sonido);
