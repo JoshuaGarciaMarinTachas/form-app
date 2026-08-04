@@ -128,7 +128,7 @@ export const formularioData = {
       id: "montaje",
       label: "Tipo de montaje",
       tipo: "select",
-      opciones: ["Sala de consejo", "Tipo aula", "Tipo auditorio"],
+      opciones: ["Tipo herradura", "Tipo aula", "Tipo auditorio"],
       dependsOn: {
         campo: "espacio",
         valores: ["Sala Edificio B"],
