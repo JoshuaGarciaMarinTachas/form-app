@@ -677,9 +677,9 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (key === "curules") {
 
               if (item.curules_presidium) {
-                valor = `${item.cantidad_curules} curules`;
+                valor = item.cantidad_curules || "0";
               } else {
-                valor = "No requerido";
+                valor = "No";
               }
 
             }
