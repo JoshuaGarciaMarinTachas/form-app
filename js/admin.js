@@ -494,6 +494,10 @@ document.addEventListener("DOMContentLoaded", function () {
               espacio: (evento.espacio || "No especificado") + tipoMontaje,
               personas: evento.personas || "0",
               montaje: evento.montaje || "No requerido",
+              curules:
+                evento.curules_presidium
+                  ? `${evento.cantidad_curules} curules`
+                  : "No requerido",
               descripcion: evento.descripcion || "Sin descripción",
               observaciones: evento.observaciones || "Sin observaciones",
               recursos_totales:
