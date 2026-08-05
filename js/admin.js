@@ -223,9 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "fecha_llenado",
     ];
 
-    const columnas = columnasOrdenadas.filter((c) =>
-      data[0]?.hasOwnProperty(c),
-    );
+    const columnas = columnasOrdenadas.filter((c) => {
+      if (c === "curules") return true;
+      return data[0]?.hasOwnProperty(c);
+    });
 
     thead.innerHTML =
       "<tr>" +
@@ -276,10 +277,12 @@ document.addEventListener("DOMContentLoaded", function () {
           // Curules Presidium
           else if (col === "curules") {
 
-            td.innerHTML = valor?.requerido
-              ? `<span class="tag highlight">${valor.cantidad} curules</span>`
-              : `<span class="empty">No requerido</span>`;
+            const requerido = row.curules_presidium;
+            const cantidad = row.cantidad_curules;
 
+            td.innerHTML = requerido
+              ? `<span class="tag highlight">${cantidad} curules</span>`
+              : `<span class="empty">No requerido</span>`;
           }
 
           // Personificadores
@@ -673,8 +676,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Curules Presidium
             else if (key === "curules") {
 
-              if (valor?.requerido) {
-                valor = `${valor.cantidad} curules`;
+              if (item.curules_presidium) {
+                valor = `${item.cantidad_curules} curules`;
               } else {
                 valor = "No requerido";
               }
