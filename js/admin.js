@@ -280,9 +280,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const requerido = row.curules_presidium;
             const cantidad = row.cantidad_curules;
 
-            td.innerHTML = requerido
-              ? `<span class="tag highlight">${cantidad} curules</span>`
-              : `<span class="empty">No requerido</span>`;
+            td.textContent = requerido
+              ? cantidad
+              : "No";
           }
 
           // Personificadores
