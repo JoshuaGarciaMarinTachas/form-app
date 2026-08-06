@@ -135,7 +135,8 @@ export function crearCampo(campo) {
 
       const numMicro = document.createElement("input");
       numMicro.type = "number";
-      numMicro.value = 0;
+      numMicro.min = 1;
+      numMicro.value = 1;
       numMicro.style.display = "none";
 
       chkMicro.addEventListener("change", () => {
@@ -179,7 +180,7 @@ export function crearCampo(campo) {
 
       input.getValores = () => ({
         activo: chkSonido.checked,
-        microfonos: chkMicro.checked ? parseInt(numMicro.value) || 0 : 0,
+        microfonos: chkMicro.checked ? parseInt(numMicro.value) || 1 : 0,
       });
 
       break;
