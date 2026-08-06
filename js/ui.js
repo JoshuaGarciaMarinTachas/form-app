@@ -165,7 +165,7 @@ export function crearCampo(campo) {
       micro.appendChild(numMicro);
 
       sub.appendChild(micro);
-
+      console.log(sub.innerHTML);
       input.appendChild(main);
       input.appendChild(sub);
 
