@@ -433,9 +433,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // ===== SONIDO =====
             if (evento.sonido?.activo) {
-              if (evento.sonido.bocina) humanos.push("Bocina");
-              if (evento.sonido.microfonos > 0)
+              // Siempre incluye bocina
+              humanos.push("Bocina");
+
+              if (evento.sonido.microfonos > 0) {
                 humanos.push(`${evento.sonido.microfonos} micrófonos`);
+              }
             }
 
             // ===== PERSONIFICADORES =====
@@ -699,12 +702,17 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (key === "sonido") {
               if (valor?.activo) {
                 const items = [];
-                if (valor.bocina) items.push("Bocina");
-                if (valor.microfonos > 0)
+
+                // Siempre mostrar bocina
+                items.push("Bocina");
+
+                if (valor.microfonos > 0) {
                   items.push(`${valor.microfonos} micrófonos`);
-                valor = items.length ? items.join(", ") : "Audio básico";
+                }
+
+                td.textContent = items.join(", ");
               } else {
-                valor = "";
+                td.textContent = "No requerido";
               }
             }
             // Otros objetos

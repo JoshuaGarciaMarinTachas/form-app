@@ -146,23 +146,11 @@ export function crearCampo(campo) {
       micro.appendChild(txtMicro);
       micro.appendChild(numMicro);
 
-      const bocina = document.createElement("label");
-
-      const chkBocina = document.createElement("input");
-      chkBocina.type = "checkbox";
-
-      const txtBocina = document.createElement("span");
-      txtBocina.textContent = "Bocina";
-
-      bocina.appendChild(chkBocina);
-      bocina.appendChild(txtBocina);
-
       chkSonido.addEventListener("change", () => {
         sub.style.display = chkSonido.checked ? "flex" : "none";
       });
 
       sub.appendChild(micro);
-      sub.appendChild(bocina);
 
       input.appendChild(main);
       input.appendChild(sub);
@@ -192,7 +180,6 @@ export function crearCampo(campo) {
       input.getValores = () => ({
         activo: chkSonido.checked,
         microfonos: chkMicro.checked ? parseInt(numMicro.value) || 0 : 0,
-        bocina: chkBocina.checked,
       });
 
       break;

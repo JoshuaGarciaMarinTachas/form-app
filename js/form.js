@@ -504,15 +504,13 @@ form.addEventListener("submit", async (e) => {
     alert("Máximo 50 personas en Sala Edificio B");
     return;
   }
+
   // VALIDAR SONIDO
   if (
     data.sonido?.activo &&
-    !data.sonido.bocina &&
-    data.sonido.microfonos === 0
+    data.sonido.microfonos < 0
   ) {
-    alert(
-      "Seleccionaste sonido. Debes seleccionar una bocina, al menos un micrófono o ambos.",
-    );
+    alert("La cantidad de micrófonos no puede ser negativa.");
     return;
   }
 
