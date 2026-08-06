@@ -282,7 +282,7 @@ export function crearCampo(campo) {
       const cantidad = document.createElement("input");
       cantidad.type = "number";
       cantidad.min = 1;
-      cantidad.placeholder = "Cantidad de curules";
+      cantidad.placeholder = "Cantidad de curules: ";
       cantidad.style.display = "none";
       cantidad.style.marginTop = "10px";
 
