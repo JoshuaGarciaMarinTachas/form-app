@@ -110,6 +110,7 @@ export function crearCampo(campo) {
       input.id = campo.id;
       input.classList.add("multi-group");
 
+      // Sonido
       const main = document.createElement("label");
 
       const chkSonido = document.createElement("input");
@@ -121,10 +122,12 @@ export function crearCampo(campo) {
       main.appendChild(chkSonido);
       main.appendChild(title);
 
+      // Subopciones
       const sub = document.createElement("div");
       sub.classList.add("sub-opciones");
       sub.style.display = "none";
 
+      // Micrófonos
       const micro = document.createElement("label");
 
       const chkMicro = document.createElement("input");
@@ -141,22 +144,32 @@ export function crearCampo(campo) {
 
       chkMicro.addEventListener("change", () => {
         numMicro.style.display = chkMicro.checked ? "inline-block" : "none";
+
+        if (!chkMicro.checked) {
+          numMicro.value = 1;
+        }
+      });
+
+      chkSonido.addEventListener("change", () => {
+        sub.style.display = chkSonido.checked ? "flex" : "none";
+
+        if (!chkSonido.checked) {
+          chkMicro.checked = false;
+          numMicro.style.display = "none";
+          numMicro.value = 1;
+        }
       });
 
       micro.appendChild(chkMicro);
       micro.appendChild(txtMicro);
       micro.appendChild(numMicro);
 
-      chkSonido.addEventListener("change", () => {
-        sub.style.display = chkSonido.checked ? "flex" : "none";
-      });
-
       sub.appendChild(micro);
 
       input.appendChild(main);
       input.appendChild(sub);
 
-      //  MOVER "SONIDO" DEBAJO DE "LAPTOP"
+      // Colocar debajo de Laptop
       setTimeout(() => {
         const materiales = document.getElementById("materiales");
         if (!materiales) return;
@@ -167,24 +180,23 @@ export function crearCampo(campo) {
 
         rows.forEach((r) => {
           const texto = r.querySelector("span")?.textContent;
-          if (texto === "Laptop") {
-            laptopRow = r;
-          }
+          if (texto === "Laptop") laptopRow = r;
         });
 
         if (laptopRow) {
-          // Insertar después de Laptop
           laptopRow.insertAdjacentElement("afterend", input);
         }
       }, 200);
 
       input.getValores = () => ({
         activo: chkSonido.checked,
-        microfonos: chkMicro.checked ? parseInt(numMicro.value) || 1 : 0,
+        bocina: chkSonido.checked, // Siempre incluida
+        microfonos: chkMicro.checked ? Number(numMicro.value) || 1 : 0,
       });
 
       break;
     }
+
     case "personificadores_custom": {
       input = document.createElement("div");
       input.id = campo.id;
